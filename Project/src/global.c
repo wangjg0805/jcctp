@@ -7,6 +7,7 @@
 #include "ad_proc.h"
 #include "ad_filter.h"
 
+#include "CPUled.h"
 
 
 u8 Flag_10ms,Flag_100ms,Flag_500ms,Flag_30s;
@@ -65,10 +66,10 @@ void InitGlobalVarible(void)
     RunData.stable_flag = 0;
 	RunData.full_flag = 0;
     RunData.key_sound_time = 0;
-    RunData.current_mode = STAT_WEIGH;
+    RunData.current_mode = STAT_WEIGHT;
     RunData.current_unit = UNIT_KG;
-    RunData.do_zero_flag = 0;
-    RunData.do_tare_flag = 0;
+    //RunData.do_zero_flag = 0;
+    //RunData.do_tare_flag = 0;
     
     RunData.no_key_time = 0;
     RunData.keep_zero_time = 0;
@@ -81,7 +82,7 @@ void InitGlobalVarible(void)
     CalData.linecalstart = 0;
     CalData.linecalstep = 0;
 
-    FactoryData.factorystep = 0;
+    FactoryData.factorystep = FAC_NULL;
     FactoryData.factoryindex = 0;
 }
  
@@ -121,7 +122,7 @@ void  Init_MachineParam(void)
     MachData.weigh_fullrange = 50000;
     MachData.weigh_onestep = 1;
     MachData.weigh_dotpos = 5;
-    MachData.weigh_displaymin = 1;
+    MachData.weigh_displaymin = 4;
   
     MachData.weigh_bkofftime = 30;
     MachData.dozerorange = 20;
@@ -141,14 +142,12 @@ void Init_UserConfigParam(void)
     Read_EEPROM(EEP_CALFLAG_ADDR, buf, 2); 
     if((buf[0]==buf[1])&&(buf[0]== CHECK_DATA)) {
         Read_EEPROM(EEP_WEIGHTZERO_ADDR, buf, 4);
-        MachData.ad_zero_data = BUFtoU32(buf);
-        MData.ad_zero_data = MachData.ad_zero_data;
+        MData.ad_zero_data = BUFtoU32(buf);
         
         Read_EEPROM(EEP_WEIGHTFULL_ADDR, buf, 4);
         MachData.weigh_ad_full = BUFtoU32(buf);
        
     } else {
-        MachData.ad_zero_data = MACHINE_AD_ZERO;
         MData.ad_zero_data = MACHINE_AD_ZERO;
         MachData.weigh_ad_full = MACHINE_FULL_ZERO;
     }
@@ -316,7 +315,7 @@ void MData_update_normal(void)
         RunData.power_on_cnt--;
         if(0 == RunData.power_on_cnt) {
             RunData.power_on_flag = 0;
-		 	if(labs(MData.ad_dat_avg-MachData.ad_zero_data) < (MachData.weigh_ad_full*MachData.dozerorange/100)) {
+		 	if(labs(MData.ad_dat_avg-MData.ad_zero_data) < (MachData.weigh_ad_full*MachData.dozerorange/100)) {
                 MData.ad_zero_data = MData.ad_dat_avg;              
             }
             /////////////////////////////
@@ -328,14 +327,18 @@ void MData_update_normal(void)
         RunData.do_zero_flag = 0;
         do_zero_proc();
     }
+/*   
     if((1 == RunData.do_tare_flag)&&(1==RunData.stable_flag)) {
         RunData.do_tare_flag = 0;
         do_tare_proc();
     }
-    
+*/    
     autozero_track();    
     autoload_track(); 
    
+    if(STAT_PCS == RunData.current_mode)
+        RunData.Pcs = labs(MData.ad_dat_avg - MData.ad_zero_data-MData.ad_tare_data) / RunData.PCSCoef + 0.5;
+            
     if(MData.ad_dat_avg > MData.ad_zero_data) {
         grossw_ad = MData.ad_dat_avg - MData.ad_zero_data;
         if(grossw_ad > MData.ad_tare_data) {
@@ -357,18 +360,13 @@ void MData_update_normal(void)
     
     MData.displayweight = displaytostep(MData.netw);
 
-    
-    if((MData.displayweight<0.1)&&(0==MData.ad_tare_data)&&(1==RunData.stable_flag))
-        RunData.zero_flag = 1;
-    else
-        RunData.zero_flag = 0;
-      
-    //total :return 0 flag 
-    if(MData.displayweight < 0.1){
+    if((1==RunData.stable_flag)&&(MData.displayweight<0.1)) {
+        RunData.positive_flag = 1;
         RunData.return_zero_flag = 1;
         RunData.not_zero_time = 0;
-    } else
+    } else { 
         RunData.keep_zero_time = 0;
+    }
     
     //full flag 
     RunData.full_flag = 0;
@@ -382,23 +380,7 @@ void MData_update_normal(void)
     
     if(1==RunData.full_flag)
         RunData.key_sound_time = FULL_SOUND_TIME;
-    
-    //get price
-#if 0
-    if(0 == RunData.positive_flag)
-        RunData.price = 0;
-    else {
-        i = MData.displayweight;
-        tmp = i * RunData.unitprice / pow(10,MachData.weigh_dotpos);
-        if(UserData.killfen == 1) {
-            tmp = tmp+5;
-            i = ((u32)tmp)%10;
-            tmp = tmp - i;
-        }
-        RunData.price = tmp;
-    }
-#endif
-    
+   
 }
 
 
@@ -425,8 +407,6 @@ void Display_ClearPreZero(u8 max,u8 dot,u8* buf)
     }
 }
 
-
-
 void Display_InnerCode(u32 x)
 {
     u8 i;
@@ -438,5 +418,62 @@ void Display_InnerCode(u32 x)
 
     for(i=0;i<6;i++)
         display_buffer[i] = display_code[display_buffer[i]];
+
 }
 
+
+void Display_LPmode(void) 
+{
+    u8 i;
+    static u8 cnt = 0;
+    cnt++;
+    if(cnt >= 10)
+        cnt = 0;
+    
+    for(i=0;i<6;i++)	
+        display_buffer[i] = display_code[display_LPMODE[i]]; 
+    if(cnt<3)
+        display_buffer[5] = display_code[DISP_X];
+}
+
+void Display_PrePCS(void)
+{
+    u8 i;
+    for(i=0;i<6;i++)	
+        display_buffer[i] = display_code[display_COUNT[i]];
+
+    display_buffer[3] = display_code[RunData.PCSSample/100];
+    display_buffer[4] = display_code[(RunData.PCSSample%100)/10];
+    display_buffer[5] = display_code[RunData.PCSSample%10]; 
+
+}
+
+
+void Display_PCS(void)
+{
+    u8 i;
+    sprintf(display_buffer,"%06ld",(u32)RunData.Pcs);
+    for(i=0;i<6;i++)
+        display_buffer[i] -= 0x30;   
+    
+    Display_ClearPreZero(6,  1,display_buffer);
+    for(i=0;i<6;i++)
+        display_buffer[i] = display_code[display_buffer[i]];    
+}
+
+void Display_Weight(void)
+{
+    u8 i;
+    sprintf(display_buffer,"%06ld",(u32)MData.displayweight);
+    for(i=0;i<6;i++)
+        display_buffer[i] -= 0x30;        
+    Display_ClearPreZero(6,MachData.weigh_dotpos,display_buffer);
+    
+    for(i=0;i<6;i++)
+        display_buffer[i] = display_code[display_buffer[i]];
+    
+    display_buffer[1] |= SEG_P;
+    if(0 == RunData.positive_flag)
+        display_buffer[0] = display_code[DISP_X];
+    
+}

@@ -3,14 +3,6 @@
 #include "factory.h"
 #include "global.h"
 
-#define SEG_A 0x80
-#define SEG_B 0x20
-#define SEG_C 0x01
-#define SEG_D 0x02
-#define SEG_E 0x08
-#define SEG_F 0x40
-#define SEG_G 0x10
-#define SEG_P 0x04
 
 const u8 display_code[] = {SEG_A+SEG_B+SEG_C+SEG_D+SEG_E+SEG_F,      //0
                            SEG_B+SEG_C,                              //1  
@@ -44,7 +36,7 @@ const u8 display_code[] = {SEG_A+SEG_B+SEG_C+SEG_D+SEG_E+SEG_F,      //0
 };
 
 //LPMODE
-u8 const display_LPMODE[]  = {DISP_NULL,DISP_NULL,DISP_NULL,DISP_NULL,DISP_NULL,DISP_X};
+u8 const display_LPMODE[]  = {DISP_NULL,DISP_NULL,DISP_NULL,DISP_NULL,DISP_NULL,DISP_NULL};
 //FULL
 u8 const display_FULL[]  = {DISP_NULL,DISP_F,DISP_U,DISP_L,DISP_L,DISP_NULL}; 
 //USERCAL
@@ -55,10 +47,8 @@ u8 const display_FACTORYCAL_ZERO[] = { DISP_L,   1,   DISP_N,   DISP_X,  DISP_X,
 //factory mode
 u8 const display_FACTORY[] = {DISP_F,  DISP_X,  DISP_NULL,  DISP_NULL,  DISP_NULL,  DISP_NULL};
 u8 const display_LINECAL[] = {DISP_L,  DISP_N,     DISP_X,     DISP_X,     DISP_X,  DISP_X};
-//power on status
-u8 const display_BOOT_INFO[]  = {8,8,8,8,8,8};
-u8 const display_MODEL_INFO[] = {DISP_NULL,DISP_NULL,DISP_NULL,DISP_NULL,DISP_NULL,DISP_NULL};
 
+u8 const display_COUNT[]  = {DISP_C,  0  ,DISP_U,  DISP_X,  DISP_X,  DISP_X}; 
 
 
 /*************TM1668Ð´×Ö½Úº¯Êý***********/
@@ -275,27 +265,29 @@ void TM1668_Display_UserCal(void)
 
 }
 
-
 void TM1668_Display_Normal(void)
 {
     u32 i;
-    //display proc  
+    //display proc 
     if(1 == RunData.lowpower_flag) {
-        for(i=0;i<6;i++)	
-           display_buffer[i] = display_code[display_LPMODE[i]]; 
+        Display_LPmode();
     } else if(1 == RunData.full_flag){
         for(i=0;i<6;i++)	
            display_buffer[i] = display_code[display_FULL[i]]; 
     } else {
-        sprintf(display_buffer,"%06ld",(u32)MData.displayweight);
-        for(i=0;i<6;i++)
-            display_buffer[i] -= 0x30;        
-        Display_ClearPreZero(6,MachData.weigh_dotpos,display_buffer);
-        
-        for(i=0;i<6;i++)
-            display_buffer[i] = display_code[display_buffer[i]];
-        display_buffer[1] |= SEG_P;
-
+        switch(RunData.current_mode){
+        case STAT_PCS_SAMPLE:
+            Display_PrePCS();
+            break;
+        case STAT_PCS:
+            Display_PCS();
+            break;
+        case STAT_WEIGHT:
+            Display_Weight();
+            break;
+        default:
+            break;
+        }
     }
     
     TM1668_Update();

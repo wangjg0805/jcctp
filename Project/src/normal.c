@@ -4,25 +4,22 @@
 #include "stdio.h" 
 #include "global.h"
 
-#if 0
-void BkLight_Proc(void) 
+
+void LPmode_Check(void) 
 {
     u8 tmp;
     tmp = 0;
     if((RunData.no_key_time > NO_KEY_BKOFF_TIME)&&(RunData.keep_zero_time > KEEPZERO_BKOFF_TIME))
         tmp++;
-    if((9!=MachData.weigh_bkofftime)&&(0!=MachData.weigh_bkofftime)&&(RunData.not_zero_time > (MachData.weigh_bkofftime*60*60*2)))
-        tmp++;
+    //if((9!=MachData.weigh_bkofftime)&&(0!=MachData.weigh_bkofftime)&&(RunData.not_zero_time > (MachData.weigh_bkofftime*60*60*2)))
+    //    tmp++;
     
     if(0==tmp) {
         RunData.lowpower_flag = 0;
-        BkLight_On();
     } else {
         RunData.lowpower_flag = 1;
-        BkLight_Off();
     }
 }
-#endif
 
 void Normal_Pro(void)
 {
@@ -49,6 +46,7 @@ void Normal_Pro(void)
             i = Key_GetCode();
             if(0 != i) {
                 RunData.key_sound_time = KEY_NORMAL_SOUND_TIME;
+                RunData.no_key_time = 0;
                 switch(MachData.mode) {
                 case MACHINE_NORMAL_MODE + MACHINE_LINECAL_MODE:
                     Key_Proc_Linecal(i);
@@ -61,7 +59,6 @@ void Normal_Pro(void)
                     break;
                 case MACHINE_NORMAL_MODE:
                     Key_Proc(i);
-                    RunData.no_key_time = 0;
                     break;
                 default:
                     break;
@@ -109,7 +106,7 @@ void Normal_Pro(void)
             
         if(1 == Flag_500ms) {
             Flag_500ms = 0; 
-            //BkLight_Proc();
+            LPmode_Check();
             //printf("ad_dat_avg is: %ld \r\n",MData.ad_dat_avg);
             //printf("weigh_ad_zero is: %ld \r\n",MData.weigh_ad_zero);
             //UART2_SendData("dat_avg",MData.ad_dat_avg);

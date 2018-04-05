@@ -37,6 +37,18 @@
 
 #define TM1668COM_CONFIG_ADDRESS      0xC0
 
+//
+#define SEG_A 0x80
+#define SEG_B 0x20
+#define SEG_C 0x01
+#define SEG_D 0x02
+#define SEG_E 0x08
+#define SEG_F 0x40
+#define SEG_G 0x10
+#define SEG_P 0x04
+
+
+
 //special char
 #define   DISP_S       0x05
 #define   DISP_C       0x0a
@@ -58,15 +70,14 @@
 #define   DISP_ALL     0x1a
 #define   DISP_NULL    0x1b
 
-//
+
 extern u8 const display_LPMODE[]; 
 
 extern u8 const display_FULL[]; 
 extern u8 const display_USERCAL[];
 extern u8 const display_FACTORYCAL_ZERO[];
 extern u8 const display_FACTORY[];
-extern u8 const display_BOOT_INFO[];
-extern u8 const display_MODEL_INFO[]; 
+extern u8 const display_COUNT[]; 
 
 
 extern const u8 display_code[];

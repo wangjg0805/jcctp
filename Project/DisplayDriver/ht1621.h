@@ -30,6 +30,18 @@
 #define DATAL   GPIO_WriteLow(GPIOC,  GPIO_PIN_7)
 #define DATAH   GPIO_WriteHigh(GPIOC, GPIO_PIN_7)
 
+#if 0
+#define SEG_A 0x80
+#define SEG_B 0x40
+#define SEG_C 0x20
+#define SEG_D 0x01
+#define SEG_E 0x02
+#define SEG_F 0x08
+#define SEG_G 0x04
+#define SEG_P 0x10
+#endif
+
+
 //extern area
 extern void HT1621_Init(void);
 extern void HT1621_Update(void);

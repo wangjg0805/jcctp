@@ -38,9 +38,9 @@ void Key_UserCalPCSProc(void)
             CalData.usercalstep = 12;
         } else {
             CalData.usercalstep++;
-            MachData.ad_zero_data = MData.ad_dat_avg;
+            //MachData.ad_zero_data = MData.ad_dat_avg;
             MData.ad_zero_data = MData.ad_dat_avg;
-            U32toBUF(MachData.ad_zero_data,buf);
+            U32toBUF(MData.ad_zero_data,buf);
             buf[4] = buf[0];
             buf[5] = buf[1];
             buf[6] = buf[2];
@@ -52,13 +52,13 @@ void Key_UserCalPCSProc(void)
         }
         break;
     case 2:
-        if(labs(MData.ad_dat_avg-MachData.ad_zero_data) < MACHINE_LOAD_AD_MIN) {
+        if(labs(MData.ad_dat_avg-MData.ad_zero_data) < MACHINE_LOAD_AD_MIN) {
             CalData.usercalstep = 13;
-        } else if(labs(MData.ad_dat_avg-MachData.ad_zero_data) > MACHINE_LOAD_AD_MAX) {
+        } else if(labs(MData.ad_dat_avg-MData.ad_zero_data) > MACHINE_LOAD_AD_MAX) {
             CalData.usercalstep = 14;
         } else {
             CalData.usercalstep++;
-            MachData.weigh_ad_full = MData.ad_dat_avg -  MachData.ad_zero_data;
+            MachData.weigh_ad_full = MData.ad_dat_avg -  MData.ad_zero_data;
             MachData.weigh_coef = MachData.weigh_fullrange /  (MachData.weigh_ad_full + 0.1);
             U32toBUF(MachData.weigh_ad_full,buf);
             buf[4] = buf[0];

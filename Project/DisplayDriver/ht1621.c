@@ -3,17 +3,9 @@
 #include "stdlib.h"
 
 #include "math.h"
+#include "ht1621.h"
 
 #include "global.h"
-
-#define SEG_A 0x80
-#define SEG_B 0x40
-#define SEG_C 0x20
-#define SEG_D 0x01
-#define SEG_E 0x02
-#define SEG_F 0x08
-#define SEG_G 0x04
-#define SEG_P 0x10
 
 
 ////////////////////////////
@@ -117,16 +109,7 @@ void DIS_SpecialChar(u8 data)
 }   
 //-----------------------------------------------------------------------------   
 
-/////////////////////////////////////////////////////////////////////
-//
-/////////////////////////////////////////////////////////////////////
-void DIS_BootInfo(void)
- {
-    u8 i;    
-	for(i=0;i<16;i++)	
-        display_buffer[i] = display_code[display_BOOT_INFO[i]];
-    
-}
+
 
 void DIS_LowPowerInfo(void)
 {

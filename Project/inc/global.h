@@ -8,7 +8,7 @@
 
 #include "timer1.h"
 #include "CS1231.h"
-#include "ht1621.h"
+#include "TM1668.h"
 #include "rs232.h"
 #include "i2c.h"
 #include "key.h"
@@ -38,7 +38,6 @@ typedef enum {
 
 
 #define NO_KEY_BKOFF_TIME       (5*2)  //500ms
-#define NO_KEY_CLRUNIT_TIME     (5*2)
 #define KEEPZERO_BKOFF_TIME     (5*2)
 
 #define POWER_ON_DOZERO_TIME    20   //*100ms 
@@ -67,9 +66,9 @@ typedef enum {
 
 //MACH STAT
 typedef enum {
-    STAT_WEIGH = 0,
-    STAT_CAL,
-    STAT_CONFIG
+    STAT_WEIGHT = 0,
+    STAT_PCS_SAMPLE,
+    STAT_PCS,
 }SYSStatus;
 
 typedef enum {
@@ -93,7 +92,7 @@ typedef enum {
     FAC_RSV7,
     FAC_RSV8,
     
-}FACTORYCfgType;
+}FactoryCfgType;
 
 
 
@@ -111,7 +110,7 @@ typedef struct{
     u32 weigh_division;
     
     u8 weigh_calpoint_num;   
-    u32 ad_zero_data;
+    //u32 ad_zero_data;
     u32 weigh_ad_full;
     u32 weigh_ad_calpoint[10];  //multi point cal
     
@@ -134,26 +133,28 @@ typedef struct{
 
 
 typedef struct{
-    u8 do_tare_flag;
+    //u8 do_tare_flag;
     u8 do_zero_flag;
     u8 full_flag;
     u8 positive_flag;
     u8 stable_flag;
     u8 zero_flag;
     u8 power_on_flag;
+    u8 return_zero_flag;    
+    u8 lowpower_flag;
+
     u8 power_on_cnt;
-   
-    SYSStatus current_mode;
-    UNITType current_unit;
-    
     u8 key_sound_time;
+    
     u32 no_key_time;
     u32 keep_zero_time;
     u32 not_zero_time;
+    u32 PCSSample;
+    float Pcs;
+    float PCSCoef;
     
-    u8 return_zero_flag;
-    
-    u8 lowpower_flag;
+    SYSStatus current_mode;
+    UNITType current_unit;
 }RuningData;
 
 typedef struct{
@@ -185,7 +186,7 @@ typedef struct{
 }CalProcData;
 
 typedef struct{
-    FACTORYCfgType factorystep;
+    FactoryCfgType factorystep;
     u8 factoryindex;
 }FactoryProcData;
 

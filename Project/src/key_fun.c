@@ -5,6 +5,8 @@
 #include "global.h"
 
 //*************************************************************
+const u16 CountList[] = {10,20,50,100,200,500,900,0};
+static u8 CouIndex = 0;
 
 void Key_UnitProc(void)
 {
@@ -13,8 +15,25 @@ void Key_UnitProc(void)
         
 void Key_PCSProc(void)
 {
-
+    u32 i;
     
+    if(STAT_WEIGHT == RunData.current_mode) {
+        RunData.current_mode = STAT_PCS_SAMPLE;
+        CouIndex = 0;
+        RunData.PCSSample = CountList[CouIndex];
+    } else if(STAT_PCS_SAMPLE == RunData.current_mode) {
+        i = MData.ad_dat_avg - MData.ad_zero_data - MData.ad_tare_data; 
+        if(i > RunData.PCSSample * FilterData.ad_filter_para) {
+            RunData.PCSCoef = (i+0.1) / RunData.PCSSample ;
+            RunData.current_mode = STAT_PCS;
+        } else {
+            RunData.current_mode = STAT_WEIGHT;
+        }
+    } else if(STAT_PCS == RunData.current_mode) {
+        RunData.current_mode = STAT_WEIGHT;
+    } else {
+        ;
+    }
 }
 
 
@@ -27,7 +46,14 @@ void Key_LongTareProc(void)
 
 void Key_TareProc(void)
 {
-    RunData.do_tare_flag = 1;
+    if(STAT_PCS_SAMPLE == RunData.current_mode) {
+        CouIndex++;
+        if(0 == CountList[CouIndex])
+            CouIndex = 0;
+        RunData.PCSSample = CountList[CouIndex];
+    } else {
+        RunData.do_zero_flag = 1;
+    }
 }        
 
 void Key_Proc(u16 key)

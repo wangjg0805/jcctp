@@ -37,7 +37,6 @@ void main(void)
     Key_Init();
   
     CS1231_Init();
-    Filter_Init();
     ///////////////////////////////ADC1 init
     Init_ADC1();
     I2c_Init();
