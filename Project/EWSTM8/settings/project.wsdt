@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<Workspace>
+  <ConfigDictionary>
+    
+  <CurrentConfigs><Project>project/STM8S105</Project></CurrentConfigs></ConfigDictionary>
+  <Desktop>
+    <Static>
+      <Workspace>
+        <ColumnWidths>
+          
+          
+          
+          
+        <Column0>324</Column0><Column1>27</Column1><Column2>27</Column2><Column3>27</Column3></ColumnWidths>
+      </Workspace>
+      <Build>
+        <PreferedWindows>
+          
+          
+          
+          
+        <Position>3</Position><ScreenPosX>0</ScreenPosX><ScreenPosY>0</ScreenPosY><Windows><Window><Factory>Debug-Log</Factory></Window><Window><Factory>Find-in-Files</Factory></Window></Windows></PreferedWindows>
+        
+        
+        
+        
+      <ColumnWidth0>20</ColumnWidth0><ColumnWidth1>721</ColumnWidth1><ColumnWidth2>244</ColumnWidth2><ColumnWidth3>61</ColumnWidth3></Build>
+      <Debug-Log>
+        
+        
+        <PreferedWindows>
+          <Position>3</Position>
+          <ScreenPosX>0</ScreenPosX>
+          <ScreenPosY>0</ScreenPosY>
+          <Windows>
+            <Window>
+              <Factory>Build</Factory>
+            </Window>
+          </Windows>
+        </PreferedWindows>
+      <ColumnWidth0>20</ColumnWidth0><ColumnWidth1>1221</ColumnWidth1></Debug-Log>
+      <TerminalIO/>
+    <Find-in-Files><ColumnWidth0>491</ColumnWidth0><ColumnWidth1>70</ColumnWidth1><ColumnWidth2>842</ColumnWidth2></Find-in-Files></Static>
+    <Windows>
+      
+      
+    <Wnd0>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-16789-24374</Identity>
+            <TabName>Workspace</TabName>
+            <Factory>Workspace</Factory>
+            <Session>
+              
+            <NodeDict><ExpandedNode>project</ExpandedNode><ExpandedNode>project/CS1231</ExpandedNode><ExpandedNode>project/DisplayDriver</ExpandedNode><ExpandedNode>project/Include Files</ExpandedNode><ExpandedNode>project/Output</ExpandedNode><ExpandedNode>project/Source Files</ExpandedNode></NodeDict></Session>
+          </Tab>
+        </Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd0><Wnd1><Tabs><Tab><Identity>TabID-31736-16874</Identity><TabName>Build</TabName><Factory>Build</Factory><Session/></Tab><Tab><Identity>TabID-17660-619</Identity><TabName>Debug Log</TabName><Factory>Debug-Log</Factory><Session/></Tab><Tab><Identity>TabID-6414-2708</Identity><TabName>Find in Files</TabName><Factory>Find-in-Files</Factory><Session/></Tab></Tabs><SelectedTab>0</SelectedTab></Wnd1></Windows>
+    <Editor>
+      
+      
+      
+      
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_clk.c</Filename><XPos>0</XPos><YPos>393</YPos><SelStart>12018</SelStart><SelEnd>12018</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_awu.h</Filename><XPos>0</XPos><YPos>55</YPos><SelStart>2963</SelStart><SelEnd>2963</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_adc1.h</Filename><XPos>0</XPos><YPos>295</YPos><SelStart>14113</SelStart><SelEnd>14136</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\src\I2C.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>700</SelStart><SelEnd>700</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\src\stm8s_it.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\CS1231\ad_filter.c</Filename><XPos>0</XPos><YPos>120</YPos><SelStart>4337</SelStart><SelEnd>4337</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\src\timer1.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>67</SelStart><SelEnd>67</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\CS1231\ad_filter.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>187</SelStart><SelEnd>187</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\src\rs232.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>84</SelStart><SelEnd>84</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\inc\rs232.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>125</SelStart><SelEnd>125</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_uart2.c</Filename><XPos>0</XPos><YPos>661</YPos><SelStart>20578</SelStart><SelEnd>20578</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\DisplayDriver\ht1621.h</Filename><XPos>0</XPos><YPos>19</YPos><SelStart>1022</SelStart><SelEnd>1022</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\CS1231\CS1231.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>800</SelStart><SelEnd>805</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_gpio.c</Filename><XPos>0</XPos><YPos>62</YPos><SelStart>2777</SelStart><SelEnd>2777</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\src\key.c</Filename><XPos>0</XPos><YPos>84</YPos><SelStart>2595</SelStart><SelEnd>2595</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\inc\key.h</Filename><XPos>0</XPos><YPos>3</YPos><SelStart>481</SelStart><SelEnd>481</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\inc\key_fun.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>246</SelStart><SelEnd>246</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\src\normal.c</Filename><XPos>0</XPos><YPos>65</YPos><SelStart>2783</SelStart><SelEnd>2783</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\DisplayDriver\TM1668.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>1825</SelStart><SelEnd>1825</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\CS1231\CS1231.c</Filename><XPos>0</XPos><YPos>65</YPos><SelStart>1368</SelStart><SelEnd>1368</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\src\main.c</Filename><XPos>0</XPos><YPos>40</YPos><SelStart>1096</SelStart><SelEnd>1096</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\inc\i2c.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>411</SelStart><SelEnd>411</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\src\factory.c</Filename><XPos>0</XPos><YPos>214</YPos><SelStart>7175</SelStart><SelEnd>7175</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\DisplayDriver\TM1668.c</Filename><XPos>0</XPos><YPos>230</YPos><SelStart>7345</SelStart><SelEnd>7345</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\DisplayDriver\ht1621.c</Filename><XPos>0</XPos><YPos>132</YPos><SelStart>3019</SelStart><SelEnd>3019</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\src\global.c</Filename><XPos>0</XPos><YPos>407</YPos><SelStart>10836</SelStart><SelEnd>10836</SelEnd></Tab><ActiveTab>25</ActiveTab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Positions>
+      
+      
+      
+      
+      
+    <Top><Row0><Sizes><Toolbar-004dd150><key>iaridepm.enu1</key></Toolbar-004dd150></Sizes></Row0><Row1><Sizes/></Row1></Top><Left><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>672</Bottom><Right>415</Right><x>-2</x><y>-2</y><xscreen>29</xscreen><yscreen>52</yscreen><sizeHorzCX>18125</sizeHorzCX><sizeHorzCY>60606</sizeHorzCY><sizeVertCX>260625</sizeVertCX><sizeVertCY>785548</sizeVertCY></Rect></Wnd0></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>141</Bottom><Right>1602</Right><x>-2</x><y>-2</y><xscreen>1604</xscreen><yscreen>143</yscreen><sizeHorzCX>1002500</sizeHorzCX><sizeHorzCY>166667</sizeHorzCY><sizeVertCX>63750</sizeVertCX><sizeVertCY>160839</sizeVertCY></Rect></Wnd1></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+  </Desktop>
+</Workspace>
+
+

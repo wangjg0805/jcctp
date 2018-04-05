@@ -1,0 +1,6 @@
+Sat Jul 22 21:06:31 2017: Log started
+Sat Jul 22 21:06:44 2017: DiGdiOpen(VersionH = 294, VersionL = 294, Parameters = -stlink3 -mcuname STM8S105K6)
+Sat Jul 22 21:06:44 2017: DiGdiInitIO(DeviceFile = usb://usb)
+Sat Jul 22 21:07:06 2017: DiGdiOpen(VersionH = 294, VersionL = 294, Parameters = -stlink3 -mcuname STM8S105K6)
+Sat Jul 22 21:07:06 2017: DiGdiInitIO(DeviceFile = usb://usb)
+Sat Jul 22 21:07:06 2017: Failed to initialize communcation with hardware: SWIM error [3]: Detected hardware not compatible with software
