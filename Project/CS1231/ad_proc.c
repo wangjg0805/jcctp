@@ -8,61 +8,13 @@
 #include  "stdlib.h" //int abs
 #include  "math.h"   //float abs
 
-/*
 void autoload_track(void)
 {
+    static u8 debugtimes = 0;
     static u32 trackcnt = 0;
-	static u32 lock_ad_last = 0;
+	static u32 netweight = 0;
 	u32 weigh_tmp;
-    if(FALSE == RunData.stable_flag) {
-        trackcnt = 0;
-        return;
-    }
-    if(1==RunData.power_on_flag) {
-        trackcnt = 0;
-        return;
-    }
-    if((MACHINE_NORMAL_MODE+MACHINE_USERCAL_MODE) == MachData.mode) {
-        trackcnt = 0;
-        return;
-    }
-    if(abs(MData.ad_dat_avg-MData.weigh_ad_zero) < FilterData.ad_filter_para*100) {
-        trackcnt = 0;
-        return;
-    }
-    trackcnt++;
-	if(1 == trackcnt) {
-        lock_ad_last = MData.ad_dat_avg - MData.weigh_ad_zero;
-    } else if(0 == trackcnt % 15) {
-        weigh_tmp = MData.ad_dat_avg-MData.weigh_ad_zero;
-        if(abs(weigh_tmp-lock_ad_last) <  FilterData.ad_filter_para*3) {
-            if(weigh_tmp > lock_ad_last)
-                MData.weigh_ad_zero += (weigh_tmp - lock_ad_last);
-            else
-                MData.weigh_ad_zero -= (lock_ad_last - weigh_tmp);
-            printf("load track... weigh_ad_zero is: %ld \r\n", MData.weigh_ad_zero);
-            MData.ad_dat_avg = lock_ad_last + MData.weigh_ad_zero;
-        } else {
-            lock_ad_last = MData.ad_dat_avg - MData.weigh_ad_zero;
-            RunData.stable_flag = FALSE;
-            printf("load track is broken,lock_ad_last is: %ld \r\n",lock_ad_last);
-		}
-    } else {
-        MData.ad_dat_avg = lock_ad_last + MData.weigh_ad_zero;      
-    }
-}
-*/ 
-
-void autoload_track(void)
-{
-    static u32 trackcnt = 0;
-	static u32 lock_ad_last = 0;
-	u32 weigh_tmp;
-    if(FALSE == RunData.stable_flag) {
-        trackcnt = 0;
-        return;
-    }
-    if(1==RunData.power_on_flag) {
+    if((0==RunData.stable_flag)||(1==RunData.power_on_flag)) {
         trackcnt = 0;
         return;
     }
@@ -74,21 +26,24 @@ void autoload_track(void)
         trackcnt = 0;
         return;
     }
+    
     trackcnt++;
 	if(1 == trackcnt) {
-        lock_ad_last = MData.ad_dat_avg - MData.ad_zero_data;
+        netweight = MData.ad_dat_avg - MData.ad_zero_data;
+        printf("start load track..... netweigth: %ld \r\n",netweight);
     } else if(0 == trackcnt % 15) {
         weigh_tmp = MData.ad_dat_avg-MData.ad_zero_data;
-        if(abs(weigh_tmp-lock_ad_last) <  FilterData.ad_filter_para*MachData.loadtrackrange) {
-            MData.ad_dat_avg = lock_ad_last + MData.ad_zero_data;
+        if(abs(weigh_tmp-netweight) < FilterData.ad_filter_para*MachData.loadtrackrange) {
+            MData.ad_dat_avg = netweight + MData.ad_zero_data;
+            debugtimes++;
+            printf("auto load track working ,times is: %d \r\n",debugtimes);
         } else {
-            lock_ad_last = MData.ad_dat_avg - MData.ad_zero_data;
-            RunData.stable_flag = FALSE;
-            printf("load track is broken,lock_ad_last is: %ld \r\n",lock_ad_last);
-            trackcnt = 1;
+            //netweight = MData.ad_dat_avg - MData.ad_zero_data;
+            trackcnt = 0;
+            printf("restart auto load track...... \r\n");
 		}
     } else {
-        MData.ad_dat_avg = lock_ad_last + MData.ad_zero_data;      
+        MData.ad_dat_avg = netweight + MData.ad_zero_data;      
     }
 }
 

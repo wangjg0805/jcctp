@@ -111,21 +111,6 @@ void DIS_SpecialChar(u8 data)
 
 
 
-void DIS_LowPowerInfo(void)
-{
- 
-}
-
-
-void DIS_FactoryCfg(u8 step)
-{
-    u8 i;
-    for(i=0;i<6;i++)	
-        display_buffer[i] = display_code[display_FACTORY[i]];
-     display_buffer[1] = display_code[step];
-}
-
-
 //////////////////////////////////////////////////////////////////////
 void DIS_Flag(void)
 {

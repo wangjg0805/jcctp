@@ -9,11 +9,11 @@
 
 const u8 weigh_fullrange[] =     {1,  3,   6, 15,  30,  60,  100,   0}; //*1000
 const u8 weigh_onestep[] =       {1,  1,   2,  5,  10,  20,  50,  100,  0};
-const u8  weigh_dot[] =          {1,  1,   2,  3,   4,   0};
-const u8  weigh_displaymin[] =   {1,  1,   2,  3,   4,   5,  0};
-const u8  weigh_bkofftime[] =    {1,  1,   2,  3,   4,   9,  0};
-const u8  poweron_zerorange[] =  {1,  4,  10,  20, 50, 100,  0};  
-const u8  auto_loadtrackrange[] ={1,  1,   2,  3,   4,   5,  0}; 
+const u8 weigh_dot[] =           {1,  1,   2,  3,   4,   0};
+const u8 weigh_displaymin[] =    {1,  1,   2,  3,   4,   5,  0};
+const u8 weigh_lptime[] =        {1,  5,   15,  30,  60,  99, 0};
+const u8 poweron_zerorange[] =   {1,  4,  10,  20, 50, 100,  0};  
+const u8 auto_loadtrackrange[] = {1,  1,   2,  3,   4,   5,  0}; 
 
 void Key_UserCalUnitProc(void)
 {
@@ -60,6 +60,8 @@ void Key_UserCalPCSProc(void)
             CalData.usercalstep++;
             MachData.weigh_ad_full = MData.ad_dat_avg -  MData.ad_zero_data;
             MachData.weigh_coef = MachData.weigh_fullrange /  (MachData.weigh_ad_full + 0.1);
+            FilterData.ad_filter_para = MachData.weigh_ad_full / MachData.weigh_division;
+            
             U32toBUF(MachData.weigh_ad_full,buf);
             buf[4] = buf[0];
             buf[5] = buf[1];
@@ -69,6 +71,8 @@ void Key_UserCalPCSProc(void)
             buf[0] = CHECK_DATA;
             buf[1] = CHECK_DATA;        
             Write_EEPROM(EEP_CALFLAG_ADDR,buf,2);  //caldata ok flag
+            
+            //Init_UserConfigParam();
         }
         break;
     case 3: 

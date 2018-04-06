@@ -49,9 +49,6 @@ extern void HT1621_Update(void);
 extern void DIS_On_All(void);
 extern void DIS_Off_All(void);
 extern void DIS_SpecialChar(u8 data);
-extern void DIS_FactoryCfgArea1(u8 step);
-
-extern void DIS_LowPowerInfo(void);
 
 
 #endif

@@ -36,11 +36,7 @@ typedef enum {
 #define MACHINE_LOAD_AD_MIN     20000
 #define MACHINE_LOAD_AD_MAX     10000000
 
-
-#define NO_KEY_BKOFF_TIME       (5*2)  //500ms
-#define KEEPZERO_BKOFF_TIME     (5*2)
-
-#define POWER_ON_DOZERO_TIME    20   //*100ms 
+#define POWER_ON_WAIT_TIME    50   //*100ms  max time: 5s
 #define AUTOZERO_TRACK_TIME     10   //
 #define AUTOZERO_TRACK_RANGE    3    //
 
@@ -68,7 +64,9 @@ typedef enum {
 typedef enum {
     STAT_WEIGHT = 0,
     STAT_PCS_SAMPLE,
+    STAT_PCS_ERR,  
     STAT_PCS,
+    STAT_BATTERY,
 }SYSStatus;
 
 typedef enum {
@@ -103,7 +101,7 @@ typedef struct{
     u8 weigh_onestep;
     u8 weigh_dotpos;
     u8 weigh_displaymin;
-    u8 weigh_bkofftime;
+    u8 weigh_lptime;
     u8 dozerorange;
     u8 loadtrackrange;
     
@@ -158,6 +156,11 @@ typedef struct{
 }RuningData;
 
 typedef struct{
+    u16 bat_buf[8];
+    u16 battery;   //6.42 = 642
+    u8 batterybufindex;
+
+    
     u32 hx711_data;
     u32 ad_dat_avg;
     u32 ad_zero_data;
@@ -166,6 +169,7 @@ typedef struct{
     float grossw;
     float netw;
     float displayweight;
+
 }MeasureData;
     
 typedef struct{
@@ -210,6 +214,14 @@ extern float displaytostep(float w);
 
 extern void FactoryGetFirstStepIndex(void);
 extern u8 System_Init(void);
-
+extern void Battery_Filter(u16 ad);
+extern void Battery_Get(void);
 extern void Display_ClearPreZero(u8 max,u8 dot,u8* buf);
+
+//display function
+extern void Display_LPMode(void);
+extern void Display_PrePCS(void);
+extern void Display_PCS(void);
+extern void Display_Weight(void);
+extern void Display_Battery(void);
 #endif

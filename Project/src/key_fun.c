@@ -8,11 +8,24 @@
 const u16 CountList[] = {10,20,50,100,200,500,900,0};
 static u8 CouIndex = 0;
 
+
 void Key_UnitProc(void)
 {
-    
+    if(STAT_BATTERY == RunData.current_mode) {
+        RunData.current_mode = STAT_WEIGHT;
+    } else {
+        ;
+    }
 }        
-        
+
+
+void Key_LongUnitProc(void)
+{
+    //additional function for debug
+    RunData.current_mode = STAT_BATTERY;
+
+}
+
 void Key_PCSProc(void)
 {
     u32 i;
@@ -27,7 +40,7 @@ void Key_PCSProc(void)
             RunData.PCSCoef = (i+0.1) / RunData.PCSSample ;
             RunData.current_mode = STAT_PCS;
         } else {
-            RunData.current_mode = STAT_WEIGHT;
+            RunData.current_mode = STAT_PCS_ERR;
         }
     } else if(STAT_PCS == RunData.current_mode) {
         RunData.current_mode = STAT_WEIGHT;
@@ -38,10 +51,12 @@ void Key_PCSProc(void)
 
 
 void Key_LongTareProc(void)
-{    
-    CalData.usercalstart = 1;
-    CalData.usercalstep = 1;
-    MachData.mode = MACHINE_NORMAL_MODE+MACHINE_USERCAL_MODE;
+{   
+    //if(STAT_WEIGHT == RunData.current_mode) {    
+        CalData.usercalstart = 1;
+        CalData.usercalstep = 1;
+        MachData.mode = MACHINE_NORMAL_MODE+MACHINE_USERCAL_MODE;
+    //}
 }
 
 void Key_TareProc(void)
@@ -73,6 +88,9 @@ void Key_Proc(u16 key)
         break;
     case KEY_PRESSED_3S + KEY_TARECAL:
         Key_LongTareProc(); 
+        break;
+    case KEY_PRESSED_3S + KEY_UNITMODE:
+        Key_LongUnitProc(); 
         break;
         
     default:

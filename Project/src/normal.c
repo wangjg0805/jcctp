@@ -8,8 +8,8 @@
 void LPmode_Check(void) 
 {
     u8 tmp;
-    tmp = 0;
-    if((RunData.no_key_time > NO_KEY_BKOFF_TIME)&&(RunData.keep_zero_time > KEEPZERO_BKOFF_TIME))
+    tmp = 0; //nokey time & keepzero time MUST BE SATISFIED WITH THE PARAM
+    if((RunData.no_key_time > MachData.weigh_lptime)&&(RunData.keep_zero_time > MachData.weigh_lptime))
         tmp++;
     //if((9!=MachData.weigh_bkofftime)&&(0!=MachData.weigh_bkofftime)&&(RunData.not_zero_time > (MachData.weigh_bkofftime*60*60*2)))
     //    tmp++;
@@ -107,7 +107,11 @@ void Normal_Pro(void)
         if(1 == Flag_500ms) {
             Flag_500ms = 0; 
             LPmode_Check();
-            //printf("ad_dat_avg is: %ld \r\n",MData.ad_dat_avg);
+            if(ADC1_GetFlagStatus(ADC1_FLAG_EOC)) {
+                Battery_Filter(ADC1_GetConversionValue());
+                Battery_Get();
+            }
+            
             //printf("weigh_ad_zero is: %ld \r\n",MData.weigh_ad_zero);
             //UART2_SendData("dat_avg",MData.ad_dat_avg);
             //UART2_SendData("ad_zero",MData.weigh_ad_zero);

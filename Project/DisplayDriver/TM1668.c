@@ -29,27 +29,30 @@ const u8 display_code[] = {SEG_A+SEG_B+SEG_C+SEG_D+SEG_E+SEG_F,      //0
 						   SEG_C+SEG_D+SEG_E+SEG_G,                  //o    0x15
                            SEG_D+SEG_E+SEG_F+SEG_G,                  //t  	0x16		
 					  	   SEG_B+SEG_C+SEG_D+SEG_E+SEG_G,            //d  	0x17
- 						   SEG_A+SEG_B+SEG_C+SEG_E+SEG_F,            //N    0x18
-                           SEG_B+SEG_C+SEG_E+SEG_F+SEG_G,            //H    0x19
-                           SEG_A+SEG_B+SEG_C+SEG_D+SEG_E+SEG_F+SEG_G+SEG_P, //8. 0x1a
-                           0                                         //NULL 0x1b                        
+                           SEG_D+SEG_E+SEG_G,                        //c    0x18
+ 						   SEG_A+SEG_B+SEG_C+SEG_E+SEG_F,            //N    0x19
+                           SEG_B+SEG_C+SEG_E+SEG_F+SEG_G,            //H    0x1a
+                           SEG_A+SEG_B+SEG_C+SEG_D+SEG_E+SEG_F+SEG_G+SEG_P, //8. 0x1b
+                           0                                         //NULL 0x1c                        
 };
 
+
+//BAT
+u8 const display_BATTERY[]   = {DISP_d,  DISP_c,  DISP_X,  DISP_NULL,  DISP_NULL,  DISP_NULL};
 //LPMODE
-u8 const display_LPMODE[]  = {DISP_NULL,DISP_NULL,DISP_NULL,DISP_NULL,DISP_NULL,DISP_NULL};
+u8 const display_LPMODE[]    = {DISP_NULL,DISP_NULL,DISP_NULL,DISP_NULL,DISP_NULL,DISP_NULL};
 //FULL
-u8 const display_FULL[]  = {DISP_NULL,DISP_F,DISP_U,DISP_L,DISP_L,DISP_NULL}; 
+u8 const display_FULL[]      = {DISP_NULL,DISP_F,DISP_U,DISP_L,DISP_L,DISP_NULL}; 
+//PCS
+u8 const display_COUNT[]      = {DISP_C,  0  ,DISP_U,  DISP_X,  DISP_X,  DISP_X}; 
+u8 const display_COUNTERR[]   = {DISP_C,  0  ,DISP_U,  DISP_E,  DISP_r,  DISP_r};
 //USERCAL
-u8 const display_USERCAL[] = { DISP_C,   DISP_A,   DISP_L,   DISP_X,  DISP_X,  DISP_X};
+u8 const display_USERCAL[]    = { DISP_C,   DISP_A,   DISP_L,   DISP_X,  DISP_X,  DISP_X};
 u8 const display_USERCALERR[] = { DISP_E,   DISP_r,   DISP_r,   DISP_X,  DISP_X,  DISP_X};
-//FACTORYCAL
-u8 const display_FACTORYCAL_ZERO[] = { DISP_L,   1,   DISP_N,   DISP_X,  DISP_X, DISP_X};
 //factory mode
 u8 const display_FACTORY[] = {DISP_F,  DISP_X,  DISP_NULL,  DISP_NULL,  DISP_NULL,  DISP_NULL};
+//Line cal
 u8 const display_LINECAL[] = {DISP_L,  DISP_N,     DISP_X,     DISP_X,     DISP_X,  DISP_X};
-
-u8 const display_COUNT[]  = {DISP_C,  0  ,DISP_U,  DISP_X,  DISP_X,  DISP_X}; 
-
 
 /*************TM1668Ð´×Ö½Úº¯Êý***********/
 static void TM1668_WriteByte(unsigned char Byte)
@@ -128,27 +131,25 @@ void TM1668_DisplayAll(void)
 
 void TM1668_DisplayMode(void)
 {   
-    u8 i;
-    i = MachData.weigh_fullrange/1000;
+    u16 i;
+    i = MachData.weigh_fullrange/100;
     
-    display_buffer[0] = display_code[i/100];
+    if(0 == i/100)
+        display_buffer[0] = display_code[DISP_NULL];
+    else
+        display_buffer[0] = display_code[i/100];
+    
     display_buffer[1] = display_code[(i%100)/10];
     display_buffer[2] = display_code[i%10];
     i = MachData.weigh_onestep;
-    display_buffer[3] = display_code[i/100];
+    if(0 == i/100)
+        display_buffer[3] = display_code[DISP_NULL];
+    else
+        display_buffer[3] = display_code[i/100];
+    
     display_buffer[4] = display_code[(i%100)/10];
     display_buffer[5] = display_code[i%10];
 
-    TM1668_Update();
-}
-
-
-void TM1668_DisplayWait(void)
-{
-    u8 i;
-    for(i=0;i<6;i++)
-        display_buffer[i] = display_code[DISP_X];
-    
     TM1668_Update();
 }
 
@@ -269,15 +270,23 @@ void TM1668_Display_Normal(void)
 {
     u32 i;
     //display proc 
-    if(1 == RunData.lowpower_flag) {
+    if(1 == RunData.power_on_flag) {
+        Display_Wait();
+    } else if(1 == RunData.lowpower_flag) {
         Display_LPmode();
     } else if(1 == RunData.full_flag){
         for(i=0;i<6;i++)	
            display_buffer[i] = display_code[display_FULL[i]]; 
     } else {
         switch(RunData.current_mode){
+        case STAT_BATTERY:
+            Display_Battery();
+            break;
         case STAT_PCS_SAMPLE:
             Display_PrePCS();
+            break;
+        case STAT_PCS_ERR:
+            Display_PCSErr();
             break;
         case STAT_PCS:
             Display_PCS();

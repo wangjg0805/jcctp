@@ -65,19 +65,24 @@
 #define   DISP_o       0x15
 #define   DISP_t       0x16
 #define   DISP_d       0x17
-#define   DISP_N       0x18
-#define   DISP_H       0x19
-#define   DISP_ALL     0x1a
-#define   DISP_NULL    0x1b
+#define   DISP_c       0x18
+#define   DISP_N       0x19
+#define   DISP_H       0x1a
+#define   DISP_ALL     0x1b
+#define   DISP_NULL    0x1c
 
 
+extern u8 const display_BATTERY[];
 extern u8 const display_LPMODE[]; 
-
 extern u8 const display_FULL[]; 
-extern u8 const display_USERCAL[];
-extern u8 const display_FACTORYCAL_ZERO[];
-extern u8 const display_FACTORY[];
 extern u8 const display_COUNT[]; 
+extern u8 const display_COUNTERR[];
+extern u8 const display_USERCAL[];
+extern u8 const display_USERCALERR[];
+
+extern u8 const display_FACTORYCAL[];
+extern u8 const display_LINECAL[];
+
 
 
 extern const u8 display_code[];

@@ -23,6 +23,26 @@ FactoryProcData FactoryData;
 
 UserConfigData UserData;
 
+void Battery_Filter(u16 ad)
+{
+    MData.bat_buf[MData.batterybufindex++] = ad;
+    if(MData.batterybufindex >= 8)
+        MData.batterybufindex = 0;
+}
+
+
+void Battery_Get()
+{
+    u8 i;
+    u32 tmp;
+    tmp = 0;
+    for(i=0;i<8;i++)
+        tmp += MData.bat_buf[i];
+    MData.battery = (tmp/8) * 500 / 512;
+    //printf("battery: %03d \r\n",MData.battery);
+}
+
+
 /////////////////////////////////////////ÉùÒô´¦Àí
 void Speaker_Proc(void)
 {
@@ -60,9 +80,10 @@ u32 BUFtoU32(u8* p)
 ///////////////////////////////////////////////////
 void InitGlobalVarible(void)
 {
-    //
+    u8 i;
+    
 	RunData.power_on_flag = 1;
-    RunData.power_on_cnt = POWER_ON_DOZERO_TIME;
+    RunData.power_on_cnt = POWER_ON_WAIT_TIME;
     RunData.stable_flag = 0;
 	RunData.full_flag = 0;
     RunData.key_sound_time = 0;
@@ -76,6 +97,11 @@ void InitGlobalVarible(void)
       
     MData.ad_zero_data = 0;
     MData.ad_tare_data = 0;
+    
+    MData.battery = 0;
+    MData.batterybufindex = 0;
+    for(i=0;i<8;i++)
+        MData.bat_buf[i] = 0;
      
     CalData.usercalstart = 0;
     CalData.usercalstep = 0;
@@ -124,9 +150,9 @@ void  Init_MachineParam(void)
     MachData.weigh_dotpos = 5;
     MachData.weigh_displaymin = 4;
   
-    MachData.weigh_bkofftime = 30;
-    MachData.dozerorange = 20;
-    MachData.loadtrackrange = 10;
+    MachData.weigh_lptime = 5*2;  //5s
+    MachData.dozerorange  = 20;
+    MachData.loadtrackrange = 5;
     MachData.weigh_division =  MachData.weigh_fullrange / MachData.weigh_onestep;
     
 } 
@@ -247,20 +273,15 @@ u8  System_Init(void)
     do {
         switch(i){
         case 0:
+            InitGlobalVarible();
             TM1668_DisplayAll();
             break;
         case 10:
             TM1668_DisplayMode();
             break;
-        case 15:
-            //TM1668_DisplayBat();
-            break;
         case 20:
-            TM1668_DisplayWait();
-            break;
-    
-        case 1: 
-            InitGlobalVarible();
+            Display_Battery();
+            TM1668_Update();
             break;
         case 3:
             Init_MachineParam();
@@ -291,7 +312,13 @@ u8  System_Init(void)
                 if(cnt > 2)
                     cnt = 0;
             }
+            //get battery
+            if(ADC1_GetFlagStatus(ADC1_FLAG_EOC)) {
+                Battery_Filter(ADC1_GetConversionValue());
+                Battery_Get();
+            }      
         }
+        
     }while(i!=30);
     
     if((key_buf[0] == KEY_PRESSED+KEY_UNITMODE)&&
@@ -311,16 +338,19 @@ void MData_update_normal(void)
 	u32 grossw_ad,netw_ad;
     float tmp;
     //do zero proc when power_on
-    if((1 == RunData.power_on_flag)&&(1 == RunData.stable_flag)) {
+    if(1 == RunData.power_on_flag) {
         RunData.power_on_cnt--;
-        if(0 == RunData.power_on_cnt) {
-            RunData.power_on_flag = 0;
-		 	if(labs(MData.ad_dat_avg-MData.ad_zero_data) < (MachData.weigh_ad_full*MachData.dozerorange/100)) {
-                MData.ad_zero_data = MData.ad_dat_avg;              
-            }
-            /////////////////////////////
-            MData.poweron_zero_data = MData.ad_zero_data;      //power on zero data   
-        } 
+        if(RunData.power_on_cnt < POWER_ON_WAIT_TIME-10) { //waiting time : 1s min
+            if((0 == RunData.power_on_cnt) ||
+               (1 == RunData.stable_flag)) {
+                RunData.power_on_flag = 0;
+		 	    if(labs(MData.ad_dat_avg-MData.ad_zero_data) < (MachData.weigh_ad_full*MachData.dozerorange/100)) {
+                    MData.ad_zero_data = MData.ad_dat_avg;              
+                }
+                /////////////////////////////
+                MData.poweron_zero_data = MData.ad_zero_data;      //power on zero data   
+            } 
+        }
     }
    
     if((1 == RunData.do_zero_flag)&&(1==RunData.stable_flag)) {
@@ -337,7 +367,7 @@ void MData_update_normal(void)
     autoload_track(); 
    
     if(STAT_PCS == RunData.current_mode)
-        RunData.Pcs = labs(MData.ad_dat_avg - MData.ad_zero_data-MData.ad_tare_data) / RunData.PCSCoef + 0.5;
+        RunData.Pcs = abs(MData.ad_dat_avg - MData.ad_zero_data-MData.ad_tare_data) / RunData.PCSCoef + 0.5;
             
     if(MData.ad_dat_avg > MData.ad_zero_data) {
         grossw_ad = MData.ad_dat_avg - MData.ad_zero_data;
@@ -445,7 +475,21 @@ void Display_PrePCS(void)
     display_buffer[3] = display_code[RunData.PCSSample/100];
     display_buffer[4] = display_code[(RunData.PCSSample%100)/10];
     display_buffer[5] = display_code[RunData.PCSSample%10]; 
+}
 
+
+void Display_PCSErr(void)
+{
+    static u8 cnt = 0;
+    u8 i;
+    for(i=0;i<6;i++)	
+        display_buffer[i] = display_code[display_COUNTERR[i]];
+
+    cnt++;
+    if(cnt > 15) {//1.5s
+        cnt = 0;
+        RunData.current_mode = STAT_WEIGHT;
+    }
 }
 
 
@@ -476,4 +520,26 @@ void Display_Weight(void)
     if(0 == RunData.positive_flag)
         display_buffer[0] = display_code[DISP_X];
     
+}
+
+
+void Display_Battery(void)
+{
+    u8 i;
+    for(i=0;i<6;i++)	
+        display_buffer[i] = display_code[display_BATTERY[i]];
+    
+    display_buffer[3] = display_code[MData.battery/100] | SEG_P;
+    display_buffer[4] = display_code[(MData.battery%100)/10];
+    display_buffer[5] = display_code[MData.battery%10];    
+    
+}
+
+
+void Display_Wait(void)
+{
+    u8 i;
+    for(i=0;i<6;i++)
+        display_buffer[i] = display_code[DISP_X];
+
 }
