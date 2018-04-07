@@ -4,12 +4,12 @@
 #include "math.h"
 
 #include "global.h"
-
+#include "i2c.h"
 #include "timer1.h"
 
 const u8 weigh_fullrange[] =     {1,  3,   6, 15,  30,  60,  100,   0}; //*1000
 const u8 weigh_onestep[] =       {1,  1,   2,  5,  10,  20,  50,  100,  0};
-const u8 weigh_dot[] =           {1,  1,   2,  3,   4,   0};
+const u8 weigh_dot[] =           {1,  1,   2,  3,   4,  5,  0};
 const u8 weigh_displaymin[] =    {1,  1,   2,  3,   4,   5,  0};
 const u8 weigh_lptime[] =        {1,  5,   15,  30,  60,  99, 0};
 const u8 poweron_zerorange[] =   {1,  4,  10,  20, 50, 100,  0};  
@@ -41,13 +41,14 @@ void Key_UserCalPCSProc(void)
             //MachData.ad_zero_data = MData.ad_dat_avg;
             MData.ad_zero_data = MData.ad_dat_avg;
             U32toBUF(MData.ad_zero_data,buf);
+            printf("zero data:0x%x,0x%x,0x%x,0x%x \r\n",buf[0],buf[1],buf[2],buf[3]);
             buf[4] = buf[0];
             buf[5] = buf[1];
             buf[6] = buf[2];
             buf[7] = buf[3];
             Write_EEPROM(EEP_WEIGHTZERO_ADDR,buf,8);
-            buf[0] = CHECK_DATA;
-            buf[1] = CHECK_DATA;        
+            buf[0] = 0;
+            buf[1] = 0;        
             Write_EEPROM(EEP_CALFLAG_ADDR,buf,2);  //erase caldata
         }
         break;
@@ -194,14 +195,15 @@ void Key_FactoryPCSProc(void)
     u8 buf[4];
     switch(FactoryData.factorystep) {
     case FAC_FULL:
-        MachData.weigh_fullrange = weigh_fullrange[FactoryData.factoryindex] * 1000;
+        MachData.weigh_fullrange = weigh_fullrange[FactoryData.factoryindex] * 1000L;
+        printf("weigh_fullrange :%ld \r\n", MachData.weigh_fullrange);
         U32toBUF(MachData.weigh_fullrange,buf);
         Write_EEPROM(EEP_SYS_FULLRANGE_ADDR,buf,4);
         break;
     case FAC_FENDU:
         MachData.weigh_onestep = weigh_onestep[FactoryData.factoryindex];
         U32toBUF(MachData.weigh_onestep,buf);
-        Write_EEPROM(EEP_SYS_ONESTEP_ADDR,buf,4);
+        Write_EEPROM(EEP_SYS_ONESTEP_ADDR,&buf[0],4);
         break;  
     case FAC_DOT:
         MachData.weigh_dotpos = weigh_dot[FactoryData.factoryindex];

@@ -22,6 +22,9 @@
 
 //save param
 //ZERO DATA
+
+#define    STM32EEPROM_BASE_ADDR          0x4000
+
 #define    EEP_CALFLAG_ADDR               0x00    //cal ok 
 
 #define    EEP_WEIGHTZERO_ADDR            0x10    //线性校准零点
@@ -49,9 +52,6 @@
 #define   EEP_USR_FUN7_ADDR               0xBC  //
 #define   EEP_USR_FUN8_ADDR               0xBE  //
 
-//系统配置参数 0xD0-0xF0
-#define   EEP_SYS_FULL_ADDR               0xD0  //
-#define   EEP_SYS_DIV_ADDR                0xD4  // 
 //////////////////////////////////////////////////////////////////////////////////
 //TEST
 #define   EEP_TEST_ADDR                  0xF0    //EEPROM TEST
@@ -89,6 +89,7 @@
 
 
 void I2c_Init(void);
-u8 Write_EEPROM(u16 addr, void *wrptr, u16 wlen);
-void Read_EEPROM(u16 addr, void *rdptr, u16 rlen);
+u8 Write_EEPROM(u16 addr, u8* buf, u16 wlen);
+void Read_EEPROM(u16 addr, u8* buf, u16 rlen);
+
 #endif	/*_I2C_H_*/

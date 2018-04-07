@@ -39,7 +39,8 @@ void main(void)
     CS1231_Init();
     ///////////////////////////////ADC1 init
     Init_ADC1();
-    I2c_Init();
+    //I2c_Init();
+    EEPROM_Init();
     UART2_INIT();
 
     TIM2_Init();

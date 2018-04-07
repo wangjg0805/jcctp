@@ -146,8 +146,9 @@ static u8 I2C_Send_Byte(u8 wb)
 * 入口参数: addr是EEPROM地址(11位),rdptr读缓冲区指针,rlen读出的字节数
 * 出口参数: 无
 ****************************************************************************/
-void Read_EEPROM(u16 addr, void *rdptr, u16 rlen)
-{
+/*
+void Read_EEPROM_i2c(u16 addr, void *rdptr, u16 rlen)
+{    
     u8 *rptr;
     u16 eepaddr,rl;
 	rptr = (u8 *)rdptr;
@@ -166,13 +167,17 @@ void Read_EEPROM(u16 addr, void *rdptr, u16 rlen)
 		I2C_Stop();
 	}
 }
+*/
+
 /****************************************************************************
 * 函数名: Write_MainBoard_EEPROM
 * 功能: 向主板EEPROM写入一块数据
 * 入口参数: addr是EEPROM地址(11位),wrptr写缓冲区指针,wlen写入字节数
 * 出口参数: 操作成功与否(非0表示失败)
 ****************************************************************************/
-u8 Write_EEPROM(u16 addr, void *wrptr, u16 wlen)
+
+/*
+u8 Write_EEPROM_i2c(u16 addr, void *wrptr, u16 wlen)
 {
     u8 rbuf[16],*wptr,ack,flag;
     u16 eepaddr,wl;
@@ -214,5 +219,55 @@ u8 Write_EEPROM(u16 addr, void *wrptr, u16 wlen)
     
 	return(flag);
 }
+*/
 
+//added bt wjg 20180408
+void Read_EEPROM(u16 addr, u8* buf, u16 rlen)
+{
+    u8 i;
+    
+    for(i=0;i<rlen;i++) {
+        *buf = FLASH_ReadByte(STM32EEPROM_BASE_ADDR + addr);
+        addr++;
+        buf++;
+    }
+}
+
+
+u8 Write_EEPROM(u16 addr, u8* buf, u16 wlen)
+{
+    u32 tmp;
+    disableInterrupts();
+    
+    FLASH_Unlock(FLASH_MEMTYPE_DATA);
+    while (FLASH_GetFlagStatus(FLASH_FLAG_DUL) == RESET);
+    switch(wlen) {
+    case 2:
+        FLASH_ProgramByte(STM32EEPROM_BASE_ADDR+addr,  *buf++);
+        FLASH_ProgramByte(STM32EEPROM_BASE_ADDR+addr+1,*buf);
+        break;
+    case 4:
+        printf("0x%x,0x%x,0x%x,0x%x \r\n",*buf,*(buf+1),*(buf+2),*(buf+3));
+        tmp = BUFtoU32(buf);
+        printf("FLASH_Program4byte:%ld \r\n",tmp);
+        FLASH_ProgramWord(STM32EEPROM_BASE_ADDR+addr,  tmp);
+        break;
+    case 8:
+        tmp = BUFtoU32(buf);
+        printf("FLASH_Program8byte:%ld \r\n",tmp);
+        FLASH_ProgramWord(STM32EEPROM_BASE_ADDR+addr,  tmp);
+        tmp = BUFtoU32(buf+4);
+        printf("FLASH_ProgramWord:%ld \r\n",tmp);
+        FLASH_ProgramWord(STM32EEPROM_BASE_ADDR+addr+4,  tmp);
+        break;
+    }
+    
+    for(tmp=0;tmp<80000;tmp++){
+        ;
+    }
+    
+    FLASH_Lock(FLASH_MEMTYPE_DATA);
+    enableInterrupts();
+    return(1);
+}
 //end of I2C.c

@@ -105,13 +105,12 @@ typedef struct{
     u8 dozerorange;
     u8 loadtrackrange;
     
-    u32 weigh_division;
-    
-    u8 weigh_calpoint_num;   
-    //u32 ad_zero_data;
+    u32 weigh_division; 
     u32 weigh_ad_full;
-    u32 weigh_ad_calpoint[10];  //multi point cal
     
+    u8 weigh_linecalflag;
+    u32 weigh_linecalcalbuf[5];  //multi point cal
+    float weigh_linecalk[5];
     float weigh_coef;
     
 }MachineData;
@@ -210,6 +209,7 @@ extern UserConfigData UserData;
 
 extern void U32toBUF(u32 data,u8* p);
 extern u32 BUFtoU32(u8* p);
+extern u32 BUFtoU32_tmp(u8* p);
 extern float displaytostep(float w);
 
 extern void FactoryGetFirstStepIndex(void);

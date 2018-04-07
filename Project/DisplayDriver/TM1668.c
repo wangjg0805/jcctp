@@ -52,7 +52,7 @@ u8 const display_USERCALERR[] = { DISP_E,   DISP_r,   DISP_r,   DISP_X,  DISP_X,
 //factory mode
 u8 const display_FACTORY[] = {DISP_F,  DISP_X,  DISP_NULL,  DISP_NULL,  DISP_NULL,  DISP_NULL};
 //Line cal
-u8 const display_LINECAL[] = {DISP_L,  DISP_N,     DISP_X,     DISP_X,     DISP_X,  DISP_X};
+u8 const display_LINECAL[] = {DISP_L,  DISP_N,  DISP_NULL,  DISP_X,  DISP_X,  DISP_X};
 
 /*************TM1668Ğ´×Ö½Úº¯Êı***********/
 static void TM1668_WriteByte(unsigned char Byte)
@@ -134,13 +134,18 @@ void TM1668_DisplayMode(void)
     u16 i;
     i = MachData.weigh_fullrange/100;
     
-    if(0 == i/100)
-        display_buffer[0] = display_code[DISP_NULL];
-    else
-        display_buffer[0] = display_code[i/100];
-    
-    display_buffer[1] = display_code[(i%100)/10];
-    display_buffer[2] = display_code[i%10];
+    if(10 == i/100) {
+        display_buffer[0] = display_code[9];
+        display_buffer[1] = display_code[9];
+        display_buffer[2] = display_code[9];
+    } else {
+        if(0 == i/100)
+            display_buffer[0] = display_code[DISP_NULL];
+        else
+            display_buffer[0] = display_code[i/100];
+        display_buffer[1] = display_code[(i%100)/10];
+        display_buffer[2] = display_code[i%10];
+    }
     i = MachData.weigh_onestep;
     if(0 == i/100)
         display_buffer[3] = display_code[DISP_NULL];
@@ -170,7 +175,7 @@ void TM1668_Display_Factory(void)
     i = 0;
     switch(FactoryData.factorystep) {
     case FAC_FULL:
-        i = weigh_fullrange[FactoryData.factoryindex];
+        i = (u8)weigh_fullrange[FactoryData.factoryindex];
         break;
     case FAC_FENDU:
         i = weigh_onestep[FactoryData.factoryindex];
@@ -206,12 +211,24 @@ void TM1668_Display_LineCal(void)
     
     switch(CalData.linecalstep) {
     case 1:
-        Display_InnerCode();  //Display innercode
+        Display_InnerCode(MData.ad_dat_avg);  //Display innercode
         break;
     case 2:
-        display_buffer[4] = display_code[0];
+        if((MData.ad_dat_avg-MData.ad_zero_data>5000) ||
+           (cnt<5)) {   
+            display_buffer[3] = display_code[2];
+            display_buffer[4] = display_code[5];
+            display_buffer[5] = display_code[0];
+        }
         break;
-    case 3: //flash
+    case 3:
+        if((MData.ad_dat_avg-MData.ad_zero_data>5000) ||
+           (cnt<5)) {
+            display_buffer[3] = display_code[2];
+            display_buffer[4] = display_code[5];
+            display_buffer[5] = display_code[0];
+        }
+
         if(MData.hx711_data < MData.ad_zero_data + 1000) {
             if(cnt<5) {
                 display_buffer[4] = display_code[DISP_F];

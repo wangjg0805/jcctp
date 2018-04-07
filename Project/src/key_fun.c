@@ -107,7 +107,19 @@ void Key_LineCalUnitProc(void)
 
 void Key_LineCalPCSProc(void)
 {
-
+    switch(CalData.linecalstep) {
+    case 1:  //save zero
+    case 2:  //save 250
+    case 3:  //save 500
+        //MachData.weigh_linecalbuf[CalData.linecalstep-1] = MData.ad_dat_avg;
+        CalData.linecalstep++;
+        break;
+    case 4:
+        
+        MachData.mode = MACHINE_NORMAL_MODE;
+    default:
+        break;
+    }
 }
 
 

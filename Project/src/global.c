@@ -23,6 +23,25 @@ FactoryProcData FactoryData;
 
 UserConfigData UserData;
 
+
+/*******************************************************************************
+*                         ==EEPROM初始化函数==
+* FLASH_DeInit();                                          --> 复位EEPROM的寄存器值
+* FLASH_Unlock(FLASH_MEMTYPE_DATA);                         --> 解锁 对 Data EEPROM memory 进行操作
+*FLASH_SetProgrammingTime(FLASH_PROGRAMTIME_STANDARD);     --> 标准编程时间
+*******************************************************************************/
+void EEPROM_Init(void)
+{
+    FLASH_DeInit();
+    FLASH_Unlock(FLASH_MEMTYPE_DATA);
+    FLASH_SetProgrammingTime(FLASH_PROGRAMTIME_STANDARD);
+    FLASH_Lock(FLASH_MEMTYPE_DATA);
+}
+
+
+//////////
+
+
 void Battery_Filter(u16 ad)
 {
     MData.bat_buf[MData.batterybufindex++] = ad;
@@ -75,6 +94,17 @@ u32 BUFtoU32(u8* p)
     return((i<<24)+(j<<16)+(k<<8)+ m);
 }
 
+u32 BUFtoU32_tmp(u8* p)
+{
+    u32 i,j,k,m;
+    i = *(p+3);
+    j = *(p+2);
+    k = *(p+1);
+    m = *(p+0);
+    return((m<<24)+(k<<16)+(j<<8)+ i);
+}
+
+
 //////////////////////////////////////////////////
 //1
 ///////////////////////////////////////////////////
@@ -111,7 +141,23 @@ void InitGlobalVarible(void)
     FactoryData.factorystep = FAC_NULL;
     FactoryData.factoryindex = 0;
 }
- 
+
+
+void  Init_LinecalParam(void)
+{	 
+    u32 i,j;
+	u8  buf[8];	 
+    //get data from eeprom
+    //
+    //
+/*
+    i = (weigh_linecalcalbuf[2] - weigh_linecalcalbuf[0]) / 2 ; //
+    j =  weigh_linecalcalbuf[1] - weigh_linecalcalbuf[0];
+    k =  weigh_linecalcalbuf[2] - weigh_linecalcalbuf[1];
+    
+    weigh_linecalk[0] = i / (j+0.1);
+*/    
+}
 ///////////////////////////////////////////////
 //根据机器型号 初始化系统变量包含了
 // 分辨率
@@ -125,34 +171,38 @@ void InitGlobalVarible(void)
 void  Init_MachineParam(void)
 {	 
     u32 i,j;
-	u8  buf[8];	 
-    /*
-    Read_EEPROM(EEP_SYS_FULLRANGE_ADDR, buf, 8);
-    MachData.weigh_fullrange = BUFtoU32(buf);
-    MachData.weigh_onestep = BUFtoU32(&buf[4]);
+	u8  buf[16];	 
+    static u8 times = 1;
+    Read_EEPROM(EEP_SYS_FULLRANGE_ADDR, buf, 16);
+    printf("read machine buf %d :",times++);
+        for(i=0;i<16;i++)
+            printf("0x%x ",buf[i]);
+    printf("\r\n");
+    MachData.weigh_fullrange = BUFtoU32_tmp(buf);
+    MachData.weigh_onestep = BUFtoU32_tmp(buf+4);
+    MachData.weigh_dotpos = BUFtoU32_tmp(buf+8);
+    MachData.weigh_displaymin = BUFtoU32_tmp(buf+12);
     
-    Read_EEPROM(EEP_SYS_DOT_ADDR, buf, 8); 
-    MachData.weigh_dotpos = BUFtoU32(buf);
-    MachData.weigh_displaymin = BUFtoU32(&buf[4]);
-    
+  /*  
     Read_EEPROM(EEP_SYS_BKOFFTIME_ADDR, buf, 8); 
-    MachData.weigh_bkofftime = BUFtoU32(buf);
-    MachData.dozerorange = BUFtoU32(&buf[4]);
+    MachData.weigh_bkofftime = BUFtoU32_tmp(buf);
+    MachData.dozerorange = BUFtoU32_tmp(&buf[4]);
     
     Read_EEPROM(EEP_SYS_LOADTRACK_ADDR, buf, 4); 
-    MachData.loadtrackrange = BUFtoU32(buf);
+    MachData.loadtrackrange = BUFtoU32_tmp(buf);
   
     MachData.weigh_division = MachData.weigh_fullrange/MachData.weigh_onestep;      
     MachData.weigh_calpoint_num = 1;
     */
-    MachData.weigh_fullrange = 50000;
+/*    
+    MachData.weigh_fullrange = 100000;
     MachData.weigh_onestep = 1;
-    MachData.weigh_dotpos = 5;
-    MachData.weigh_displaymin = 4;
-  
+    MachData.weigh_dotpos = 3;
+    MachData.weigh_displaymin = 2;
+*/  
     MachData.weigh_lptime = 5*2;  //5s
     MachData.dozerorange  = 20;
-    MachData.loadtrackrange = 5;
+    MachData.loadtrackrange = 1;
     MachData.weigh_division =  MachData.weigh_fullrange / MachData.weigh_onestep;
     
 } 
@@ -164,14 +214,17 @@ void  Init_MachineParam(void)
 void Init_UserConfigParam(void)
 {
     u32 i,j;
-	u8 buf[4];	
+	u8 buf[16];	
     Read_EEPROM(EEP_CALFLAG_ADDR, buf, 2); 
     if((buf[0]==buf[1])&&(buf[0]== CHECK_DATA)) {
-        Read_EEPROM(EEP_WEIGHTZERO_ADDR, buf, 4);
-        MData.ad_zero_data = BUFtoU32(buf);
+        Read_EEPROM(EEP_WEIGHTZERO_ADDR, buf, 16);
+        printf("read weight zero full buf :");
+        for(i=0;i<16;i++)
+            printf("0x%x ",buf[i]);
+        printf("\r\n");
         
-        Read_EEPROM(EEP_WEIGHTFULL_ADDR, buf, 4);
-        MachData.weigh_ad_full = BUFtoU32(buf);
+        MData.ad_zero_data = BUFtoU32_tmp(buf);
+        MachData.weigh_ad_full = BUFtoU32_tmp(buf+8);
        
     } else {
         MData.ad_zero_data = MACHINE_AD_ZERO;
@@ -276,10 +329,10 @@ u8  System_Init(void)
             InitGlobalVarible();
             TM1668_DisplayAll();
             break;
-        case 10:
+        case 20:
             TM1668_DisplayMode();
             break;
-        case 20:
+        case 40:
             Display_Battery();
             TM1668_Update();
             break;
@@ -319,7 +372,7 @@ u8  System_Init(void)
             }      
         }
         
-    }while(i!=30);
+    }while(i!=60);
     
     if((key_buf[0] == KEY_PRESSED+KEY_UNITMODE)&&
        (key_buf[1] == KEY_PRESSED+KEY_PCSCONFIRM))
@@ -364,7 +417,7 @@ void MData_update_normal(void)
     }
 */    
     autozero_track();    
-    autoload_track(); 
+    //autoload_track(); 
    
     if(STAT_PCS == RunData.current_mode)
         RunData.Pcs = abs(MData.ad_dat_avg - MData.ad_zero_data-MData.ad_tare_data) / RunData.PCSCoef + 0.5;
@@ -402,10 +455,10 @@ void MData_update_normal(void)
     RunData.full_flag = 0;
     if((1==RunData.positive_flag)&&(MData.grossw > (MachData.weigh_fullrange+FULL_STEP_NUM*MachData.weigh_onestep))) {
         RunData.full_flag = 1;
-        printf("full:positive,the grossw is %08.2f \r\n",MData.grossw);
+        //printf("full:positive,the grossw is %08.2f \r\n",MData.grossw);
     } else if((0==RunData.positive_flag)&&(MData.displayweight > NEG_FULL_NUM)) {
         RunData.full_flag = 1;
-        printf("full:negative,the displayweight is %08.2f \r\n",MData.displayweight);
+        //printf("full:negative,the displayweight is %08.2f \r\n",MData.displayweight);
     }
     
     if(1==RunData.full_flag)
@@ -511,12 +564,13 @@ void Display_Weight(void)
     sprintf(display_buffer,"%06ld",(u32)MData.displayweight);
     for(i=0;i<6;i++)
         display_buffer[i] -= 0x30;        
-    Display_ClearPreZero(6,MachData.weigh_dotpos,display_buffer);
+    Display_ClearPreZero(5,MachData.weigh_dotpos,display_buffer);
     
     for(i=0;i<6;i++)
         display_buffer[i] = display_code[display_buffer[i]];
     
-    display_buffer[1] |= SEG_P;
+   
+    display_buffer[5-MachData.weigh_dotpos] |= SEG_P;
     if(0 == RunData.positive_flag)
         display_buffer[0] = display_code[DISP_X];
     

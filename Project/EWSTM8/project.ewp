@@ -83,7 +83,7 @@
         </option>
         <option>
           <name>GenStackSize</name>
-          <state>0x100</state>
+          <state>0x400</state>
         </option>
         <option>
           <name>GenHeapSize</name>
@@ -884,6 +884,9 @@
         <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_conf.h</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_flash.h</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_gpio.h</name>
       </file>
       <file>
@@ -906,6 +909,9 @@
       </file>
       <file>
         <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_clk.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_flash.c</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_gpio.c</name>
