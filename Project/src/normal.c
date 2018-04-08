@@ -3,6 +3,8 @@
 #include <math.h>
 #include "stdio.h" 
 #include "global.h"
+#include "ad_filter.h"
+#include "CPUled.h"
 
 
 void LPmode_Check(void) 
@@ -21,7 +23,7 @@ void LPmode_Check(void)
     }
 }
 
-void Normal_Pro(void)
+void Normal_Proc(void)
 {
     u16 i;
     u8 NewDataFlag = 0;
@@ -70,33 +72,19 @@ void Normal_Pro(void)
                 switch(MachData.mode) {
                 case MACHINE_NORMAL_MODE + MACHINE_LINECAL_MODE:
                     MData_update_normal();
-                    if(LCD == DISPLAY_TYPE)
-                        Display_LineCal();
-                    else
-                        TM1668_Display_LineCal();
+                    TM1668_Display_LineCal();
                     break;    
                 case MACHINE_NORMAL_MODE + MACHINE_FACTORY_MODE:
                     MData_update_normal();
-                    if(LCD == DISPLAY_TYPE)
-                        Display_Factory();
-                    else
-                        TM1668_Display_Factory();
+                    TM1668_Display_Factory();
                     break;
                 case MACHINE_NORMAL_MODE + MACHINE_USERCAL_MODE:
-                    MData_update_cal();
-                    if(LCD == DISPLAY_TYPE)
-                       Display_UserCal();
-                    else
-                        TM1668_Display_UserCal();
-                       
+                    //MData_update_cal();
+                    TM1668_Display_UserCal();                  
                     break;
                 case MACHINE_NORMAL_MODE:
                     MData_update_normal();
-                    if(LCD == DISPLAY_TYPE)
-                        Display_Normal();
-                    else
-                        TM1668_Display_Normal();
-                    
+                    TM1668_Display_Normal();  
                     break;
                 default:
                     break;

@@ -107,14 +107,34 @@ void Key_LineCalUnitProc(void)
 
 void Key_LineCalPCSProc(void)
 {
+    u8 buf[8];
+    
     switch(CalData.linecalstep) {
     case 1:  //save zero
+        buf[0] = 0;
+        buf[1] = 0;
+        buf[2] = 0;
+        buf[3] = 0; 
+        MachData.weigh_linecalbuf[0] = MData.ad_dat_avg; 
+        U32toBUF(MData.ad_dat_avg,buf+4);
+        Write_EEPROM(EEP_LINECALFLAG_ADDR,buf,8);
+        //erase linecal flag
+        CalData.linecalstep++;
+        break;
     case 2:  //save 250
     case 3:  //save 500
-        //MachData.weigh_linecalbuf[CalData.linecalstep-1] = MData.ad_dat_avg;
+        MachData.weigh_linecalbuf[CalData.linecalstep-1] = MData.ad_dat_avg;
         CalData.linecalstep++;
         break;
     case 4:
+        U32toBUF(MachData.weigh_linecalbuf[1],buf);
+        U32toBUF(MachData.weigh_linecalbuf[2],buf+4);
+        Write_EEPROM(EEP_LINECAL_P1_ADDR,buf,8);
+        buf[0] = CHECK_DATA;
+        buf[1] = CHECK_DATA;
+        buf[2] = CHECK_DATA;
+        buf[3] = CHECK_DATA; 
+        Write_EEPROM(EEP_LINECALFLAG_ADDR,buf,4);
         
         MachData.mode = MACHINE_NORMAL_MODE;
     default:

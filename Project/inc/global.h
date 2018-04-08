@@ -109,7 +109,7 @@ typedef struct{
     u32 weigh_ad_full;
     
     u8 weigh_linecalflag;
-    u32 weigh_linecalcalbuf[5];  //multi point cal
+    u32 weigh_linecalbuf[5];  //multi point cal
     float weigh_linecalk[5];
     float weigh_coef;
     
@@ -216,11 +216,17 @@ extern void FactoryGetFirstStepIndex(void);
 extern u8 System_Init(void);
 extern void Battery_Filter(u16 ad);
 extern void Battery_Get(void);
-extern void Display_ClearPreZero(u8 max,u8 dot,u8* buf);
+extern void MData_update_normal(void);
+
+
 
 //display function
-extern void Display_LPMode(void);
+extern void Display_ClearPreZero(u8 max,u8 dot,u8* buf);
+extern void Display_InnerCode(u32 x);
+extern void Display_Wait(void);
+extern void Display_LPmode(void);
 extern void Display_PrePCS(void);
+extern void Display_PCSErr(void);
 extern void Display_PCS(void);
 extern void Display_Weight(void);
 extern void Display_Battery(void);

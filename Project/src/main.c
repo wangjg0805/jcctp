@@ -2,7 +2,13 @@
 
 #include "stdio.h" 
 #include "global.h"
+#include "normal.h"
+
 #include "TM1668.h"
+#include "CPUled.h"
+#include "i2c.h"
+#include "ht1621.h"
+
 //
 void Init_HSI(void)
 {
@@ -30,8 +36,6 @@ void Init_ADC1(void)
 
 void main(void)       
 {
-    u8  i;
- 
     Init_HSI();
     Speaker_Init();
     Key_Init();
@@ -64,7 +68,7 @@ void main(void)
         CalData.linecalstep = 1;
     }
     
-    Normal_Pro();
+    Normal_Proc();
     
 	while(1){;}
 }  

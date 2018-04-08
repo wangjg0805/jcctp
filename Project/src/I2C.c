@@ -5,6 +5,7 @@
 #include "string.h"
 #include "global.h"
 
+#if 0
 ////////////////////////////////////////////
 /* 1 delay */
 ////////////////////////////////////////////
@@ -221,6 +222,8 @@ u8 Write_EEPROM_i2c(u16 addr, void *wrptr, u16 wlen)
 }
 */
 
+#endif
+
 //added bt wjg 20180408
 void Read_EEPROM(u16 addr, u8* buf, u16 rlen)
 {
@@ -270,4 +273,24 @@ u8 Write_EEPROM(u16 addr, u8* buf, u16 wlen)
     enableInterrupts();
     return(1);
 }
+
+
+///////added by wjg 20180408
+
+
+/*******************************************************************************
+*                         ==EEPROM初始化函数==
+* FLASH_DeInit();                                          --> 复位EEPROM的寄存器值
+* FLASH_Unlock(FLASH_MEMTYPE_DATA);                         --> 解锁 对 Data EEPROM memory 进行操作
+*FLASH_SetProgrammingTime(FLASH_PROGRAMTIME_STANDARD);     --> 标准编程时间
+*******************************************************************************/
+void EEPROM_Init(void)
+{
+    FLASH_DeInit();
+    FLASH_Unlock(FLASH_MEMTYPE_DATA);
+    FLASH_SetProgrammingTime(FLASH_PROGRAMTIME_STANDARD);
+    FLASH_Lock(FLASH_MEMTYPE_DATA);
+}
+
+
 //end of I2C.c

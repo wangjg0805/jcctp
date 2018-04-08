@@ -87,7 +87,10 @@ extern u8 const display_LINECAL[];
 
 extern const u8 display_code[];
 /*******声明接口函数*******/
+
 extern void TM1668_Update(void);  //数码管显示
+extern void TM1668_DisplayAll(void);
+extern void TM1668_DisplayMode(void);
 extern void TM1668_Display_SpecialChar(u8 x);
 
 extern void TM1668_Display_Factory(void);

@@ -5,10 +5,14 @@
 #include "global.h"
 
 //------------------------------------------------------------
-void Key_TareProc(void);
-void Key_ZeroProc(void);
-void Key_TotalProc(void);
+extern void Key_TareProc(void);
+extern void Key_ZeroProc(void);
+extern void Key_TotalProc(void);
 
-void Key_Proc(u16 key);
+extern void Key_Proc(u16 key);
+
+extern void Key_Proc_Linecal(u16 key);
+extern void Key_Proc_Factory(u16 key);
+extern void Key_Proc_UserCal(u16 key);
 
 #endif

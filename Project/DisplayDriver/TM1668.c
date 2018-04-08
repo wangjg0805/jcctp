@@ -2,7 +2,7 @@
 #include "TM1668.h"
 #include "factory.h"
 #include "global.h"
-
+#include  "stdlib.h"
 
 const u8 display_code[] = {SEG_A+SEG_B+SEG_C+SEG_D+SEG_E+SEG_F,      //0
                            SEG_B+SEG_C,                              //1  
@@ -88,21 +88,6 @@ void TM1668_Init(void)
     TM1668_WriteCommand(TM1668COM_ADDRESS_CONTINUE);
   
 }
-
-
-
-
-/************TM1668写地址数据函数**************/
-static void TM1668_Write1Data(unsigned char Addr,u8 Data)
-{
-    TM1668_STB_L;
-    TM1668_WriteByte(Addr);
-    TM1668_WriteByte(Data&0xff);
-    //TM1668_WriteByte((Data>>8)&0xff); //for seg9 seg10
-    TM1668_STB_H;
-}
-
-
 
 /************TM1668写地址数据函数**************/
 void TM1668_Update(void)
@@ -214,7 +199,7 @@ void TM1668_Display_LineCal(void)
         Display_InnerCode(MData.ad_dat_avg);  //Display innercode
         break;
     case 2:
-        if((MData.ad_dat_avg-MData.ad_zero_data>5000) ||
+        if((abs(MData.ad_dat_avg-MData.ad_zero_data)>5000) ||
            (cnt<5)) {   
             display_buffer[3] = display_code[2];
             display_buffer[4] = display_code[5];
@@ -222,21 +207,11 @@ void TM1668_Display_LineCal(void)
         }
         break;
     case 3:
-        if((MData.ad_dat_avg-MData.ad_zero_data>5000) ||
+        if((abs(MData.ad_dat_avg-MData.ad_zero_data)>5000) ||
            (cnt<5)) {
-            display_buffer[3] = display_code[2];
-            display_buffer[4] = display_code[5];
+            display_buffer[3] = display_code[5];
+            display_buffer[4] = display_code[0];
             display_buffer[5] = display_code[0];
-        }
-
-        if(MData.hx711_data < MData.ad_zero_data + 1000) {
-            if(cnt<5) {
-                display_buffer[4] = display_code[DISP_F];
-            } else {
-                display_buffer[4] = display_code[DISP_X];
-            } 
-        } else {
-            display_buffer[4] = DISP_F;
         }
         break;
     default:

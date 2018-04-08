@@ -33,6 +33,14 @@
 #define    EEP_WEIGHTFULL_ADDR            0x18    //满量程内码
 #define    EEP_WEIGHTFULL_ADDR_BAK        0x1C    //备份
 
+//linecal param
+#define    EEP_LINECALFLAG_ADDR           0x20    //flag
+#define    EEP_LINECAL_P0_ADDR            0x24    // 0
+#define    EEP_LINECAL_P1_ADDR            0x28    // 1
+#define    EEP_LINECAL_P2_ADDR            0x2C    // 2
+#define    EEP_LINECAL_RSV_ADDR           0x30    // 3
+
+
 //system config area
 #define   EEP_SYS_FULLRANGE_ADDR          0x50  //
 #define   EEP_SYS_ONESTEP_ADDR            0x54  //
@@ -88,8 +96,9 @@
 
 
 
-void I2c_Init(void);
-u8 Write_EEPROM(u16 addr, u8* buf, u16 wlen);
-void Read_EEPROM(u16 addr, u8* buf, u16 rlen);
+//extern void I2c_Init(void);
 
+extern u8 Write_EEPROM(u16 addr, u8* buf, u16 wlen);
+extern void Read_EEPROM(u16 addr, u8* buf, u16 rlen);
+extern void EEPROM_Init(void);
 #endif	/*_I2C_H_*/
