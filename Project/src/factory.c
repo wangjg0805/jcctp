@@ -11,9 +11,10 @@ const u8 weigh_fullrange[] =     {1,  3,   6, 15,  30,  60,  100,   0}; //*1000
 const u8 weigh_onestep[] =       {1,  1,   2,  5,  10,  20,  50,  100,  0};
 const u8 weigh_dot[] =           {1,  1,   2,  3,   4,  5,  0};
 const u8 weigh_displaymin[] =    {1,  1,   2,  3,   4,   5,  0};
+const u8 auto_loadtrackrange[] = {1,  1,   2,  3,   4,   5,  9, 0};
 const u8 weigh_lptime[] =        {1,  5,   15,  30,  60,  99, 0};
 const u8 poweron_zerorange[] =   {1,  4,  10,  20, 50, 100,  0};  
-const u8 auto_loadtrackrange[] = {1,  1,   2,  3,   4,   5,  0}; 
+ 
 
 void Key_UserCalUnitProc(void)
 {
@@ -61,7 +62,7 @@ void Key_UserCalPCSProc(void)
             CalData.usercalstep++;
             MachData.weigh_ad_full = MData.ad_dat_avg -  MData.ad_zero_data;
             MachData.weigh_coef = MachData.weigh_fullrange /  (MachData.weigh_ad_full + 0.1);
-            FilterData.ad_filter_para = MachData.weigh_ad_full / MachData.weigh_division;
+            FilterData.ad_filter_para = (MachData.weigh_ad_full+0.1) / MachData.weigh_division;
             
             U32toBUF(MachData.weigh_ad_full,buf);
             buf[4] = buf[0];
@@ -110,12 +111,12 @@ void Key_FactoryUnitProc(void)
     case FAC_DISPLAYMIN:
         if(weigh_displaymin[FactoryData.factoryindex] == 0)
             FactoryData.factoryindex = 1;
-        break;
-/*        
-    case 5:
-        if(weigh_bkofftime[FactoryData.factoryindex] == 0)
+        break;        
+    case FAC_LOADTRACK:
+        if(auto_loadtrackrange[FactoryData.factoryindex] == 0)
             FactoryData.factoryindex = 1;
         break;
+/*
     case 6:
         if(poweron_zerorange[FactoryData.factoryindex] == 0)
             FactoryData.factoryindex = 1;
@@ -160,6 +161,13 @@ void Key_FactoryTareProc(void)
    case FAC_DISPLAYMIN:
        FactoryData.factoryindex = MachData.weigh_displaymin;
        break;
+   case FAC_LOADTRACK:
+       if(9 == MachData.loadtrackrange)
+           FactoryData.factoryindex = 6;
+       else
+           FactoryData.factoryindex = MachData.loadtrackrange;
+       break;
+      
 /*       
    case FAC_:
        switch(MachData.weigh_bkofftime) {
@@ -215,6 +223,13 @@ void Key_FactoryPCSProc(void)
         U32toBUF(MachData.weigh_displaymin,buf);
         Write_EEPROM(EEP_SYS_DISFENDU_ADDR,buf,4);
         break;
+
+    case FAC_LOADTRACK:
+        MachData.loadtrackrange = auto_loadtrackrange[FactoryData.factoryindex];
+        U32toBUF(MachData.loadtrackrange,buf);
+        Write_EEPROM(EEP_SYS_LOADTRACK_ADDR,buf,4);
+        break;
+        
     case FAC_EXIT:    
         MachData.mode -= MACHINE_FACTORY_MODE; 
         break;

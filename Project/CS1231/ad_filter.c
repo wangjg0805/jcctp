@@ -28,7 +28,7 @@ void Filter_Init(void)
     flag_ad_buf_full = 0;
     fast_filter_flag = 0;
     
-    FilterData.ad_filter_para = 10*5;
+    FilterData.ad_filter_para = 5.0;
     FilterData.zero_track_enable = 0;
     FilterData.zero_track_cnt = 0;
     FilterData.load_track_enable = 0;

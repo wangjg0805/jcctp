@@ -163,6 +163,10 @@ void  Init_MachineParam(void)
     MachData.weigh_dotpos = BUFtoU32_tmp(buf+8);
     MachData.weigh_displaymin = BUFtoU32_tmp(buf+12);
     
+    Read_EEPROM(EEP_SYS_LOADTRACK_ADDR, buf, 8);
+
+    MachData.loadtrackrange = BUFtoU32_tmp(buf);
+    
   /*  
     Read_EEPROM(EEP_SYS_BKOFFTIME_ADDR, buf, 8); 
     MachData.weigh_bkofftime = BUFtoU32_tmp(buf);
@@ -180,9 +184,8 @@ void  Init_MachineParam(void)
     MachData.weigh_dotpos = 3;
     MachData.weigh_displaymin = 2;
 */  
-    MachData.weigh_lptime = 5*2;  //5s
+    MachData.weigh_lptime = 10*2;  //5s
     MachData.dozerorange  = 20;
-    MachData.loadtrackrange = 1;
     MachData.weigh_division =  MachData.weigh_fullrange / MachData.weigh_onestep;
     
 } 
@@ -213,7 +216,7 @@ void Init_UserConfigParam(void)
     }
     
 	MachData.weigh_coef = MachData.weigh_fullrange / (MachData.weigh_ad_full + 0.1);
-    FilterData.ad_filter_para = MachData.weigh_ad_full / MachData.weigh_division;
+    FilterData.ad_filter_para = (MachData.weigh_ad_full+0.1) / MachData.weigh_division;
 }
 
 void Init_UserDataParam(void)
@@ -402,7 +405,7 @@ void MData_update_normal(void)
     }
 */    
     autozero_track();    
-    //autoload_track(); 
+    autoload_track(); 
    
     if(MData.ad_dat_avg > MData.ad_zero_data) {
         grossw_ad = MData.ad_dat_avg - MData.ad_zero_data;
@@ -503,8 +506,11 @@ void Display_PrePCS(void)
     u8 i;
     for(i=0;i<6;i++)	
         display_buffer[i] = display_code[display_COUNT[i]];
-
-    display_buffer[3] = display_code[RunData.PCSSample/100];
+    if(RunData.PCSSample < 100)
+        display_buffer[3] = display_code[DISP_NULL];
+    else
+        display_buffer[3] = display_code[RunData.PCSSample/100];
+    
     display_buffer[4] = display_code[(RunData.PCSSample%100)/10];
     display_buffer[5] = display_code[RunData.PCSSample%10]; 
 }

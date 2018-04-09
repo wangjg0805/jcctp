@@ -83,6 +83,7 @@ typedef enum {
     FAC_FENDU,
     FAC_DOT,
     FAC_DISPLAYMIN,
+    FAC_LOADTRACK,
     FAC_EXIT,
     FAC_MAX,
     FAC_RSV5,
@@ -101,9 +102,9 @@ typedef struct{
     u8 weigh_onestep;
     u8 weigh_dotpos;
     u8 weigh_displaymin;
+    u8 loadtrackrange;
     u8 weigh_lptime;
     u8 dozerorange;
-    u8 loadtrackrange;
     
     u32 weigh_division; 
     u32 weigh_ad_full;
@@ -176,7 +177,7 @@ typedef struct{
     u8 zero_track_cnt;
     u8 load_track_enable;
     u8 load_track_cnt;
-    u8 ad_filter_para;
+    float ad_filter_para;
 }FilterProcData;  
  
 typedef struct{

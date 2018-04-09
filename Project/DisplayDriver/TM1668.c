@@ -170,7 +170,11 @@ void TM1668_Display_Factory(void)
         break;
     case FAC_DISPLAYMIN:
         i = weigh_displaymin[FactoryData.factoryindex];
+        break;
+    case FAC_LOADTRACK:
+        i = auto_loadtrackrange[FactoryData.factoryindex];
         break;     
+        
     default:
         break;
     }
