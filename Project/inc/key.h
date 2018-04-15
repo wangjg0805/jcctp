@@ -4,7 +4,7 @@
 
 #define KEY_NUM              16       
 //2ms É¨ÃèÒ»´Î°´¼ü
-#define KEY_PRESS_TIME       10       //100ms
+#define KEY_PRESS_TIME       15       //150ms
 #define KEY_PRESS_TIME_3S    300      //3s
 
 

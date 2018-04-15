@@ -133,9 +133,13 @@ void ad_filter(u32 ad_data)
 {
     u32 tmp;
     static u32 last_ad;
+    
+    //printf("new ad: %ld \r\n", ad_data);
+    /*
     if(abs(ad_data-last_ad) > 200) {
         printf("new ad: %ld ,last ad:%ld \r\n", ad_data,last_ad);
     }
+*/    
     last_ad = ad_data;
     
     tmp = ad_filter0(ad_data); 
