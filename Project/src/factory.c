@@ -48,9 +48,9 @@ void Key_UserCalPCSProc(void)
             buf[6] = buf[2];
             buf[7] = buf[3];
             Write_EEPROM(EEP_WEIGHTZERO_ADDR,buf,8);
-            buf[0] = 0;
-            buf[1] = 0;        
-            Write_EEPROM(EEP_CALFLAG_ADDR,buf,2);  //erase caldata
+            //buf[0] = 0;
+            //buf[1] = 0;        
+            //Write_EEPROM(EEP_CALFLAG_ADDR,buf,2);  //erase caldata
         }
         break;
     case 2:

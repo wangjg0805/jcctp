@@ -2,7 +2,7 @@
 #ifndef __AD_FILTER_H__
 #define __AD_FILTER_H__
 
-#define RAW_DATA_MAG       2  //Ñ¹Ëõ¼¸±¶
+#define RAW_DATA_MAG       1  //Ñ¹Ëõ¼¸±¶
 #define AD_FILTER_LENGTH   8
 
 extern void Filter_Init(void);

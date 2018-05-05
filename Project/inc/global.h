@@ -37,7 +37,7 @@ typedef enum {
 #define MACHINE_LOAD_AD_MAX     10000000
 
 #define POWER_ON_WAIT_TIME    50   //*100ms  max time: 5s
-#define AUTOZERO_TRACK_TIME     10   //
+#define AUTOZERO_TRACK_TIME     8   //
 #define AUTOZERO_TRACK_RANGE    3    //
 
 #define AUTOLOAD_TRACK_RANGE    5    //
@@ -46,15 +46,8 @@ typedef enum {
 #define KEY_LONG_SOUND_TIME     (20)
 #define FULL_SOUND_TIME         (5)
 
-#define FULL_STEP_NUM           9 //over 9D ,and full
-#define NEG_FULL_NUM          9999 //-9999,and full
-
-//
-#define USER_CAL_PASSWORD         97528
-#define USER_TOJIN_PASSWORD       10001
-#define USER_TOKG_PASSWORD        10002
-#define USER_KILLFEN_PASSWORD     20001
-#define USER_SAVEFEN_PASSWORD     20002
+#define FULL_STEP_NUM             9 //over 9D ,and full
+#define NEG_FULL_NUM          99999 //-9999,and full
 
 //ZERO RANGE
 //#define POWER_ON_ZERO_RANGE     10  //10%

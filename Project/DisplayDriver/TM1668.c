@@ -273,6 +273,8 @@ void TM1668_Display_Normal(void)
     } else if(1 == RunData.full_flag){
         for(i=0;i<6;i++)	
            display_buffer[i] = display_code[display_FULL[i]]; 
+        if(0==RunData.positive_flag) //
+           display_buffer[0] = display_code[DISP_X]; 
     } else {
         switch(RunData.current_mode){
         case STAT_BATTERY:

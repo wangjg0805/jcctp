@@ -62,27 +62,29 @@ void autoload_track(void)
 	static u32 loadtrack_load = 0;
     
 	u32 weigh_tmp,tmp;
+ 
+    if((MACHINE_NORMAL_MODE+MACHINE_USERCAL_MODE) == MachData.mode) {
+        return;
+    }
+ 
     if((0==RunData.stable_flag)||(1==RunData.power_on_flag)) {
         trackcnt = 0;
         return;
     }
-    if((MACHINE_NORMAL_MODE+MACHINE_USERCAL_MODE) == MachData.mode) {
-        trackcnt = 0;
-        return;
-    }
+    
     if(abs(MData.ad_dat_avg-MData.ad_zero_data) < FilterData.ad_filter_para*100) {
         trackcnt = 0;
         return;
     }
     
-    if(9 == MachData.loadtrackrange)
+    if(9 == MachData.loadtrackrange)  //user config disable this function
         return;
     
     trackcnt++;
     if(1 == trackcnt) {
         //loadtrack_zero = MData.ad_zero_data;
         loadtrack_load = MData.ad_dat_avg - MData.ad_zero_data;
-    } else if(0 == trackcnt%15) {
+    } else if(0 == trackcnt%10) {
         weigh_tmp = MData.ad_dat_avg - MData.ad_zero_data;       
         tmp = abs(weigh_tmp - loadtrack_load);
         printf("new weigh:%ld, track weigh: %ld, tmp is:%ld \r\n",weigh_tmp,loadtrack_load,tmp);
@@ -105,12 +107,23 @@ void autoload_track(void)
 
 void autozero_track(void)
 { 
+    /*
     if(0==FilterData.zero_track_enable)
         return;
-    if(0!=MData.ad_tare_data)
-        return;
+    */
     if(1==RunData.power_on_flag)
         return;
+
+    if(0 == RunData.stable_flag) {
+        FilterData.zero_track_cnt = 0;
+        return;
+    }
+    
+    if(0!=MData.ad_tare_data) {
+        //printf("MData.ad_tare_data is %ld \r\n",MData.ad_tare_data);
+        return;
+    }
+    
     if((MACHINE_NORMAL_MODE+MACHINE_USERCAL_MODE) == MachData.mode)
         return;
     if(abs(MData.ad_dat_avg-MData.ad_zero_data) < FilterData.ad_filter_para*AUTOZERO_TRACK_RANGE) {
