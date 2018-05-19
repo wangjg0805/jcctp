@@ -38,21 +38,21 @@ const u8 display_code[] = {SEG_A+SEG_B+SEG_C+SEG_D+SEG_E+SEG_F,      //0
 
 
 //BAT
-u8 const display_BATTERY[]   = {DISP_d,  DISP_c,  DISP_X,  DISP_NULL,  DISP_NULL,  DISP_NULL};
+u8 const display_BATTERY[]   = {DISP_NULL,  DISP_NULL,  DISP_NULL,  DISP_X,  DISP_c,  DISP_d};
 //LPMODE
 u8 const display_LPMODE[]    = {DISP_NULL,DISP_NULL,DISP_NULL,DISP_NULL,DISP_NULL,DISP_NULL};
 //FULL
-u8 const display_FULL[]      = {DISP_NULL,DISP_F,DISP_U,DISP_L,DISP_L,DISP_NULL}; 
+u8 const display_FULL[]      = {DISP_NULL,DISP_L,DISP_L,DISP_U,DISP_F,DISP_NULL}; 
 //PCS
-u8 const display_COUNT[]      = {DISP_C,  0  ,DISP_U,  DISP_X,  DISP_X,  DISP_X}; 
-u8 const display_COUNTERR[]   = {DISP_C,  0  ,DISP_U,  DISP_E,  DISP_r,  DISP_r};
+u8 const display_COUNT[]      = {DISP_X,  DISP_X  ,DISP_X,  DISP_U,  0,  DISP_C}; 
+u8 const display_COUNTERR[]   = {DISP_r,  DISP_r  ,DISP_E,  DISP_U,  0,  DISP_C};
 //USERCAL
-u8 const display_USERCAL[]    = { DISP_C,   DISP_A,   DISP_L,   DISP_X,  DISP_X,  DISP_X};
-u8 const display_USERCALERR[] = { DISP_E,   DISP_r,   DISP_r,   DISP_X,  DISP_X,  DISP_X};
+u8 const display_USERCAL[]    = { DISP_X,   DISP_X,   DISP_X,   DISP_L,  DISP_A,  DISP_C};
+u8 const display_USERCALERR[] = { DISP_X,   DISP_X,   DISP_X,   DISP_r,  DISP_r,  DISP_E};
 //factory mode
-u8 const display_FACTORY[] = {DISP_F,  DISP_X,  DISP_NULL,  DISP_NULL,  DISP_NULL,  DISP_NULL};
+u8 const display_FACTORY[] = {DISP_NULL,  DISP_NULL,  DISP_NULL,  DISP_NULL,  DISP_X,  DISP_F};
 //Line cal
-u8 const display_LINECAL[] = {DISP_L,  DISP_N,  DISP_NULL,  DISP_X,  DISP_X,  DISP_X};
+u8 const display_LINECAL[] = {DISP_X,  DISP_X,  DISP_X,  DISP_NULL,  DISP_N,  DISP_L};
 
 /*************TM1668Ð´×Ö½Úº¯Êý***********/
 static void TM1668_WriteByte(unsigned char Byte)
@@ -85,6 +85,7 @@ void TM1668_Init(void)
     GPIO_Init(TM1668_STB_PORT,TM1668_STB_PIN,GPIO_MODE_OUT_PP_LOW_FAST);
     
     TM1668_WriteCommand(TM1668COM_7SEG_11GRID);    //7segment 11grid
+    TM1668_WriteCommand(TM1668COM_DISPLAY_4_16);    //7segment 11grid
     TM1668_WriteCommand(TM1668COM_ADDRESS_CONTINUE);
   
 }
@@ -95,8 +96,8 @@ void TM1668_Update(void)
     unsigned char i;
     TM1668_STB_L;
     TM1668_WriteByte(TM1668COM_CONFIG_ADDRESS+0x00); 
-    for(i=0;i<6;i++) {
-        TM1668_WriteByte(display_buffer[5-i]);   //seg0-7
+    for(i=0;i<7;i++) {
+        TM1668_WriteByte(display_buffer[i]);   //seg0-7
         TM1668_WriteByte(0x00);                //seg8 9
     }
     TM1668_STB_H;  //Ëø´æ
@@ -108,7 +109,7 @@ void TM1668_Update(void)
 void TM1668_DisplayAll(void)
 {
     u8 i;
-    for(i=0;i<6;i++)
+    for(i=0;i<7;i++)
         display_buffer[i] = display_code[DISP_ALL];
     
     TM1668_Update();
@@ -120,25 +121,25 @@ void TM1668_DisplayMode(void)
     i = MachData.weigh_fullrange/100;
     
     if(10 == i/100) {
-        display_buffer[0] = display_code[9];
-        display_buffer[1] = display_code[9];
-        display_buffer[2] = display_code[9];
+        display_buffer[5] = display_code[9];
+        display_buffer[4] = display_code[9];
+        display_buffer[3] = display_code[9];
     } else {
         if(0 == i/100)
-            display_buffer[0] = display_code[DISP_NULL];
+            display_buffer[5] = display_code[DISP_NULL];
         else
-            display_buffer[0] = display_code[i/100];
-        display_buffer[1] = display_code[(i%100)/10];
-        display_buffer[2] = display_code[i%10];
+            display_buffer[5] = display_code[i/100];
+        display_buffer[4] = display_code[(i%100)/10];
+        display_buffer[3] = display_code[i%10];
     }
     i = MachData.weigh_onestep;
     if(0 == i/100)
-        display_buffer[3] = display_code[DISP_NULL];
+        display_buffer[2] = display_code[DISP_NULL];
     else
-        display_buffer[3] = display_code[i/100];
+        display_buffer[2] = display_code[i/100];
     
-    display_buffer[4] = display_code[(i%100)/10];
-    display_buffer[5] = display_code[i%10];
+    display_buffer[1] = display_code[(i%100)/10];
+    display_buffer[0] = display_code[i%10];
 
     TM1668_Update();
 }
@@ -155,7 +156,7 @@ void TM1668_Display_Factory(void)
      
     for(i=0;i<6;i++)	
         display_buffer[i] = display_code[display_FACTORY[i]]; 
-    display_buffer[1] = display_code[FactoryData.factorystep];
+    display_buffer[4] = display_code[FactoryData.factorystep];
     
     i = 0;
     switch(FactoryData.factorystep) {
@@ -179,10 +180,11 @@ void TM1668_Display_Factory(void)
         break;
     }
     
-    display_buffer[3] = display_code[i/100];
-    display_buffer[4] = display_code[(i%100)/10];
-    display_buffer[5] = display_code[i%10];
+    display_buffer[2] = display_code[i/100];
+    display_buffer[1] = display_code[(i%100)/10];
+    display_buffer[0] = display_code[i%10];
 
+    //MData_update_LED();
     TM1668_Update();
 }
 
@@ -205,23 +207,24 @@ void TM1668_Display_LineCal(void)
     case 2:
         if((abs(MData.ad_dat_avg-MData.ad_zero_data)>5000) ||
            (cnt<5)) {   
-            display_buffer[3] = display_code[2];
-            display_buffer[4] = display_code[5];
-            display_buffer[5] = display_code[0];
+            display_buffer[2] = display_code[2];
+            display_buffer[1] = display_code[5];
+            display_buffer[0] = display_code[0];
         }
         break;
     case 3:
         if((abs(MData.ad_dat_avg-MData.ad_zero_data)>5000) ||
            (cnt<5)) {
-            display_buffer[3] = display_code[5];
-            display_buffer[4] = display_code[0];
-            display_buffer[5] = display_code[0];
+            display_buffer[2] = display_code[5];
+            display_buffer[1] = display_code[0];
+            display_buffer[0] = display_code[0];
         }
         break;
     default:
         break;
     }
     
+    MData_update_LED();
     TM1668_Update();
 }
 
@@ -241,10 +244,10 @@ void TM1668_Display_UserCal(void)
         Display_InnerCode(MData.ad_dat_avg);
         break;
     case 2:
-        display_buffer[4] = display_code[DISP_F];
+        display_buffer[1] = display_code[DISP_F];
         break;
     case 3:
-        display_buffer[4] = display_code[DISP_F];
+        display_buffer[1] = display_code[DISP_F];
         break;
         
     case 11: //err
@@ -253,7 +256,7 @@ void TM1668_Display_UserCal(void)
     case 14:
         for(i=0;i<6;i++)	
             display_buffer[i] = display_code[display_USERCALERR[i]];
-        display_buffer[4] = display_code[CalData.usercalstep - 10];
+        display_buffer[0] = display_code[CalData.usercalstep - 10];
         break;    
     default:break;
     }
@@ -274,7 +277,7 @@ void TM1668_Display_Normal(void)
         for(i=0;i<6;i++)	
            display_buffer[i] = display_code[display_FULL[i]]; 
         if(0==RunData.positive_flag) //
-           display_buffer[0] = display_code[DISP_X]; 
+           display_buffer[5] = display_code[DISP_X]; 
     } else {
         switch(RunData.current_mode){
         case STAT_BATTERY:
@@ -296,6 +299,6 @@ void TM1668_Display_Normal(void)
             break;
         }
     }
-    
+    MData_update_LED();
     TM1668_Update();
 }

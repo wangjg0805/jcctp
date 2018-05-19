@@ -224,4 +224,6 @@ extern void Display_PCSErr(void);
 extern void Display_PCS(void);
 extern void Display_Weight(void);
 extern void Display_Battery(void);
+extern void Display_ClearLED(void);
+extern void Display_SwapBuffer(void);
 #endif

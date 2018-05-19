@@ -35,6 +35,8 @@ void Normal_Proc(void)
                  ad_filter(MData.hx711_data);
                  NewDataFlag = 1;
              }
+             
+             
          }
            
         if(Flag_10ms) {

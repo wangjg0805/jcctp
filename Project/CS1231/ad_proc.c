@@ -132,6 +132,7 @@ void autozero_track(void)
 	        FilterData.zero_track_cnt = 0;
 	        MData.ad_zero_data = MData.ad_dat_avg;
             printf("auto zero working,weigh_ad_zero is %ld \r\n",MData.ad_zero_data);
+            RunData.zero_flag = 1;
 	    }
 	} else  
 	    FilterData.zero_track_cnt = 0;

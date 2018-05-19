@@ -47,6 +47,9 @@
 #define SEG_G 0x10
 #define SEG_P 0x04
 
+#define LED_STABLE 0x02
+#define LED_ZERO   0x01
+#define LED_COUNT  0x10
 
 
 //special char

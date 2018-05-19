@@ -315,6 +315,7 @@ u8  System_Init(void)
             TM1668_DisplayAll();
             break;
         case 20:
+            Display_ClearLED();
             TM1668_DisplayMode();
             break;
         case 40:
@@ -373,7 +374,20 @@ u8  System_Init(void)
     return(MACHINE_NORMAL_MODE);
 }
 
-	
+void MData_update_LED(void)
+{
+    
+    display_buffer[6] = 0x00;
+    if(1 == RunData.stable_flag)
+        display_buffer[6] |= LED_STABLE;
+    
+    if(1 == RunData.zero_flag)
+        display_buffer[6] |= LED_ZERO;
+      
+    if(STAT_PCS == RunData.current_mode)
+        display_buffer[6] |= LED_COUNT;
+}
+
 void MData_update_normal(void)
 {
 	u32 grossw_ad,netw_ad;
@@ -464,9 +478,8 @@ void Display_ClearPreZero(u8 max,u8 dot,u8* buf)
 {
     u8 i;
     for(i = 0;i < max - dot;i++) {
-        if(*buf == 0) {
-            *buf = DISP_NULL;
-            buf++;
+        if(*(buf+5-i) == 0) {
+            *(buf+5-i) = DISP_NULL;
         } else
             break;
     }
@@ -476,6 +489,8 @@ void Display_InnerCode(u32 x)
 {
     u8 i;
     sprintf((char*)display_buffer,"%06ld",x);
+    Display_SwapBuffer();
+    
     for(i=0;i<6;i++)
         display_buffer[i] -= 0x30;
    
@@ -497,8 +512,9 @@ void Display_LPmode(void)
     
     for(i=0;i<6;i++)	
         display_buffer[i] = display_code[display_LPMODE[i]]; 
+    
     if(cnt<3)
-        display_buffer[5] = display_code[DISP_X];
+        display_buffer[0] = display_code[DISP_X];
 }
 
 void Display_PrePCS(void)
@@ -507,12 +523,12 @@ void Display_PrePCS(void)
     for(i=0;i<6;i++)	
         display_buffer[i] = display_code[display_COUNT[i]];
     if(RunData.PCSSample < 100)
-        display_buffer[3] = display_code[DISP_NULL];
+        display_buffer[2] = display_code[DISP_NULL];
     else
-        display_buffer[3] = display_code[RunData.PCSSample/100];
+        display_buffer[2] = display_code[RunData.PCSSample/100];
     
-    display_buffer[4] = display_code[(RunData.PCSSample%100)/10];
-    display_buffer[5] = display_code[RunData.PCSSample%10]; 
+    display_buffer[1] = display_code[(RunData.PCSSample%100)/10];
+    display_buffer[0] = display_code[RunData.PCSSample%10]; 
 }
 
 
@@ -535,6 +551,8 @@ void Display_PCS(void)
 {
     u8 i;
     sprintf((char*)display_buffer,"%06ld",(u32)(RunData.Pcs + 0.5)); //实际PCS数 是否需要四舍五入??
+    Display_SwapBuffer();
+    
     for(i=0;i<6;i++)
         display_buffer[i] -= 0x30;   
     
@@ -547,17 +565,20 @@ void Display_Weight(void)
 {
     u8 i;
     sprintf((char*)display_buffer,"%06ld",(u32)MData.displayweight);
+    Display_SwapBuffer();
+    
     for(i=0;i<6;i++)
-        display_buffer[i] -= 0x30;        
+        display_buffer[i] -= 0x30;     
+    
     Display_ClearPreZero(5,MachData.weigh_dotpos,display_buffer);
     
     for(i=0;i<6;i++)
         display_buffer[i] = display_code[display_buffer[i]];
     
    
-    display_buffer[5-MachData.weigh_dotpos] |= SEG_P;
+    display_buffer[MachData.weigh_dotpos] |= SEG_P;
     if(0 == RunData.positive_flag)
-        display_buffer[0] = display_code[DISP_X];
+        display_buffer[5] = display_code[DISP_X];
     
 }
 
@@ -568,9 +589,9 @@ void Display_Battery(void)
     for(i=0;i<6;i++)	
         display_buffer[i] = display_code[display_BATTERY[i]];
     
-    display_buffer[3] = display_code[MData.battery/100] | SEG_P;
-    display_buffer[4] = display_code[(MData.battery%100)/10];
-    display_buffer[5] = display_code[MData.battery%10];    
+    display_buffer[2] = display_code[MData.battery/100] | SEG_P;
+    display_buffer[1] = display_code[(MData.battery%100)/10];
+    display_buffer[0] = display_code[MData.battery%10];    
     
 }
 
@@ -580,5 +601,26 @@ void Display_Wait(void)
     u8 i;
     for(i=0;i<6;i++)
         display_buffer[i] = display_code[DISP_X];
+
+}
+
+void Display_ClearLED(void)
+{
+    display_buffer[6] = 0x00;
+}
+
+void Display_SwapBuffer(void)
+{
+    u8 i,j,k;
+    
+    i = display_buffer[0];
+    j = display_buffer[1];
+    k = display_buffer[2];
+    display_buffer[0] = display_buffer[5];
+    display_buffer[1] = display_buffer[4];
+    display_buffer[2] = display_buffer[3];
+    display_buffer[3] = k;
+    display_buffer[4] = j;
+    display_buffer[5] = i;
 
 }

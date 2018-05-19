@@ -125,7 +125,8 @@ void ad_filter(u32 ad_data)
     //////////////////////////////////////////
     if(1 == fast_filter_flag) {
         ad_stable_cnt  = 0;
-        RunData.stable_flag    = 0;
+        RunData.stable_flag = 0;
+        RunData.zero_flag = 0;
 		//auto_off_cnt   = 0;
  	    MData.ad_dat_avg = tmp/RAW_DATA_MAG;   //快速变化阶段
          printf("fast_filter stage...... \r\n");
