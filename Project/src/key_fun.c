@@ -3,7 +3,7 @@
 #include "stdio.h"
 
 #include "global.h"
-
+#include "factory.h"
 //*************************************************************
 const u16 CountList[] = {10,20,50,100,200,500,900,0};
 static u8 CouIndex = 0;
@@ -11,18 +11,17 @@ static u8 CouIndex = 0;
 
 void Key_UnitProc(void)
 {
-    if(STAT_BATTERY == RunData.current_mode) {
+    
+    if(STAT_BATTERY == RunData.current_mode)
         RunData.current_mode = STAT_WEIGHT;
-    } else {
-        ;
-    }
+    
 }        
-
 
 void Key_LongUnitProc(void)
 {
-    //additional function for debug
-    RunData.current_mode = STAT_BATTERY;
+    //additional function for debug //
+    if(MachData.mode == MACHINE_NORMAL_MODE)
+        RunData.current_mode = STAT_BATTERY;
 
 }
 
@@ -50,13 +49,20 @@ void Key_PCSProc(void)
 }
 
 
+void Key_LongPCSProc(void) 
+{
+    if(MachData.mode == MACHINE_NORMAL_MODE) {
+        CalData.calstep = CAL_WAIT_ZERO;
+        MachData.mode = MACHINE_NORMAL_MODE+MACHINE_USERCAL2_MODE;
+    }
+}
+
 void Key_LongTareProc(void)
-{   
-    //if(STAT_WEIGHT == RunData.current_mode) {    
-        CalData.usercalstart = 1;
-        CalData.usercalstep = 1;
-        MachData.mode = MACHINE_NORMAL_MODE+MACHINE_USERCAL_MODE;
-    //}
+{
+    if(MachData.mode == MACHINE_NORMAL_MODE) {
+        CalData.calstep = CAL_WAIT_ZERO;
+        MachData.mode = MACHINE_NORMAL_MODE+MACHINE_USERCAL1_MODE;
+    }
 }
 
 void Key_TareProc(void)
@@ -82,12 +88,15 @@ void Key_Proc(u16 key)
     case KEY_PRESSED+KEY_PCSCONFIRM:
         Key_PCSProc();
         break;        
-
     case KEY_PRESSED+KEY_TARECAL:
         Key_TareProc();
         break;
+        
     case KEY_PRESSED_3S + KEY_TARECAL:
         Key_LongTareProc(); 
+        break;
+    case KEY_PRESSED_3S + KEY_PCSCONFIRM:
+        Key_LongPCSProc(); 
         break;
     case KEY_PRESSED_3S + KEY_UNITMODE:
         Key_LongUnitProc(); 
@@ -98,75 +107,43 @@ void Key_Proc(u16 key)
     }
 }
 
-//linecal key proc added
-void Key_LineCalUnitProc(void)
+
+void Key_Proc_Factory(u16 key)
 {
-
-}
-
-
-void Key_LineCalPCSProc(void)
-{
-    u8 buf[8];
-    
-    switch(CalData.linecalstep) {
-    case 1:  //save zero
-        buf[0] = 0;
-        buf[1] = 0;
-        buf[2] = 0;
-        buf[3] = 0; 
-        MachData.weigh_linecalbuf[0] = MData.ad_dat_avg; 
-        U32toBUF(MData.ad_dat_avg,buf+4);
-        Write_EEPROM(EEP_LINECALFLAG_ADDR,buf,8);
-        //erase linecal flag
-        CalData.linecalstep++;
-        break;
-    case 2:  //save 250
-    case 3:  //save 500
-        MachData.weigh_linecalbuf[CalData.linecalstep-1] = MData.ad_dat_avg;
-        CalData.linecalstep++;
-        break;
-    case 4:
-        U32toBUF(MachData.weigh_linecalbuf[1],buf);
-        U32toBUF(MachData.weigh_linecalbuf[2],buf+4);
-        Write_EEPROM(EEP_LINECAL_P1_ADDR,buf,8);
-        buf[0] = CHECK_DATA;
-        buf[1] = CHECK_DATA;
-        buf[2] = CHECK_DATA;
-        buf[3] = CHECK_DATA; 
-        Write_EEPROM(EEP_LINECALFLAG_ADDR,buf,4);
-        
-        MachData.mode = MACHINE_NORMAL_MODE;
-    default:
-        break;
-    }
-}
-
-
-void Key_LineCalTareProc(void)
-{
-
-}
-
-
-void Key_Proc_Linecal(u16 key)
-{
-    switch(key)
-    {
+    switch(key){
     case KEY_PRESSED+KEY_UNITMODE:
-        Key_LineCalUnitProc();
+        Key_FactoryUnitProc();
         break;
     case KEY_PRESSED+KEY_PCSCONFIRM:
-        Key_LineCalPCSProc();
-        break;        
-
+        Key_FactoryPCSProc();
+        break;   
     case KEY_PRESSED+KEY_TARECAL:
-        Key_LineCalTareProc();
-        break;        
+        Key_FactoryTareProc();
+        break;
+        
     default:
         break;
     }
 }
+
+void Key_Proc_UserCal(u16 key)
+{
+    switch(key){
+    case KEY_PRESSED+KEY_UNITMODE:
+        Key_UserCalUnitProc();
+        break;
+    case KEY_PRESSED+KEY_PCSCONFIRM:
+        //Key_UserCalPCSProc();
+        break; 
+    case KEY_PRESSED+KEY_TARECAL:
+        //Key_UserCalTareProc();
+        break;   
+    default:
+        break;
+    }
+}
+
+
 
 
 

@@ -30,15 +30,10 @@
 #define    EEP_WEIGHTZERO_ADDR            0x10    //线性校准零点
 #define    EEP_WEIGHTZERO_ADDR_BAK        0x14    //备份
 //FULL DATA
-#define    EEP_WEIGHTFULL_ADDR            0x18    //满量程内码
-#define    EEP_WEIGHTFULL_ADDR_BAK        0x1C    //备份
-
-//linecal param
-#define    EEP_LINECALFLAG_ADDR           0x20    //flag
-#define    EEP_LINECAL_P0_ADDR            0x24    // 0
-#define    EEP_LINECAL_P1_ADDR            0x28    // 1
-#define    EEP_LINECAL_P2_ADDR            0x2C    // 2
-#define    EEP_LINECAL_RSV_ADDR           0x30    // 3
+#define    EEP_WEIGHTFULL1_ADDR           0x20    //满量程内码
+#define    EEP_WEIGHTFULL1_ADDR_BAK       0x24    //备份
+#define    EEP_WEIGHTFULL2_ADDR           0x28    //满量程内码
+#define    EEP_WEIGHTFULL2_ADDR_BAK       0x2C    //备份
 
 
 //system config area

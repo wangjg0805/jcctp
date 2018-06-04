@@ -8,7 +8,7 @@
 #include "CPUled.h"
 #include "i2c.h"
 #include "ht1621.h"
-
+#include "factory.h"
 //
 void Init_HSI(void)
 {
@@ -56,18 +56,15 @@ void main(void)
     //BkLight_On();
 #else
     TM1668_Init();
-#endif
+#endif  
+
     /////////////////////////////////////////////////////////////////////////	
     MachData.mode = System_Init();
 
     if((MACHINE_NORMAL_MODE+MACHINE_FACTORY_MODE) == MachData.mode) {
         FactoryData.factorystep = FAC_FULL;
-        FactoryGetFirstStepIndex();
-    } else if((MACHINE_NORMAL_MODE+MACHINE_LINECAL_MODE) == MachData.mode) {
-        CalData.linecalstart = 1;
-        CalData.linecalstep = 1;
     }
-    
+    FactoryGetFirstStepIndex(); //use for cal info
     Normal_Proc();
     
 	while(1){;}

@@ -10,9 +10,6 @@ extern void Key_ZeroProc(void);
 extern void Key_TotalProc(void);
 
 extern void Key_Proc(u16 key);
-
-extern void Key_Proc_Linecal(u16 key);
 extern void Key_Proc_Factory(u16 key);
 extern void Key_Proc_UserCal(u16 key);
-
 #endif

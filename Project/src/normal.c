@@ -52,13 +52,11 @@ void Normal_Proc(void)
                 RunData.key_sound_time = KEY_NORMAL_SOUND_TIME;
                 RunData.no_key_time = 0;
                 switch(MachData.mode) {
-                case MACHINE_NORMAL_MODE + MACHINE_LINECAL_MODE:
-                    Key_Proc_Linecal(i);
-                    break;
                 case MACHINE_NORMAL_MODE + MACHINE_FACTORY_MODE:
                     Key_Proc_Factory(i);
                     break;
-                case MACHINE_NORMAL_MODE + MACHINE_USERCAL_MODE:
+                case MACHINE_NORMAL_MODE + MACHINE_USERCAL1_MODE:
+                case MACHINE_NORMAL_MODE + MACHINE_USERCAL2_MODE:
                     Key_Proc_UserCal(i);
                     break;
                 case MACHINE_NORMAL_MODE:
@@ -71,21 +69,16 @@ void Normal_Proc(void)
             
             if(1 == NewDataFlag) {
                 NewDataFlag = 0;
+                MData_update_normal();
                 switch(MachData.mode) {
-                case MACHINE_NORMAL_MODE + MACHINE_LINECAL_MODE:
-                    MData_update_normal();
-                    TM1668_Display_LineCal();
-                    break;    
                 case MACHINE_NORMAL_MODE + MACHINE_FACTORY_MODE:
-                    MData_update_normal();
                     TM1668_Display_Factory();
                     break;
-                case MACHINE_NORMAL_MODE + MACHINE_USERCAL_MODE:
-                    //MData_update_cal();
+                case MACHINE_NORMAL_MODE + MACHINE_USERCAL1_MODE:
+                case MACHINE_NORMAL_MODE + MACHINE_USERCAL2_MODE:
                     TM1668_Display_UserCal();                  
                     break;
                 case MACHINE_NORMAL_MODE:
-                    MData_update_normal();
                     TM1668_Display_Normal();  
                     break;
                 default:

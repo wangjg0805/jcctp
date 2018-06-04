@@ -13,10 +13,19 @@
 static u32 ad_dat[AD_FILTER_LENGTH];
 static u8  ad_dat_idx;
 static u8  ad_stable_cnt;
+static u8 filter0_stable_cnt = 0; 
 
 static u8  flag_ad_buf_full = 0;
 static u8  fast_filter_flag = 0;
 
+void manual_break_stable(void)
+{
+    fast_filter_flag = 1;     //破坏缓存数据，重新开始建立 
+    filter0_stable_cnt = 0;
+	flag_ad_buf_full = 0;  
+ 	ad_dat_idx       = 0;    
+
+}
 //--------------------------------------------------------------
 void Filter_Init(void)
 {
@@ -40,8 +49,7 @@ void Filter_Init(void)
 u32 ad_filter0(u32 ad_new_dat)
 {
     static u32 direct_add_cnt     = 0;
-    static u32 direct_sub_cnt     = 0;
-    static u8 filter0_stable_cnt = 0;    
+    static u32 direct_sub_cnt     = 0;   
     static u32 ad_last_dat  = 0;  
     u32 tmp;
     tmp = abs(ad_new_dat - ad_last_dat);
@@ -56,10 +64,7 @@ u32 ad_filter0(u32 ad_new_dat)
 	    }
         
 	    if((direct_add_cnt > 2)||(direct_sub_cnt > 2)) { //相邻数据大于2D 连续变化3次就进入快速滤波模式
-	     fast_filter_flag = 1;
-	     filter0_stable_cnt = 0;
-	     flag_ad_buf_full = 0;  //破坏缓存数据，重新开始建立 
- 	     ad_dat_idx       = 0;
+	        manual_break_stable();
 	    }
 	    //相邻两次变化超过2D 就不允许自动跟踪
         FilterData.zero_track_enable  = 0;
@@ -129,7 +134,7 @@ void ad_filter(u32 ad_data)
         RunData.zero_flag = 0;
 		//auto_off_cnt   = 0;
  	    MData.ad_dat_avg = tmp/RAW_DATA_MAG;   //快速变化阶段
-         printf("fast_filter stage...... \r\n");
+        printf("fast_filter stage...... \r\n");
         return;
     }
     

@@ -24,8 +24,8 @@ typedef enum {
 
 #define MACHINE_NORMAL_MODE     0x01
 #define MACHINE_FACTORY_MODE    0x02
-#define MACHINE_USERCAL_MODE    0x04
-#define MACHINE_LINECAL_MODE    0x08
+#define MACHINE_USERCAL1_MODE   0x04
+#define MACHINE_USERCAL2_MODE   0x08
 
 
 #define MACHINE_AD_ZERO         10000
@@ -33,8 +33,14 @@ typedef enum {
 
 #define MACHINE_ZERO_AD_MIN     3000
 #define MACHINE_ZERO_AD_MAX     6000000
-#define MACHINE_LOAD_AD_MIN     20000
-#define MACHINE_LOAD_AD_MAX     10000000
+#define MACHINE_LOAD1_AD_MIN     20000
+#define MACHINE_LOAD1_AD_MAX     10000000
+
+#define MACHINE_LOAD2A_AD_MIN     20000
+#define MACHINE_LOAD2A_AD_MAX     10000000
+#define MACHINE_LOAD2B_AD_MIN     20000
+#define MACHINE_LOAD2B_AD_MAX     10000000
+
 
 #define POWER_ON_WAIT_TIME    50   //*100ms  max time: 5s
 #define AUTOZERO_TRACK_TIME     8   //
@@ -77,6 +83,7 @@ typedef enum {
     FAC_DOT,
     FAC_DISPLAYMIN,
     FAC_LOADTRACK,
+    FAC_ZEROLIMIT,
     FAC_EXIT,
     FAC_MAX,
     FAC_RSV5,
@@ -86,6 +93,23 @@ typedef enum {
     
 }FactoryCfgType;
 
+typedef enum {
+    CAL_NULL = 0,
+    CAL_WAIT_ZERO,
+    CAL_LOAD1_FLASH,
+    CAL_LOAD1,
+    CAL_LOAD2_FLASH,
+    CAL_LOAD2,
+    CAL_PASS,
+    CAL_ZERO_TOO_SMALL = 11,
+    CAL_ZERO_TOO_BIG,
+    CAL_LOAD1_TOO_SMALL,
+    CAL_LOAD1_TOO_BIG,
+    CAL_LOAD2_TOO_SMALL,
+    CAL_LOAD2_TOO_BIG,           
+    CAL_RSV1,
+    
+}UserCalType;
 
 
 typedef struct{
@@ -101,11 +125,8 @@ typedef struct{
     
     u32 weigh_division; 
     u32 weigh_ad_full;
-    
-    u8 weigh_linecalflag;
-    u32 weigh_linecalbuf[5];  //multi point cal
-    float weigh_linecalk[5];
-    float weigh_coef;
+    u32 weigh_ad_Middle;
+    float weigh_coef[2];
     
 }MachineData;
 
@@ -174,12 +195,10 @@ typedef struct{
 }FilterProcData;  
  
 typedef struct{
-    u8 usercalstart;
-    u8 usercalstep;
+    UserCalType calstep;
     //linecal rsv
-    u8 linecalstart;
-    u8 linecalstep;
-    
+    //u8 linecalstart;
+    //u8 linecalstep;
 }CalProcData;
 
 typedef struct{
@@ -206,13 +225,13 @@ extern u32 BUFtoU32(u8* p);
 extern u32 BUFtoU32_tmp(u8* p);
 extern float displaytostep(float w);
 
-extern void FactoryGetFirstStepIndex(void);
 extern u8 System_Init(void);
 extern void Battery_Filter(u16 ad);
 extern void Battery_Get(void);
+extern void MData_update_LED(void);
 extern void MData_update_normal(void);
 
-
+extern void Init_UserConfigParam(void);
 
 //display function
 extern void Display_ClearPreZero(u8 max,u8 dot,u8* buf);

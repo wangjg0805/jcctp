@@ -7,39 +7,124 @@
 #include "i2c.h"
 #include "timer1.h"
 
-const u8 weigh_fullrange[] =     {1,  3,   6, 15,  30,  60,  100,   0}; //*1000
-const u8 weigh_onestep[] =       {1,  1,   2,  5,  10,  20,  50,  100,  0};
-const u8 weigh_dot[] =           {1,  1,   2,  3,   4,  5,  0};
-const u8 weigh_displaymin[] =    {1,  1,   2,  3,   4,   5,  0};
-const u8 auto_loadtrackrange[] = {1,  1,   2,  3,   4,   5,  9, 0};
-const u8 weigh_lptime[] =        {1,  5,   15,  30,  60,  99, 0};
-const u8 poweron_zerorange[] =   {1,  4,  10,  20, 50, 100,  0};  
- 
+const u32 weigh_calmode1[] =      {1,   1500,  3000,  10000,  15000,  25000,  30000,   50000,  100000,   0};
+const u32 weigh_calmode2[2][10]= {{1,   1500,  3000,  10000,  15000,  25000,  30000,   50000,  100000,   0},
+                                  {1,   3000,  6000,  20000,  30000,  50000,  60000,  100000,  200000,   0}};
+
+
+const u8 weigh_fullrange[] =     {1,   3,    6,  20,   30,  50,  60,  100,  200, 0}; //*1000 
+const u8 weigh_onestep[] =       {1,   1,    2,   5,   10,  20,  50,  100,  0};
+const u8 weigh_dot[] =           {1,   1,    2,   3,    4,   5,   0};
+const u8 weigh_displaymin[] =    {1,   1,    2,   3,    4,   5,   0};
+const u8 auto_loadtrackrange[] = {1,   1,    2,   3,    4,   5,   9,    0};
+const u8 weigh_lptime[] =        {1,   5,   15,  30,   60,  99,   0};
+const u8 poweron_zerorange[] =   {1,   4,   20,  50,  100, 200,   0};  
+
+
+void Key_CalExit(void)
+{
+    MachData.mode = MACHINE_NORMAL_MODE;
+    CalData.calstep = CAL_NULL;    
+}
+
 
 void Key_UserCalUnitProc(void)
 {
-
+    Key_CalExit();   
 }
 
-void Key_UserCalTareProc(void)
-{
-
-}
-
-
-void Key_UserCalPCSProc(void)
+void SaveToE2prom(u32 data, u16 addr,u8 len)
 {
     u8 buf[8];
     
-    switch(CalData.usercalstep) {
-    case 1:
-        if(MData.ad_dat_avg < MACHINE_ZERO_AD_MIN) {
-            CalData.usercalstep = 11; // zero too small
-        } else if(MData.ad_dat_avg > MACHINE_ZERO_AD_MAX) {
-            CalData.usercalstep = 12;
+    U32toBUF(data,buf);
+    buf[4] = buf[0];
+    buf[5] = buf[1];
+    buf[6] = buf[2];
+    buf[7] = buf[3]; 
+    Write_EEPROM(addr,buf,len);
+}
+
+void Key_CalProc1(void)
+{
+    u8 buf[8];
+    
+    if(labs(MData.ad_dat_avg-MData.ad_zero_data) < MACHINE_LOAD1_AD_MIN) {
+        CalData.calstep = CAL_LOAD1_TOO_SMALL;
+    } else if(labs(MData.ad_dat_avg-MData.ad_zero_data) > MACHINE_LOAD1_AD_MAX) {
+        CalData.calstep = CAL_LOAD1_TOO_BIG;
+    } else {
+        CalData.calstep = CAL_PASS;
+        MachData.weigh_ad_Middle = MData.ad_dat_avg -  MData.ad_zero_data;  //use 1/2 
+        MachData.weigh_ad_full = MachData.weigh_ad_Middle * 2;
+        MachData.weigh_coef[0] = MachData.weigh_fullrange / (MachData.weigh_ad_full + 0.1);
+        MachData.weigh_coef[1] = MachData.weigh_coef[0];
+        FilterData.ad_filter_para = (MachData.weigh_ad_full+0.1) / MachData.weigh_division;
+        
+        SaveToE2prom(MachData.weigh_ad_Middle,EEP_WEIGHTFULL1_ADDR,8);
+        SaveToE2prom(MachData.weigh_ad_full,  EEP_WEIGHTFULL2_ADDR,8);
+      
+        buf[0] = CHECK_DATA;
+        buf[1] = CHECK_DATA;        
+        Write_EEPROM(EEP_CALFLAG_ADDR,buf,2);  //caldata ok flag
+    }    
+}
+
+
+void Key_CalProc2(void)
+{
+    u8 buf[8];
+     
+    switch(CalData.calstep) {
+    case CAL_LOAD1:
+        if(labs(MData.ad_dat_avg-MData.ad_zero_data) < MACHINE_LOAD2A_AD_MIN) {
+            CalData.calstep = CAL_LOAD1_TOO_SMALL;
+        } else if(labs(MData.ad_dat_avg-MData.ad_zero_data) > MACHINE_LOAD2A_AD_MAX) {
+            CalData.calstep = CAL_LOAD1_TOO_BIG;
         } else {
-            CalData.usercalstep++;
-            //MachData.ad_zero_data = MData.ad_dat_avg;
+           CalData.calstep = CAL_LOAD2_FLASH;
+           MachData.weigh_ad_Middle = MData.ad_dat_avg -  MData.ad_zero_data;
+            
+           SaveToE2prom(MachData.weigh_ad_Middle,EEP_WEIGHTFULL1_ADDR,8);
+        }
+        break;
+    case CAL_LOAD2:
+        if(labs(MData.ad_dat_avg-MData.ad_zero_data) < MACHINE_LOAD2B_AD_MIN) {
+            CalData.calstep = CAL_LOAD2_TOO_SMALL;
+        } else if(labs(MData.ad_dat_avg-MData.ad_zero_data) > MACHINE_LOAD2B_AD_MAX) {
+            CalData.calstep = CAL_LOAD2_TOO_BIG;
+        } else {
+           CalData.calstep = CAL_PASS;
+           MachData.weigh_ad_full = MData.ad_dat_avg -  MData.ad_zero_data;
+           
+           SaveToE2prom(MachData.weigh_ad_full,EEP_WEIGHTFULL2_ADDR,8);
+           
+           buf[0] = CHECK_DATA;
+           buf[1] = CHECK_DATA;        
+           Write_EEPROM(EEP_CALFLAG_ADDR,buf,2);
+           
+           //update weigh coef
+           Init_UserConfigParam();
+        }
+        break;
+    default:
+        break;
+    }
+}
+
+//done it automatic 
+void Key_UserCalAutoProc(void)
+{
+    u8 buf[8];
+    
+    switch(CalData.calstep) {
+    case CAL_WAIT_ZERO:  //waiting for stable ,get 0
+        if(MData.ad_dat_avg < MACHINE_ZERO_AD_MIN) {
+            CalData.calstep = CAL_ZERO_TOO_SMALL; // zero too small
+        } else if(MData.ad_dat_avg > MACHINE_ZERO_AD_MAX) {
+            CalData.calstep = CAL_ZERO_TOO_BIG;
+        } else {
+            CalData.calstep = CAL_LOAD1_FLASH;
             MData.ad_zero_data = MData.ad_dat_avg;
             U32toBUF(MData.ad_zero_data,buf);
             printf("zero data:0x%x,0x%x,0x%x,0x%x \r\n",buf[0],buf[1],buf[2],buf[3]);
@@ -53,38 +138,24 @@ void Key_UserCalPCSProc(void)
             //Write_EEPROM(EEP_CALFLAG_ADDR,buf,2);  //erase caldata
         }
         break;
-    case 2:
-        if(labs(MData.ad_dat_avg-MData.ad_zero_data) < MACHINE_LOAD_AD_MIN) {
-            CalData.usercalstep = 13;
-        } else if(labs(MData.ad_dat_avg-MData.ad_zero_data) > MACHINE_LOAD_AD_MAX) {
-            CalData.usercalstep = 14;
-        } else {
-            CalData.usercalstep++;
-            MachData.weigh_ad_full = MData.ad_dat_avg -  MData.ad_zero_data;
-            MachData.weigh_coef = MachData.weigh_fullrange /  (MachData.weigh_ad_full + 0.1);
-            FilterData.ad_filter_para = (MachData.weigh_ad_full+0.1) / MachData.weigh_division;
-            
-            U32toBUF(MachData.weigh_ad_full,buf);
-            buf[4] = buf[0];
-            buf[5] = buf[1];
-            buf[6] = buf[2];
-            buf[7] = buf[3]; 
-            Write_EEPROM(EEP_WEIGHTFULL_ADDR,buf,8);
-            buf[0] = CHECK_DATA;
-            buf[1] = CHECK_DATA;        
-            Write_EEPROM(EEP_CALFLAG_ADDR,buf,2);  //caldata ok flag
-            
-            //Init_UserConfigParam();
-        }
+    case CAL_LOAD1_FLASH:     
+        if(labs(MData.ad_dat_avg-MData.ad_zero_data) > 10000)
+            CalData.calstep = CAL_LOAD1;
         break;
-    case 3: 
-    case 11:
-    case 12:
-    case 13:
-    case 14:        
-        CalData.usercalstart = 0;
-        CalData.usercalstep = 0;
-        MachData.mode = MachData.mode - MACHINE_USERCAL_MODE;
+            
+    case CAL_LOAD1:
+        if(MachData.mode == MACHINE_NORMAL_MODE+MACHINE_USERCAL1_MODE)
+            Key_CalProc1(); // confirm fullrange
+        else
+            Key_CalProc2(); //
+        break;
+        
+    case CAL_LOAD2_FLASH:
+        if(labs(MData.ad_dat_avg-MData.ad_zero_data) > (MachData.weigh_ad_Middle+10000))
+            CalData.calstep = CAL_LOAD2;
+        break;
+    case CAL_LOAD2:
+        Key_CalProc2();
         break;
     default:
         break;
@@ -116,11 +187,12 @@ void Key_FactoryUnitProc(void)
         if(auto_loadtrackrange[FactoryData.factoryindex] == 0)
             FactoryData.factoryindex = 1;
         break;
-/*
-    case 6:
+
+    case FAC_ZEROLIMIT:
         if(poweron_zerorange[FactoryData.factoryindex] == 0)
             FactoryData.factoryindex = 1;
         break;
+/*
     case 7:
         if(auto_loadtrackrange[FactoryData.factoryindex] == 0)
             FactoryData.factoryindex = 1;
@@ -129,6 +201,23 @@ void Key_FactoryUnitProc(void)
         
     default:
         break;
+    }
+}
+
+
+
+void FactoryGetFirstStepIndex(void)
+{
+    switch(MachData.weigh_fullrange) {
+    case 3000:    FactoryData.factoryindex = 1;break;
+    case 6000:    FactoryData.factoryindex = 2;break;
+    case 20000:   FactoryData.factoryindex = 3;break;
+    case 30000:   FactoryData.factoryindex = 4;break;
+    case 50000:   FactoryData.factoryindex = 5;break;
+    case 60000:   FactoryData.factoryindex = 6;break;
+    case 100000:  FactoryData.factoryindex = 7;break;
+    case 200000:  FactoryData.factoryindex = 8;break;
+    default:      FactoryData.factoryindex = 1;break;
     }
 }
 
@@ -166,29 +255,18 @@ void Key_FactoryTareProc(void)
            FactoryData.factoryindex = 6;
        else
            FactoryData.factoryindex = MachData.loadtrackrange;
-       break;
-      
-/*       
-   case FAC_:
-       switch(MachData.weigh_bkofftime) {
-       case 1:    FactoryData.factoryindex = 1;break;
-       case 2:    FactoryData.factoryindex = 2;break;
-       case 3:    FactoryData.factoryindex = 3;break;
-       case 4:    FactoryData.factoryindex = 4;break;
-       case 9:    FactoryData.factoryindex = 5;break;
-       default:   FactoryData.factoryindex = 1;break;
-       }
-       break;
-   case 6:
+       break;       
+   case FAC_ZEROLIMIT:
        switch(MachData.dozerorange) {
        case 4:    FactoryData.factoryindex = 1;break;
-       case 10:   FactoryData.factoryindex = 2;break;
-       case 20:   FactoryData.factoryindex = 3;break;
-       case 50:   FactoryData.factoryindex = 4;break;
-       case 100:  FactoryData.factoryindex = 5;break;
+       case 20:   FactoryData.factoryindex = 2;break;
+       case 50:   FactoryData.factoryindex = 3;break;
+       case 100:  FactoryData.factoryindex = 4;break;
+       case 200:  FactoryData.factoryindex = 5;break;
        default:   FactoryData.factoryindex = 1;break;
        }
        break;
+/*       
    case 7:
        FactoryData.factoryindex = MachData.loadtrackrange;
        break;
@@ -230,20 +308,17 @@ void Key_FactoryPCSProc(void)
         Write_EEPROM(EEP_SYS_LOADTRACK_ADDR,buf,4);
         break;
         
-    case FAC_EXIT:    
-        MachData.mode -= MACHINE_FACTORY_MODE; 
-        break;
-/*        
-    case 5:
-        MachData.weigh_bkofftime = weigh_bkofftime[FactoryData.factoryindex];
-        U32toBUF(MachData.weigh_bkofftime,buf);
-        Write_EEPROM(EEP_SYS_BKOFFTIME_ADDR,buf,4);
-        break;  
-    case 6:
+    case FAC_ZEROLIMIT:
         MachData.dozerorange = poweron_zerorange[FactoryData.factoryindex];
         U32toBUF(MachData.dozerorange,buf);
         Write_EEPROM(EEP_SYS_ZERORANGE_ADDR,buf,4);
         break;
+        
+    case FAC_EXIT:    
+        MachData.mode -= MACHINE_FACTORY_MODE; 
+        break;
+        
+/*        
     case 7:
         MachData.loadtrackrange = auto_loadtrackrange[FactoryData.factoryindex];
         U32toBUF(MachData.loadtrackrange,buf);
@@ -257,37 +332,3 @@ void Key_FactoryPCSProc(void)
     }
 }
 
-void Key_Proc_Factory(u16 key)
-{
-    switch(key){
-    case KEY_PRESSED+KEY_UNITMODE:
-        Key_FactoryUnitProc();
-        break;
-    case KEY_PRESSED+KEY_TARECAL:
-        Key_FactoryTareProc();
-        break;
-    case KEY_PRESSED+KEY_PCSCONFIRM:
-        Key_FactoryPCSProc();
-        break;   
-    default:
-        break;
-    }
-}
-
-void Key_Proc_UserCal(u16 key)
-{
-    switch(key){
-    case KEY_PRESSED+KEY_UNITMODE:
-        Key_UserCalUnitProc();
-        break;
-    case KEY_PRESSED+KEY_PCSCONFIRM:
-        Key_UserCalPCSProc();
-        break; 
-    case KEY_PRESSED+KEY_TARECAL:
-        Key_UserCalTareProc();
-        break; 
-        
-    default:
-        break;
-    }
-}

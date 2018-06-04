@@ -4,6 +4,7 @@
 #include "stdio.h"
 
 #include "global.h"
+#include "factory.h"
 #include "ad_proc.h"
 #include "ad_filter.h"
 #include "TM1668.h"
@@ -105,43 +106,12 @@ void InitGlobalVarible(void)
     for(i=0;i<8;i++)
         MData.bat_buf[i] = 0;
      
-    CalData.usercalstart = 0;
-    CalData.usercalstep = 0;
-    CalData.linecalstart = 0;
-    CalData.linecalstep = 0;
+    CalData.calstep = CAL_NULL;
 
     FactoryData.factorystep = FAC_NULL;
     FactoryData.factoryindex = 0;
 }
 
-//
-void Get_LinecalParam(void)
-{
-    u32 i,j,k;
-
-    i = (MachData.weigh_linecalbuf[2] - MachData.weigh_linecalbuf[0]) / 2 ; //
-    j =  MachData.weigh_linecalbuf[1] - MachData.weigh_linecalbuf[0];
-    k =  MachData.weigh_linecalbuf[2] - MachData.weigh_linecalbuf[1];
-    
-
-}
-
-void  Init_LinecalParam(void)
-{	 
-	u8  buf[16];	 
-   
-    Read_EEPROM(EEP_LINECALFLAG_ADDR, buf, 16);
-
-    if((CHECK_DATA==buf[0])&&(CHECK_DATA==buf[0])) {
-        MachData.weigh_linecalbuf[0] = BUFtoU32_tmp(buf+4);
-        MachData.weigh_linecalbuf[1] = BUFtoU32_tmp(buf+8);
-        MachData.weigh_linecalbuf[2] = BUFtoU32_tmp(buf+12);
-        MachData.weigh_linecalflag = 1;
-        Get_LinecalParam();
-    } else {
-        MachData.weigh_linecalflag = 0;
-    }
-}
 ///////////////////////////////////////////////
 //根据机器型号 初始化系统变量包含了
 // 分辨率
@@ -163,14 +133,11 @@ void  Init_MachineParam(void)
     MachData.weigh_dotpos = BUFtoU32_tmp(buf+8);
     MachData.weigh_displaymin = BUFtoU32_tmp(buf+12);
     
-    Read_EEPROM(EEP_SYS_LOADTRACK_ADDR, buf, 8);
+    Read_EEPROM(EEP_SYS_LOADTRACK_ADDR, buf, 16);
 
     MachData.loadtrackrange = BUFtoU32_tmp(buf);
-    
+    MachData.dozerorange = BUFtoU32_tmp(buf+4);
   /*  
-    Read_EEPROM(EEP_SYS_BKOFFTIME_ADDR, buf, 8); 
-    MachData.weigh_bkofftime = BUFtoU32_tmp(buf);
-    MachData.dozerorange = BUFtoU32_tmp(&buf[4]);
     
     Read_EEPROM(EEP_SYS_LOADTRACK_ADDR, buf, 4); 
     MachData.loadtrackrange = BUFtoU32_tmp(buf);
@@ -184,8 +151,7 @@ void  Init_MachineParam(void)
     MachData.weigh_dotpos = 3;
     MachData.weigh_displaymin = 2;
 */  
-    MachData.weigh_lptime = 10*2;  //5s
-    MachData.dozerorange  = 20;
+    MachData.weigh_lptime = 10*2;  //5s
     MachData.weigh_division =  MachData.weigh_fullrange / MachData.weigh_onestep;
     
 } 
@@ -200,22 +166,22 @@ void Init_UserConfigParam(void)
     
     Read_EEPROM(EEP_CALFLAG_ADDR, buf, 2); 
     if((buf[0]==buf[1])&&(buf[0]== CHECK_DATA)) {
-        Read_EEPROM(EEP_WEIGHTZERO_ADDR, buf, 16);
-/*
-        printf("read weight zero full buf :");
-        for(i=0;i<16;i++)
-            printf("0x%x ",buf[i]);
-        printf("\r\n");
-*/        
+        Read_EEPROM(EEP_WEIGHTZERO_ADDR, buf, 8); 
         MData.ad_zero_data = BUFtoU32_tmp(buf);
+        
+        Read_EEPROM(EEP_WEIGHTFULL1_ADDR, buf, 16);
+        MachData.weigh_ad_Middle = BUFtoU32_tmp(buf);
         MachData.weigh_ad_full = BUFtoU32_tmp(buf+8);
-       
+        MachData.weigh_coef[0] = (MachData.weigh_fullrange/2) / (MachData.weigh_ad_Middle + 0.1);
+        MachData.weigh_coef[1] =  MachData.weigh_fullrange    / (MachData.weigh_ad_full + 0.1);
     } else {
         MData.ad_zero_data = MACHINE_AD_ZERO;
         MachData.weigh_ad_full = MACHINE_FULL_ZERO;
+        MachData.weigh_ad_Middle = MachData.weigh_ad_full / 2;
+        MachData.weigh_coef[0] = MachData.weigh_fullrange / (MachData.weigh_ad_full + 0.1);
+        MachData.weigh_coef[1] = MachData.weigh_coef[0];
     }
     
-	MachData.weigh_coef = MachData.weigh_fullrange / (MachData.weigh_ad_full + 0.1);
     FilterData.ad_filter_para = (MachData.weigh_ad_full+0.1) / MachData.weigh_division;
 }
 
@@ -288,19 +254,6 @@ float displaytostep(float w)
 }
 
 
-void FactoryGetFirstStepIndex(void)
-{
-    switch(MachData.weigh_fullrange) {
-    case 3000:   FactoryData.factoryindex = 1;break;
-    case 6000:   FactoryData.factoryindex = 2;break;
-    case 15000:  FactoryData.factoryindex = 3;break;
-    case 30000:  FactoryData.factoryindex = 4;break;
-    case 60000:  FactoryData.factoryindex = 5;break;
-    case 100000: FactoryData.factoryindex = 6;break;
-    default:     FactoryData.factoryindex = 1;break;
-    }
-}
-
 ///////////////////////////////////////////////////
 u8  System_Init(void)
 {
@@ -326,7 +279,7 @@ u8  System_Init(void)
             Init_MachineParam();
             break;
         case 5:     
-            Init_LinecalParam();  
+            //Init_LinecalParam();  
             break;
         case 7:
             Init_UserConfigParam();
@@ -367,10 +320,6 @@ u8  System_Init(void)
        (key_buf[1] == KEY_PRESSED+KEY_PCSCONFIRM))
         return(MACHINE_NORMAL_MODE + MACHINE_FACTORY_MODE);
 
-    if((key_buf[0] == KEY_PRESSED+KEY_PCSCONFIRM)&&
-       (key_buf[1] == KEY_PRESSED+KEY_TARECAL))
-        return(MACHINE_NORMAL_MODE + MACHINE_LINECAL_MODE);
- 
     return(MACHINE_NORMAL_MODE);
 }
 
@@ -388,11 +337,9 @@ void MData_update_LED(void)
         display_buffer[6] |= LED_COUNT;
 }
 
-void MData_update_normal(void)
+//power on stage
+u8 MData_PowerOnProc(void)
 {
-	u32 grossw_ad,netw_ad;
-    //float tmp;
-    //do zero proc when power_on
     if(1 == RunData.power_on_flag) {
         RunData.power_on_cnt--;
         if(RunData.power_on_cnt < POWER_ON_WAIT_TIME-10) { //waiting time : 1s min
@@ -407,19 +354,41 @@ void MData_update_normal(void)
             } 
         }
     }
-   
+    
+    return(RunData.power_on_flag);
+}
+
+//user cal stage
+u8 MData_CalProc(void)
+{   
+    if(((MACHINE_NORMAL_MODE+MACHINE_USERCAL1_MODE) == MachData.mode)||
+       ((MACHINE_NORMAL_MODE+MACHINE_USERCAL2_MODE) == MachData.mode)) {
+         if(1 == RunData.stable_flag) {
+            Key_UserCalAutoProc();
+         }
+         return(1);
+    }
+    else 
+        return(0);   
+}
+
+
+void MData_update_normal(void)
+{
+	u32 grossw_ad,netw_ad;
+    float tmp;
+    //do zero proc when power_on
+    if(1 == MData_PowerOnProc())
+        return;
+    if(1 == MData_CalProc())
+        return;
+    
+    autozero_track();    
+    autoload_track(); 
     if((1 == RunData.do_zero_flag)&&(1==RunData.stable_flag)) {
         RunData.do_zero_flag = 0;
         do_zero_proc();
     }
-/*   
-    if((1 == RunData.do_tare_flag)&&(1==RunData.stable_flag)) {
-        RunData.do_tare_flag = 0;
-        do_tare_proc();
-    }
-*/    
-    autozero_track();    
-    autoload_track(); 
    
     if(MData.ad_dat_avg > MData.ad_zero_data) {
         grossw_ad = MData.ad_dat_avg - MData.ad_zero_data;
@@ -446,8 +415,13 @@ void MData_update_normal(void)
             RunData.Pcs = (MData.ad_dat_avg - MData.ad_zero_data-MData.ad_tare_data) / RunData.PCSCoef;
     }
     
-    MData.grossw = grossw_ad * MachData.weigh_coef + 0.5;
-    MData.netw = netw_ad * MachData.weigh_coef + 0.5;
+    if(grossw_ad  < MachData.weigh_ad_Middle) //use coef1
+        tmp = MachData.weigh_coef[0];
+    else
+        tmp = MachData.weigh_coef[1]; 
+        
+    MData.grossw = grossw_ad * tmp + 0.5;   
+    MData.netw = netw_ad * tmp + 0.5;
     MData.displayweight = displaytostep(MData.netw);
 
     if((1==RunData.stable_flag)&&(MData.displayweight<0.1)) {
@@ -511,7 +485,7 @@ void Display_LPmode(void)
         cnt = 0;
     
     for(i=0;i<6;i++)	
-        display_buffer[i] = display_code[display_LPMODE[i]]; 
+        display_buffer[i] = display_code[display_NULL[i]]; 
     
     if(cnt<3)
         display_buffer[0] = display_code[DISP_X];

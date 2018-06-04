@@ -76,7 +76,7 @@
 
 
 extern u8 const display_BATTERY[];
-extern u8 const display_LPMODE[]; 
+extern u8 const display_NULL[]; 
 extern u8 const display_FULL[]; 
 extern u8 const display_COUNT[]; 
 extern u8 const display_COUNTERR[];
