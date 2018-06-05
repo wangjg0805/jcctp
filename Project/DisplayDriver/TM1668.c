@@ -126,7 +126,11 @@ void TM1668_DisplayMode(void)
         display_buffer[i] = display_code[display_NULL[i]]; 
     
     i = MachData.weigh_fullrange / pow(10,MachData.weigh_dotpos);
-    display_buffer[5] = display_code[i/1000];
+    if(0 == i/1000)
+        display_buffer[5] = display_code[DISP_NULL];
+    else
+        display_buffer[5] = display_code[i/1000];
+    
     display_buffer[4] = display_code[i%1000/100];
     display_buffer[3] = display_code[i%100/10];
     display_buffer[2] = display_code[i%10] | SEG_P;
@@ -210,6 +214,8 @@ void  TM1668_Display_CalLoad(void)
     
     for(i=0;i<6;i++)
         display_buffer[i] = display_code[display_buffer[i]];
+    
+    display_buffer[MachData.weigh_dotpos] |= SEG_P;
 }
 
 

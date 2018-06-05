@@ -28,9 +28,10 @@ void Key_CalExit(void)
 }
 
 
-void Key_UserCalUnitProc(void)
+void Key_UserCalPCSProc(void)
 {
-    Key_CalExit();   
+    if(CAL_PASS != CalData.calstep) //EXIT AUTOMATICALLY WHEN IN CALPASS STAGE
+        Key_CalExit();   
 }
 
 void SaveToE2prom(u32 data, u16 addr,u8 len)
@@ -115,8 +116,9 @@ void Key_CalProc2(void)
 //done it automatic 
 void Key_UserCalAutoProc(void)
 {
+    static u8 cnt = 0;
     u8 buf[8];
-    
+  
     switch(CalData.calstep) {
     case CAL_WAIT_ZERO:  //waiting for stable ,get 0
         if(MData.ad_dat_avg < MACHINE_ZERO_AD_MIN) {
@@ -157,6 +159,12 @@ void Key_UserCalAutoProc(void)
     case CAL_LOAD2:
         Key_CalProc2();
         break;
+    case CAL_PASS:
+        cnt++;
+        if(cnt > 10) {
+            cnt = 0;
+            Key_CalExit();
+        }
     default:
         break;
     } 

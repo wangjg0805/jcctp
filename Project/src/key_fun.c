@@ -8,6 +8,13 @@
 const u16 CountList[] = {10,20,50,100,200,500,900,0};
 static u8 CouIndex = 0;
 
+void Key_LongUnitProc(void) 
+{
+    if(MachData.mode == MACHINE_NORMAL_MODE) {
+        CalData.calstep = CAL_WAIT_ZERO;
+        MachData.mode = MACHINE_NORMAL_MODE+MACHINE_USERCAL2_MODE;
+    }
+}
 
 void Key_UnitProc(void)
 {
@@ -17,7 +24,7 @@ void Key_UnitProc(void)
     
 }        
 
-void Key_LongUnitProc(void)
+void Key_LongPCSProc(void)
 {
     //additional function for debug //
     if(MachData.mode == MACHINE_NORMAL_MODE)
@@ -48,14 +55,6 @@ void Key_PCSProc(void)
     }
 }
 
-
-void Key_LongPCSProc(void) 
-{
-    if(MachData.mode == MACHINE_NORMAL_MODE) {
-        CalData.calstep = CAL_WAIT_ZERO;
-        MachData.mode = MACHINE_NORMAL_MODE+MACHINE_USERCAL2_MODE;
-    }
-}
 
 void Key_LongTareProc(void)
 {
@@ -130,10 +129,10 @@ void Key_Proc_UserCal(u16 key)
 {
     switch(key){
     case KEY_PRESSED+KEY_UNITMODE:
-        Key_UserCalUnitProc();
+        //Key_UserCalUnitProc();
         break;
     case KEY_PRESSED+KEY_PCSCONFIRM:
-        //Key_UserCalPCSProc();
+        Key_UserCalPCSProc();
         break; 
     case KEY_PRESSED+KEY_TARECAL:
         //Key_UserCalTareProc();
