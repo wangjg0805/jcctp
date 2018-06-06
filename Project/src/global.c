@@ -419,11 +419,12 @@ void MData_update_normal(void)
         tmp = MachData.weigh_coef[0];
     else
         tmp = MachData.weigh_coef[1]; 
-        
+    
+    printf("Netw: %ld \r\n",netw_ad);    
     MData.grossw = grossw_ad * tmp + 0.5;   
     MData.netw = netw_ad * tmp + 0.5;
     MData.displayweight = displaytostep(MData.netw);
-
+    
     if((1==RunData.stable_flag)&&(MData.displayweight<0.1)) {
         RunData.positive_flag = 1;
         RunData.return_zero_flag = 1;
@@ -549,7 +550,7 @@ void Display_Weight(void)
     for(i=0;i<6;i++)
         display_buffer[i] = display_code[display_buffer[i]];
     
-   
+
     display_buffer[MachData.weigh_dotpos] |= SEG_P;
     if(0 == RunData.positive_flag)
         display_buffer[5] = display_code[DISP_X];

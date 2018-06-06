@@ -146,7 +146,7 @@ void ad_filter(u32 ad_data)
             ad_dat_idx = 0;
         }
         MData.ad_dat_avg = get_buf_data()/RAW_DATA_MAG;  
-        printf("fill filter_buf stage...... \r\n");
+        //printf("fill filter_buf stage...... \r\n");
         return;
     }
     
@@ -154,11 +154,17 @@ void ad_filter(u32 ad_data)
  	if(ad_stable_cnt  > 250)
  	    ad_stable_cnt  = 50; 
  	///////////////////////////稳定计时
-	if(ad_stable_cnt > 7)
-		RunData.stable_flag = 1;
-    else {//重量不稳定
-		//auto_off_cnt = 0;
-        RunData.not_zero_time = 0;
+    if(((MACHINE_NORMAL_MODE+MACHINE_USERCAL1_MODE) == MachData.mode)||
+       ((MACHINE_NORMAL_MODE+MACHINE_USERCAL2_MODE) == MachData.mode)) {
+        if(ad_stable_cnt > 20)
+            RunData.stable_flag = 1;
+        else
+            RunData.not_zero_time = 0;
+    } else {
+        if(ad_stable_cnt > 7)
+            RunData.stable_flag = 1;
+        else
+            RunData.not_zero_time = 0;   
 	}
 
     if(ad_stable_cnt < 5)

@@ -3,6 +3,7 @@
 #include "stdio.h"
 
 #include "global.h"
+#include "ad_filter.h"
 #include "factory.h"
 //*************************************************************
 const u16 CountList[] = {10,20,50,100,200,500,900,0};
@@ -13,6 +14,7 @@ void Key_LongUnitProc(void)
     if(MachData.mode == MACHINE_NORMAL_MODE) {
         CalData.calstep = CAL_WAIT_ZERO;
         MachData.mode = MACHINE_NORMAL_MODE+MACHINE_USERCAL2_MODE;
+        manual_break_stable();
     }
 }
 
@@ -61,6 +63,7 @@ void Key_LongTareProc(void)
     if(MachData.mode == MACHINE_NORMAL_MODE) {
         CalData.calstep = CAL_WAIT_ZERO;
         MachData.mode = MACHINE_NORMAL_MODE+MACHINE_USERCAL1_MODE;
+        manual_break_stable();
     }
 }
 

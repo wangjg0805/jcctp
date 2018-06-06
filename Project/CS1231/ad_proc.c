@@ -84,17 +84,17 @@ void autoload_track(void)
     } else if(0 == trackcnt%10) {
         weigh_tmp = MData.ad_dat_avg - MData.ad_zero_data;       
         tmp = abs(weigh_tmp - loadtrack_load);
-        printf("new weigh:%ld, track weigh: %ld, tmp is:%ld \r\n",weigh_tmp,loadtrack_load,tmp);
+        //printf("new weigh:%ld, track weigh: %ld, tmp is:%ld \r\n",weigh_tmp,loadtrack_load,tmp);
         if(tmp < FilterData.ad_filter_para*MachData.loadtrackrange) {
             if(weigh_tmp > loadtrack_load)
-                MData.ad_zero_data = MData.ad_zero_data + (tmp>>1);
+                MData.ad_zero_data = MData.ad_zero_data + tmp;
             else
-                MData.ad_zero_data = MData.ad_zero_data - (tmp>>1);
+                MData.ad_zero_data = MData.ad_zero_data - tmp;
             
             printf("auto load track working , MData.ad_zero_data is: %ld \r\n",MData.ad_zero_data);
         } else {
             trackcnt = 0;
-            printf("trackcnt = 0 , MData.ad_dat_avg is: %ld \r\n",MData.ad_dat_avg);
+            //printf("trackcnt = 0 , MData.ad_dat_avg is: %ld \r\n",MData.ad_dat_avg);
 		}
     } else {
         MData.ad_dat_avg = MData.ad_zero_data + loadtrack_load;      
@@ -120,7 +120,7 @@ void autozero_track(void)
 	    if(FilterData.zero_track_cnt >= AUTOZERO_TRACK_TIME) {
 	        FilterData.zero_track_cnt = 0;
 	        MData.ad_zero_data = MData.ad_dat_avg;
-            printf("auto zero working,weigh_ad_zero is %ld \r\n",MData.ad_zero_data);
+           // printf("auto zero working,weigh_ad_zero is %ld \r\n",MData.ad_zero_data);
             RunData.zero_flag = 1;
 	    }
 	} else  
