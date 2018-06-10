@@ -49,8 +49,12 @@ u8 const display_FULL[]        = {DISP_NULL,DISP_L,DISP_L,DISP_U,DISP_F,DISP_NUL
 u8 const display_COUNT[]       = {DISP_X,  DISP_X  ,DISP_X,  DISP_U,  0,  DISP_C}; 
 u8 const display_COUNTERR[]    = {DISP_r,  DISP_r  ,DISP_E,  DISP_U,  0,  DISP_C};
 //USERCAL
+u8 const display_USERCALTIP1[]  = { DISP_NULL,           1,      DISP_L,      DISP_A,     DISP_C,  DISP_NULL};
+u8 const display_USERCALTIP2[]  = { DISP_NULL,           2,      DISP_L,      DISP_A,     DISP_C,  DISP_NULL};
+
 u8 const display_USERCAL[]     = { DISP_NULL,   DISP_NULL,   DISP_NULL,   DISP_NULL,  DISP_NULL,  DISP_NULL};
-u8 const display_USERCALPASS[] = { DISP_NULL,           5,           5,      DISP_A,     DISP_P,  DISP_NULL};
+u8 const display_USERCALPASS1[] = {        1,           5,           5,      DISP_A,     DISP_P,  DISP_NULL};
+u8 const display_USERCALPASS2[] = {        2,           5,           5,      DISP_A,     DISP_P,  DISP_NULL};
 u8 const display_USERCALERR[]  = {         9,      DISP_X,      DISP_r,      DISP_r,     DISP_E,  DISP_NULL};
 
 //factory mode
@@ -190,6 +194,19 @@ void TM1668_Display_Factory(void)
     TM1668_Update();
 }
 
+void  TM1668_Display_CalTips(void)
+{
+    u8 i;
+    
+    if(MACHINE_NORMAL_MODE + MACHINE_USERCAL1_MODE == MachData.mode) {
+        for(i=0;i<6;i++)
+            display_buffer[i] = display_code[display_USERCALTIP1[i]];
+    } else {
+        for(i=0;i<6;i++)
+            display_buffer[i] = display_code[display_USERCALTIP2[i]];
+    }
+}
+
 void  TM1668_Display_CalLoad(void)
 {
     u8 i;
@@ -231,6 +248,9 @@ void TM1668_Display_UserCal(void)
         display_buffer[i] = display_code[display_USERCAL[i]]; 
     
     switch(CalData.calstep) {
+    case CAL_TIP:
+        TM1668_Display_CalTips();
+        break;
     case CAL_WAIT_ZERO:
         Display_InnerCode(MData.ad_dat_avg);
         break;
@@ -248,9 +268,13 @@ void TM1668_Display_UserCal(void)
     case CAL_LOAD2:
         TM1668_Display_CalLoad();
         break;
-    case CAL_PASS:
+    case CAL_PASS1:
         for(i=0;i<6;i++)	
-            display_buffer[i] = display_code[display_USERCALPASS[i]];
+            display_buffer[i] = display_code[display_USERCALPASS1[i]];
+        break;
+    case CAL_PASS2:
+        for(i=0;i<6;i++)	
+            display_buffer[i] = display_code[display_USERCALPASS2[i]];
         break;
         
     case CAL_ZERO_TOO_SMALL: //err

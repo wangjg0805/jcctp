@@ -30,7 +30,9 @@ void Key_CalExit(void)
 
 void Key_UserCalPCSProc(void)
 {
-    if(CAL_PASS != CalData.calstep) //EXIT AUTOMATICALLY WHEN IN CALPASS STAGE
+    
+    if((CAL_PASS1 != CalData.calstep)||(CAL_PASS2 != CalData.calstep)||(CAL_TIP != CalData.calstep)) //EXIT AUTOMATICALLY WHEN IN CALPASS STAGE
+        
         Key_CalExit();   
 }
 
@@ -55,7 +57,7 @@ void Key_CalProc1(void)
     } else if(labs(MData.ad_dat_avg-MData.ad_zero_data) > MACHINE_LOAD1_AD_MAX) {
         CalData.calstep = CAL_LOAD1_TOO_BIG;
     } else {
-        CalData.calstep = CAL_PASS;
+        CalData.calstep = CAL_PASS1;
         MachData.weigh_ad_Middle = MData.ad_dat_avg -  MData.ad_zero_data;  //use 1/2 
         MachData.weigh_ad_full = MachData.weigh_ad_Middle * 2;
         MachData.weigh_coef[0] = MachData.weigh_fullrange / (MachData.weigh_ad_full + 0.1);
@@ -83,7 +85,7 @@ void Key_CalProc2(void)
         } else if(labs(MData.ad_dat_avg-MData.ad_zero_data) > MACHINE_LOAD2A_AD_MAX) {
             CalData.calstep = CAL_LOAD1_TOO_BIG;
         } else {
-           CalData.calstep = CAL_LOAD2_FLASH;
+           CalData.calstep = CAL_PASS1;
            MachData.weigh_ad_Middle = MData.ad_dat_avg -  MData.ad_zero_data;
             
            SaveToE2prom(MachData.weigh_ad_Middle,EEP_WEIGHTFULL1_ADDR,8);
@@ -95,7 +97,7 @@ void Key_CalProc2(void)
         } else if(labs(MData.ad_dat_avg-MData.ad_zero_data) > MACHINE_LOAD2B_AD_MAX) {
             CalData.calstep = CAL_LOAD2_TOO_BIG;
         } else {
-           CalData.calstep = CAL_PASS;
+           CalData.calstep = CAL_PASS2;
            MachData.weigh_ad_full = MData.ad_dat_avg -  MData.ad_zero_data;
            
            SaveToE2prom(MachData.weigh_ad_full,EEP_WEIGHTFULL2_ADDR,8);
@@ -120,6 +122,24 @@ void Key_UserCalAutoProc(void)
     u8 buf[8];
   
     switch(CalData.calstep) {
+    case CAL_TIP:
+    case CAL_PASS2:
+        cnt++;
+        if(cnt > 10) {
+            cnt = 0;
+            CalData.calstep++;
+        }
+        break;        
+    case CAL_PASS1:
+        cnt++;
+        if(cnt > 10) {
+            cnt = 0;
+            if(MachData.mode == MACHINE_NORMAL_MODE+MACHINE_USERCAL1_MODE)
+                CalData.calstep = CAL_OVER;
+            else
+                CalData.calstep++;
+        }
+        break;
     case CAL_WAIT_ZERO:  //waiting for stable ,get 0
         if(MData.ad_dat_avg < MACHINE_ZERO_AD_MIN) {
             CalData.calstep = CAL_ZERO_TOO_SMALL; // zero too small
@@ -159,12 +179,9 @@ void Key_UserCalAutoProc(void)
     case CAL_LOAD2:
         Key_CalProc2();
         break;
-    case CAL_PASS:
-        cnt++;
-        if(cnt > 10) {
-            cnt = 0;
+    case CAL_OVER:
             Key_CalExit();
-        }
+        break;
     default:
         break;
     } 

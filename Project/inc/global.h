@@ -95,12 +95,15 @@ typedef enum {
 
 typedef enum {
     CAL_NULL = 0,
+    CAL_TIP,
     CAL_WAIT_ZERO,
     CAL_LOAD1_FLASH,
     CAL_LOAD1,
+    CAL_PASS1,    
     CAL_LOAD2_FLASH,
     CAL_LOAD2,
-    CAL_PASS,
+    CAL_PASS2,
+    CAL_OVER,
     CAL_ZERO_TOO_SMALL = 11,
     CAL_ZERO_TOO_BIG,
     CAL_LOAD1_TOO_SMALL,

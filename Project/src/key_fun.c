@@ -12,7 +12,7 @@ static u8 CouIndex = 0;
 void Key_LongUnitProc(void) 
 {
     if(MachData.mode == MACHINE_NORMAL_MODE) {
-        CalData.calstep = CAL_WAIT_ZERO;
+        CalData.calstep = CAL_TIP;
         MachData.mode = MACHINE_NORMAL_MODE+MACHINE_USERCAL2_MODE;
         manual_break_stable();
     }
@@ -61,7 +61,7 @@ void Key_PCSProc(void)
 void Key_LongTareProc(void)
 {
     if(MachData.mode == MACHINE_NORMAL_MODE) {
-        CalData.calstep = CAL_WAIT_ZERO;
+        CalData.calstep = CAL_TIP;
         MachData.mode = MACHINE_NORMAL_MODE+MACHINE_USERCAL1_MODE;
         manual_break_stable();
     }

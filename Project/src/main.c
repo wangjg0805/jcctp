@@ -62,7 +62,7 @@ void main(void)
     MachData.mode = System_Init();
 
     if((MACHINE_NORMAL_MODE+MACHINE_FACTORY_MODE) == MachData.mode) {
-        FactoryData.factorystep = FAC_FULL;
+        FactoryData.factorystep = FAC_EXIT;
     }
     FactoryGetFirstStepIndex(); //use for cal info
     Normal_Proc();
