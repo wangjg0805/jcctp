@@ -849,6 +849,9 @@
       <name>$PROJ_DIR$\..\src\key_fun.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\src\lowpower.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\src\main.c</name>
     </file>
     <file>
@@ -905,16 +908,25 @@
         <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_adc1.c</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_awu.c</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_beep.c</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_clk.c</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_exti.c</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_flash.c</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_gpio.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_itc.c</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_tim1.c</name>

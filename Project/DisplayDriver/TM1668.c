@@ -300,7 +300,9 @@ void TM1668_Display_Normal(void)
     if(1 == RunData.power_on_flag) {
         Display_Wait();
     } else if(1 == RunData.lowpower_flag) {
-        Display_LPmode();
+        for(i=0;i<6;i++)	
+           display_buffer[i] = display_code[display_NULL[i]];
+        
     } else if(1 == RunData.full_flag){
         for(i=0;i<6;i++)	
            display_buffer[i] = display_code[display_FULL[i]]; 

@@ -18,6 +18,11 @@ static u8 filter0_stable_cnt = 0;
 static u8  flag_ad_buf_full = 0;
 static u8  fast_filter_flag = 0;
 
+u8 Filt_GetFastFilterFlag(void)
+{
+    return(fast_filter_flag);
+    
+}
 void manual_break_stable(void)
 {
     fast_filter_flag = 1;     //破坏缓存数据，重新开始建立 

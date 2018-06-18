@@ -2,12 +2,12 @@
 
 <project>
   <fileVersion>2</fileVersion>
-  <fileChecksum>4180153381</fileChecksum>
+  <fileChecksum>2990255874</fileChecksum>
   <configuration>
     <name>STM8S105</name>
     <outputs>
-      <file>$PROJ_DIR$\..\CS1231\ad_filter.c</file>
       <file>$PROJ_DIR$\..\CS1231\ad_proc.c</file>
+      <file>$PROJ_DIR$\..\CS1231\ad_filter.c</file>
       <file>$PROJ_DIR$\..\CS1231\ad_filter.h</file>
       <file>$PROJ_DIR$\..\CS1231\ad_proc.h</file>
       <file>$PROJ_DIR$\..\CS1231\CS1231.c</file>
@@ -31,6 +31,7 @@
       <file>$PROJ_DIR$\..\src\I2C.c</file>
       <file>$PROJ_DIR$\..\src\key.c</file>
       <file>$PROJ_DIR$\..\src\key_fun.c</file>
+      <file>$PROJ_DIR$\..\src\lowpower.c</file>
       <file>$PROJ_DIR$\..\src\main.c</file>
       <file>$PROJ_DIR$\..\src\normal.c</file>
       <file>$PROJ_DIR$\..\src\rs232.c</file>
@@ -47,6 +48,7 @@
       <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_tim2.h</file>
       <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_uart2.h</file>
       <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_adc1.c</file>
+      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_awu.c</file>
       <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_beep.c</file>
       <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_clk.c</file>
       <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_flash.c</file>
@@ -54,71 +56,26 @@
       <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_tim1.c</file>
       <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_tim2.c</file>
       <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_uart2.c</file>
-      <file>$PROJ_DIR$\Debug\Obj\stm8s_adc2.o</file>
-      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_tim3.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\rs232.pbi</file>
-      <file>$TOOLKIT_DIR$\inc\c\intrinsics.h</file>
-      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_iwdg.h</file>
-      <file>$PROJ_DIR$\Debug\Exe\Project.out</file>
-      <file>$PROJ_DIR$\Debug\Obj\stm8s_rst.o</file>
-      <file>$PROJ_DIR$\Debug\Obj\stm8s_tim4.pbi</file>
-      <file>$PROJ_DIR$\Debug\Obj\I2C.o</file>
-      <file>$PROJ_DIR$\Debug\Obj\stm8s_tim2.o</file>
-      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_iwdg.c</file>
-      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_can.h</file>
-      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_spi.c</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdio.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\stm8s_uart3.pbi</file>
-      <file>$PROJ_DIR$\..\inc\ht1621.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\stm8s_flash.pbi</file>
-      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_tim4.c</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Threads.h</file>
-      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_i2c.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\stm8s_gpio.pbi</file>
-      <file>$PROJ_DIR$\Debug\Obj\project.pbd</file>
-      <file>$PROJ_DIR$\Debug\Obj\motor.pbi</file>
-      <file>$PROJ_DIR$\Debug\Obj\stm8s_i2c.pbi</file>
-      <file>$PROJ_DIR$\Debug\Obj\display.o</file>
-      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_uart1.c</file>
-      <file>$PROJ_DIR$\Debug\Obj\stm8s_exti.o</file>
-      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_awu.c</file>
-      <file>$PROJ_DIR$\Debug\Obj\ht1621.pbi</file>
-      <file>$PROJ_DIR$\..\src\ht1621.c</file>
-      <file>$PROJ_DIR$\..\src\energy.c</file>
-      <file>$PROJ_DIR$\..\inc\CS5550.h</file>
-      <file>$PROJ_DIR$\..\inc\energy.h</file>
-      <file>$PROJ_DIR$\..\src\motor.c</file>
-      <file>$PROJ_DIR$\..\inc\motor.h</file>
-      <file>$PROJ_DIR$\..\src\display.c</file>
-      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_uart3.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\stm8s_uart2.pbi</file>
-      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_tim6.h</file>
-      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_awu.h</file>
-      <file>$TOOLKIT_DIR$\lib\dbgstm8mld.a</file>
-      <file>$PROJ_DIR$\Debug\Obj\stm8_interrupt_vector.pbi</file>
-      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_tim3.c</file>
-      <file>$PROJ_DIR$\Debug\Obj\CS1231.pbi</file>
-      <file>$PROJ_DIR$\Debug\Obj\key.pbi</file>
-      <file>$TOOLKIT_DIR$\inc\c\xencoding_limits.h</file>
-      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_itc.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\stm8s_exti.pbi</file>
       <file>$TOOLKIT_DIR$\inc\c\stdlib.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\stm8s_tim4.o</file>
+      <file>$TOOLKIT_DIR$\inc\c\xencoding_limits.h</file>
       <file>$PROJ_DIR$\Debug\Obj\normal.o</file>
-      <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
-      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_spi.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\stm8s_tim6.o</file>
-      <file>$PROJ_DIR$\Debug\Obj\stm8s_gpio.o</file>
       <file>$PROJ_DIR$\Debug\Obj\key_fun.o</file>
-      <file>$PROJ_DIR$\Debug\Obj\stm8s_it.pbi</file>
+      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_spi.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\stm8s_tim6.o</file>
+      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_itc.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\stm8s_gpio.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\stm8s_tim4.o</file>
       <file>$PROJ_DIR$\Debug\Obj\factory.o</file>
-      <file>$TOOLKIT_DIR$\inc\c\ymath.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\stm8s_beep.o</file>
-      <file>$TOOLKIT_DIR$\inc\c\string.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\stm8s_wwdg.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\stm8s_it.pbi</file>
       <file>$TOOLKIT_DIR$\config\lnkstm8s105k6.icf</file>
-      <file>$PROJ_DIR$\Debug\Obj\stm8s_tim3.o</file>
+      <file>$TOOLKIT_DIR$\inc\c\ymath.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\stm8s_exti.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\stm8s_wwdg.o</file>
+      <file>$TOOLKIT_DIR$\inc\c\string.h</file>
       <file>$PROJ_DIR$\Debug\Obj\stm8s_spi.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\stm8s_beep.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\stm8s_tim3.o</file>
       <file>$PROJ_DIR$\Debug\Obj\key_fun.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\stm8s_spi.o</file>
       <file>$PROJ_DIR$\Debug\Exe\project.bin</file>
@@ -154,30 +111,74 @@
       <file>$PROJ_DIR$\..\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_gpio.c</file>
       <file>$PROJ_DIR$\Debug\Obj\stm8s_clk.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\global.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\stm8s_adc2.o</file>
+      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_tim3.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\intrinsics.h</file>
+      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_iwdg.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\stm8s_tim2.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\I2C.o</file>
+      <file>$PROJ_DIR$\Debug\Exe\Project.out</file>
+      <file>$PROJ_DIR$\Debug\Obj\stm8s_rst.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\rs232.pbi</file>
+      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_can.h</file>
+      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_iwdg.c</file>
+      <file>$TOOLKIT_DIR$\inc\c\stdio.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Threads.h</file>
+      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_tim4.c</file>
+      <file>$PROJ_DIR$\..\inc\ht1621.h</file>
+      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_spi.c</file>
+      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_i2c.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\motor.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\display.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\stm8s_tim4.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\CS5550.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\project.pbd</file>
+      <file>$PROJ_DIR$\Debug\Obj\stm8s_i2c.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\stm8s_exti.o</file>
+      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_uart1.c</file>
+      <file>$PROJ_DIR$\Debug\Obj\stm8s_uart3.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\ht1621.pbi</file>
+      <file>$PROJ_DIR$\..\src\ht1621.c</file>
+      <file>$PROJ_DIR$\Debug\Obj\stm8s_flash.pbi</file>
+      <file>$PROJ_DIR$\..\inc\CS5550.h</file>
+      <file>$PROJ_DIR$\..\src\energy.c</file>
+      <file>$PROJ_DIR$\..\src\motor.c</file>
+      <file>$PROJ_DIR$\..\inc\energy.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\stm8s_gpio.pbi</file>
+      <file>$PROJ_DIR$\..\inc\motor.h</file>
+      <file>$PROJ_DIR$\..\src\display.c</file>
+      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_uart3.h</file>
+      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_awu.h</file>
+      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_tim6.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\stm8_interrupt_vector.pbi</file>
+      <file>$TOOLKIT_DIR$\lib\dbgstm8mld.a</file>
+      <file>$PROJ_DIR$\Debug\Obj\CS1231.pbi</file>
+      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_tim3.c</file>
       <file>$PROJ_DIR$\Debug\Obj\motor.o</file>
-      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_itc.c</file>
-      <file>$PROJ_DIR$\Debug\Obj\stm8s_beep.pbi</file>
-      <file>$PROJ_DIR$\Debug\Obj\stm8s_flash.o</file>
-      <file>$PROJ_DIR$\Debug\Obj\stm8s_iwdg.pbi</file>
-      <file>$TOOLKIT_DIR$\inc\c\xtgmath.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\key.pbi</file>
       <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\stm8s_iwdg.o</file>
       <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_adc2.c</file>
-      <file>$PROJ_DIR$\Debug\Obj\stm8s_tim3.pbi</file>
-      <file>$PROJ_DIR$\Debug\Obj\stm8s_tim2.pbi</file>
-      <file>$TOOLKIT_DIR$\lib\dlstm8mlf.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\TM1668.o</file>
+      <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_itc.c</file>
+      <file>$PROJ_DIR$\Debug\Obj\stm8s_flash.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\stm8s_uart2.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\c\xtgmath.h</file>
       <file>$PROJ_DIR$\Debug\Obj\stm8s_uart1.o</file>
-      <file>$PROJ_DIR$\Debug\Obj\ad_filter.pbi</file>
-      <file>$PROJ_DIR$\Debug\Obj\TM1668.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\stm8s_iwdg.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\TM1668.o</file>
+      <file>$TOOLKIT_DIR$\lib\dlstm8mlf.h</file>
       <file>$PROJ_DIR$\Debug\Obj\stm8s_clk.o</file>
-      <file>$PROJ_DIR$\Debug\Obj\global.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\ad_filter.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\stm8s_can.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\TM1668.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\stm8s_beep.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\global.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\stm8s_iwdg.pbi</file>
       <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_tim4.h</file>
       <file>$PROJ_DIR$\Debug\Obj\rs232.o</file>
-      <file>$PROJ_DIR$\Debug\Obj\CS5550.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\factory.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\stm8s_tim3.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\stm8s_tim2.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\stm8s_itc.o</file>
       <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
       <file>$PROJ_DIR$\..\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_tim2.c</file>
@@ -201,9 +202,12 @@
       <file>$PROJ_DIR$\Debug\Obj\CS1231.o</file>
       <file>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_exti.c</file>
       <file>$PROJ_DIR$\Debug\Obj\ad_proc.pbi</file>
-      <file>$PROJ_DIR$\..\src\stm8_interrupt_vector.c</file>
       <file>$PROJ_DIR$\Debug\Obj\I2C.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\stm8s_i2c.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\lowpower.o</file>
+      <file>$PROJ_DIR$\..\src\lowpower.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\lowpower.pbi</file>
+      <file>$PROJ_DIR$\..\src\stm8_interrupt_vector.c</file>
       <file>$PROJ_DIR$\Debug\Obj\stm8s_adc2.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\stm8s_tim1.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\stm8s_adc1.pbi</file>
@@ -211,59 +215,51 @@
       <file>$PROJ_DIR$\Debug\Obj\stm8s_tim5.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\stm8s_uart1.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\stm8s_wwdg.pbi</file>
+      <file>$TOOLKIT_DIR$\src\lib\main.h</file>
     </outputs>
     <file>
-      <name>[ROOT_NODE]</name>
+      <name>$PROJ_DIR$\..\CS1231\ad_proc.c</name>
       <outputs>
         <tool>
-          <name>ILINK</name>
-          <file> 53</file>
+          <name>BICOMP</name>
+          <file> 195</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 177</file>
         </tool>
       </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 12 31 35 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107 18 5 9 17 13 14 15 2 116 55 150 85 174 51 117 82 86 50 94 63 155</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 12 31 35 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107 18 5 9 17 13 14 15 2 116 55 150 85 159 174 51 117 82 86 50 94 63 155</file>
+        </tool>
+      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\..\CS1231\ad_filter.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 119</file>
+          <name>BICOMP</name>
+          <file> 161</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 162</file>
+          <name>ICCSTM8</name>
+          <file> 76</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 12 30 34 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51 18 5 9 17 13 14 15 96 99 154 128 159 173 93 66 125 61 129 2 137 106 153</file>
-        </tool>
-        <tool>
           <name>BICOMP</name>
-          <file> 12 30 34 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51 18 5 9 17 13 14 15 96 99 154 128 173 93 66 125 61 129 2 137 106 153</file>
+          <file> 12 31 35 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107 18 5 9 17 13 14 15 50 55 150 85 174 51 117 82 116 86 2 94 63 155</file>
         </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\CS1231\ad_proc.c</name>
-      <outputs>
         <tool>
           <name>ICCSTM8</name>
-          <file> 176</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 194</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCSTM8</name>
-          <file> 12 30 34 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51 18 5 9 17 13 14 15 2 61 99 154 128 159 173 93 66 125 129 96 137 106 153</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 12 30 34 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51 18 5 9 17 13 14 15 2 61 99 154 128 173 93 66 125 129 96 137 106 153</file>
+          <file> 12 31 35 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107 18 5 9 17 13 14 15 50 55 150 85 159 174 51 117 82 116 86 2 94 63 155</file>
         </tool>
       </inputs>
     </file>
@@ -271,22 +267,22 @@
       <name>$PROJ_DIR$\..\CS1231\CS1231.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 192</file>
+          <name>BICOMP</name>
+          <file> 146</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 91</file>
+          <name>ICCSTM8</name>
+          <file> 193</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 12 30 34 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51 18 5 9 17 13 14 15</file>
+          <name>BICOMP</name>
+          <file> 12 31 35 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107 18 5 9 17 13 14 15</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 12 30 34 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51 18 5 9 17 13 14 15</file>
+          <name>ICCSTM8</name>
+          <file> 12 31 35 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107 18 5 9 17 13 14 15</file>
         </tool>
       </inputs>
     </file>
@@ -294,22 +290,22 @@
       <name>$PROJ_DIR$\..\DisplayDriver\ht1621.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 141</file>
+          <name>BICOMP</name>
+          <file> 131</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 76</file>
+          <name>ICCSTM8</name>
+          <file> 98</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 34 30 51 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 61 99 154 128 159 173 93 66 125 129 96 137 106 153 7 12 18 5 9 17 13 14 15</file>
+          <name>BICOMP</name>
+          <file> 35 31 107 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 116 55 150 85 174 51 117 82 86 50 94 63 155 7 12 18 5 9 17 13 14 15</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 34 30 51 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 61 99 154 128 173 93 66 125 129 96 137 106 153 7 12 18 5 9 17 13 14 15</file>
+          <name>ICCSTM8</name>
+          <file> 35 31 107 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 116 55 150 85 159 174 51 117 82 86 50 94 63 155 7 12 18 5 9 17 13 14 15</file>
         </tool>
       </inputs>
     </file>
@@ -317,22 +313,22 @@
       <name>$PROJ_DIR$\..\DisplayDriver\TM1668.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 160</file>
-        </tool>
-        <tool>
           <name>BICOMP</name>
           <file> 163</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 158</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 30 34 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51 9 11 12 18 5 17 13 14 15 96 99 154 128 159 173 93 66 125 137 106 153</file>
+          <name>BICOMP</name>
+          <file> 31 35 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107 9 11 12 18 5 17 13 14 15 50 55 150 85 174 51 117 82 94 63 155</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 30 34 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51 9 11 12 18 5 17 13 14 15 96 99 154 128 173 93 66 125 137 106 153</file>
+          <name>ICCSTM8</name>
+          <file> 31 35 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107 9 11 12 18 5 17 13 14 15 50 55 150 85 159 174 51 117 82 94 63 155</file>
         </tool>
       </inputs>
     </file>
@@ -340,22 +336,22 @@
       <name>$PROJ_DIR$\..\src\CPUled.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 187</file>
+          <name>BICOMP</name>
+          <file> 100</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 143</file>
+          <name>ICCSTM8</name>
+          <file> 188</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 30 34 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51 12 18 5 9 17 13 14 15 10</file>
+          <name>BICOMP</name>
+          <file> 31 35 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107 12 18 5 9 17 13 14 15 10</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 30 34 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51 12 18 5 9 17 13 14 15 10</file>
+          <name>ICCSTM8</name>
+          <file> 31 35 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107 12 18 5 9 17 13 14 15 10</file>
         </tool>
       </inputs>
     </file>
@@ -363,22 +359,22 @@
       <name>$PROJ_DIR$\..\src\factory.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 105</file>
+          <name>BICOMP</name>
+          <file> 169</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 170</file>
+          <name>ICCSTM8</name>
+          <file> 60</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 34 30 51 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 61 99 154 128 159 173 93 66 125 129 96 137 106 153 12 18 5 9 17 13 14 15</file>
+          <name>BICOMP</name>
+          <file> 35 31 107 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 116 55 150 85 174 51 117 82 86 50 94 63 155 12 18 5 9 17 13 14 15</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 34 30 51 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 61 99 154 128 173 93 66 125 129 96 137 106 153 12 18 5 9 17 13 14 15</file>
+          <name>ICCSTM8</name>
+          <file> 35 31 107 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 116 55 150 85 159 174 51 117 82 86 50 94 63 155 12 18 5 9 17 13 14 15</file>
         </tool>
       </inputs>
     </file>
@@ -386,22 +382,22 @@
       <name>$PROJ_DIR$\..\src\global.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 147</file>
-        </tool>
-        <tool>
           <name>BICOMP</name>
           <file> 165</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 104</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 30 34 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51 137 99 106 154 128 159 173 93 66 153 96 125 61 129 12 18 5 9 17 13 14 15 11 3 2 10</file>
+          <name>BICOMP</name>
+          <file> 31 35 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107 94 55 63 150 85 174 51 117 155 50 82 116 86 12 18 5 9 17 13 14 15 11 3 2 10</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 30 34 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51 137 99 106 154 128 173 93 66 153 96 125 61 129 12 18 5 9 17 13 14 15 11 3 2 10</file>
+          <name>ICCSTM8</name>
+          <file> 31 35 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107 94 55 63 150 85 159 174 51 117 155 50 82 116 86 12 18 5 9 17 13 14 15 11 3 2 10</file>
         </tool>
       </inputs>
     </file>
@@ -409,22 +405,22 @@
       <name>$PROJ_DIR$\..\src\I2C.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 56</file>
-        </tool>
-        <tool>
           <name>BICOMP</name>
           <file> 196</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 110</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 34 30 51 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 108 99 154 128 159 173 93 66 125 12 18 5 9 17 13 14 15</file>
+          <name>BICOMP</name>
+          <file> 35 31 107 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 66 55 150 85 174 51 117 82 12 18 5 9 17 13 14 15</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 34 30 51 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 108 99 154 128 173 93 66 125 12 18 5 9 17 13 14 15</file>
+          <name>ICCSTM8</name>
+          <file> 35 31 107 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 66 55 150 85 159 174 51 117 82 12 18 5 9 17 13 14 15</file>
         </tool>
       </inputs>
     </file>
@@ -432,22 +428,22 @@
       <name>$PROJ_DIR$\..\src\key.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 130</file>
+          <name>BICOMP</name>
+          <file> 149</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 92</file>
+          <name>ICCSTM8</name>
+          <file> 87</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 30 34 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51 12 18 5 9 17 13 14 15</file>
+          <name>BICOMP</name>
+          <file> 31 35 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107 12 18 5 9 17 13 14 15</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 30 34 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51 12 18 5 9 17 13 14 15</file>
+          <name>ICCSTM8</name>
+          <file> 31 35 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107 12 18 5 9 17 13 14 15</file>
         </tool>
       </inputs>
     </file>
@@ -455,22 +451,45 @@
       <name>$PROJ_DIR$\..\src\key_fun.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 103</file>
+          <name>BICOMP</name>
+          <file> 70</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 113</file>
+          <name>ICCSTM8</name>
+          <file> 53</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 30 34 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51 137 99 106 154 128 159 173 93 66 153 61 125 129 12 18 5 9 17 13 14 15 2 11</file>
+          <name>BICOMP</name>
+          <file> 31 35 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107 94 55 63 150 85 174 51 117 155 116 82 86 12 18 5 9 17 13 14 15 2 11</file>
         </tool>
         <tool>
+          <name>ICCSTM8</name>
+          <file> 31 35 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107 94 55 63 150 85 159 174 51 117 155 116 82 86 12 18 5 9 17 13 14 15 2 11</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\src\lowpower.c</name>
+      <outputs>
+        <tool>
           <name>BICOMP</name>
-          <file> 30 34 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51 137 99 106 154 128 173 93 66 153 61 125 129 12 18 5 9 17 13 14 15 2 11</file>
+          <file> 200</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 198</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 35 31 107 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 199 9 12 18 5 17 13 14 15 2</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 35 31 107 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 199 9 12 18 5 17 13 14 15 2</file>
         </tool>
       </inputs>
     </file>
@@ -478,22 +497,22 @@
       <name>$PROJ_DIR$\..\src\main.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 139</file>
+          <name>BICOMP</name>
+          <file> 170</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 171</file>
+          <name>ICCSTM8</name>
+          <file> 96</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 34 30 51 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 61 99 154 128 159 173 93 66 125 129 12 18 5 9 17 13 14 15 16 10 7 11</file>
+          <name>BICOMP</name>
+          <file> 35 31 107 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 116 55 150 85 174 51 117 82 86 12 18 5 9 17 13 14 15 16 199 10 7 11</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 34 30 51 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 61 99 154 128 173 93 66 125 129 12 18 5 9 17 13 14 15 16 10 7 11</file>
+          <name>ICCSTM8</name>
+          <file> 35 31 107 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 116 55 150 85 159 174 51 117 82 86 12 18 5 9 17 13 14 15 16 199 10 7 11</file>
         </tool>
       </inputs>
     </file>
@@ -501,22 +520,22 @@
       <name>$PROJ_DIR$\..\src\normal.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 98</file>
+          <name>BICOMP</name>
+          <file> 84</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 127</file>
+          <name>ICCSTM8</name>
+          <file> 52</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 34 30 51 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 137 99 106 154 128 159 173 93 66 153 61 125 129 12 18 5 9 17 13 14 15 2 10</file>
+          <name>BICOMP</name>
+          <file> 35 31 107 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 94 55 63 150 85 174 51 117 155 116 82 86 12 18 5 9 17 13 14 15 2 10 199</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 34 30 51 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 137 99 106 154 128 173 93 66 153 61 125 129 12 18 5 9 17 13 14 15 2 10</file>
+          <name>ICCSTM8</name>
+          <file> 35 31 107 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 94 55 63 150 85 159 174 51 117 155 116 82 86 12 18 5 9 17 13 14 15 2 10 199</file>
         </tool>
       </inputs>
     </file>
@@ -524,22 +543,22 @@
       <name>$PROJ_DIR$\..\src\rs232.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 168</file>
+          <name>BICOMP</name>
+          <file> 113</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 50</file>
+          <name>ICCSTM8</name>
+          <file> 168</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 34 30 51 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 61 99 154 128 159 173 93 66 125 129 96 108 12 18 5 9 17 13 14 15</file>
+          <name>BICOMP</name>
+          <file> 35 31 107 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 116 55 150 85 174 51 117 82 86 50 66 12 18 5 9 17 13 14 15</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 34 30 51 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 61 99 154 128 173 93 66 125 129 96 108 12 18 5 9 17 13 14 15</file>
+          <name>ICCSTM8</name>
+          <file> 35 31 107 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 116 55 150 85 159 174 51 117 82 86 50 66 12 18 5 9 17 13 14 15</file>
         </tool>
       </inputs>
     </file>
@@ -547,22 +566,22 @@
       <name>$PROJ_DIR$\..\src\stm8s_it.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 124</file>
+          <name>BICOMP</name>
+          <file> 61</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 104</file>
+          <name>ICCSTM8</name>
+          <file> 81</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 185 30 34 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51 18</file>
+          <name>BICOMP</name>
+          <file> 186 31 35 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107 18</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 185 30 34 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51 18</file>
+          <name>ICCSTM8</name>
+          <file> 186 31 35 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107 18</file>
         </tool>
       </inputs>
     </file>
@@ -570,22 +589,22 @@
       <name>$PROJ_DIR$\..\src\timer1.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 181</file>
+          <name>BICOMP</name>
+          <file> 97</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 140</file>
+          <name>ICCSTM8</name>
+          <file> 182</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 30 34 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51 12 18 5 9 17 13 14 15</file>
+          <name>BICOMP</name>
+          <file> 31 35 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107 12 18 5 9 17 13 14 15</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 30 34 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51 12 18 5 9 17 13 14 15</file>
+          <name>ICCSTM8</name>
+          <file> 31 35 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107 12 18 5 9 17 13 14 15</file>
         </tool>
       </inputs>
     </file>
@@ -593,22 +612,45 @@
       <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_adc1.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 190</file>
+          <name>BICOMP</name>
+          <file> 204</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 200</file>
+          <name>ICCSTM8</name>
+          <file> 191</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 31 30 34 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51</file>
+          <name>BICOMP</name>
+          <file> 32 31 35 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107</file>
         </tool>
         <tool>
+          <name>ICCSTM8</name>
+          <file> 32 31 35 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_awu.c</name>
+      <outputs>
+        <tool>
           <name>BICOMP</name>
-          <file> 31 30 34 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51</file>
+          <file> 189</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 93</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 142 31 35 32 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 142 31 35 32 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107</file>
         </tool>
       </inputs>
     </file>
@@ -616,22 +658,22 @@
       <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_beep.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 107</file>
+          <name>BICOMP</name>
+          <file> 164</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 150</file>
+          <name>ICCSTM8</name>
+          <file> 68</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 32 30 34 31 87 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51</file>
+          <name>BICOMP</name>
+          <file> 33 31 35 32 142 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 32 30 34 31 87 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51</file>
+          <name>ICCSTM8</name>
+          <file> 33 31 35 32 142 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107</file>
         </tool>
       </inputs>
     </file>
@@ -639,45 +681,54 @@
       <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_clk.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 164</file>
+          <name>BICOMP</name>
+          <file> 103</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 146</file>
+          <name>ICCSTM8</name>
+          <file> 160</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 33 30 34 31 87 32 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51</file>
+          <name>BICOMP</name>
+          <file> 34 31 35 32 142 33 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 33 30 34 31 87 32 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51</file>
+          <name>ICCSTM8</name>
+          <file> 34 31 35 32 142 33 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107</file>
         </tool>
       </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>ILINK</name>
+          <file> 111</file>
+        </tool>
+      </outputs>
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_flash.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 151</file>
+          <name>BICOMP</name>
+          <file> 133</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 64</file>
+          <name>ICCSTM8</name>
+          <file> 153</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 35 30 34 31 87 32 33 189 36 67 94 52 177 100 37 38 49 167 39 135 51</file>
+          <name>BICOMP</name>
+          <file> 36 31 35 32 142 33 34 190 37 121 57 108 178 54 38 39 106 167 40 92 107</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 35 30 34 31 87 32 33 189 36 67 94 52 177 100 37 38 49 167 39 135 51</file>
+          <name>ICCSTM8</name>
+          <file> 36 31 35 32 142 33 34 190 37 121 57 108 178 54 38 39 106 167 40 92 107</file>
         </tool>
       </inputs>
     </file>
@@ -685,22 +736,22 @@
       <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_gpio.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 102</file>
+          <name>BICOMP</name>
+          <file> 138</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 68</file>
+          <name>ICCSTM8</name>
+          <file> 58</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 36 30 34 31 87 32 33 189 35 67 94 52 177 100 37 38 49 167 39 135 51</file>
+          <name>BICOMP</name>
+          <file> 37 31 35 32 142 33 34 190 36 121 57 108 178 54 38 39 106 167 40 92 107</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 36 30 34 31 87 32 33 189 35 67 94 52 177 100 37 38 49 167 39 135 51</file>
+          <name>ICCSTM8</name>
+          <file> 37 31 35 32 142 33 34 190 36 121 57 108 178 54 38 39 106 167 40 92 107</file>
         </tool>
       </inputs>
     </file>
@@ -708,22 +759,22 @@
       <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_tim1.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 123</file>
+          <name>BICOMP</name>
+          <file> 203</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 199</file>
+          <name>ICCSTM8</name>
+          <file> 80</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 37 30 34 31 87 32 33 189 35 36 67 94 52 177 100 38 49 167 39 135 51</file>
+          <name>BICOMP</name>
+          <file> 38 31 35 32 142 33 34 190 36 37 121 57 108 178 54 39 106 167 40 92 107</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 37 30 34 31 87 32 33 189 35 36 67 94 52 177 100 38 49 167 39 135 51</file>
+          <name>ICCSTM8</name>
+          <file> 38 31 35 32 142 33 34 190 36 37 121 57 108 178 54 39 106 167 40 92 107</file>
         </tool>
       </inputs>
     </file>
@@ -731,22 +782,22 @@
       <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_tim2.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 57</file>
+          <name>BICOMP</name>
+          <file> 172</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 158</file>
+          <name>ICCSTM8</name>
+          <file> 109</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 38 30 34 31 87 32 33 189 35 36 67 94 52 177 100 37 49 167 39 135 51</file>
+          <name>BICOMP</name>
+          <file> 39 31 35 32 142 33 34 190 36 37 121 57 108 178 54 38 106 167 40 92 107</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 38 30 34 31 87 32 33 189 35 36 67 94 52 177 100 37 49 167 39 135 51</file>
+          <name>ICCSTM8</name>
+          <file> 39 31 35 32 142 33 34 190 36 37 121 57 108 178 54 38 106 167 40 92 107</file>
         </tool>
       </inputs>
     </file>
@@ -754,37 +805,165 @@
       <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_uart2.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 178</file>
+          <name>BICOMP</name>
+          <file> 154</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 85</file>
+          <name>ICCSTM8</name>
+          <file> 179</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 39 30 34 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 135 51</file>
+          <name>BICOMP</name>
+          <file> 40 31 35 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 92 107</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 39 30 34 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 135 51</file>
+          <name>ICCSTM8</name>
+          <file> 40 31 35 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 92 107</file>
         </tool>
       </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_can.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 162</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 75</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 114 31 107</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 114 31 187 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_i2c.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 127</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 197</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 121 31 107</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 121 31 187 32 142 33 34 190 36 37 57 108 178 54 38 39 106 167 40 92 107</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_uart3.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 130</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 181</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 141 31 107</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 141 31 187 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_wwdg.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 208</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 65</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 92 31 107</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 92 31 187 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 107</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\src\CS5550.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 125</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 79</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 31 187 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107 134</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 31 187 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107 134</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_gpio.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 138</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 58</file>
+        </tool>
+      </outputs>
     </file>
     <file>
       <name>$PROJ_DIR$\Debug\Exe\Project.out</name>
       <outputs>
         <tool>
           <name>OBJCOPY</name>
-          <file> 115</file>
+          <file> 72</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ILINK</name>
-          <file> 110 187 192 56 160 119 176 105 147 141 130 103 139 98 168 190 107 164 151 102 124 123 57 178 181 144 88</file>
+          <file> 62 188 193 110 158 76 177 60 104 98 87 53 198 96 52 168 191 93 68 160 128 153 58 81 173 80 109 179 182 101 145</file>
         </tool>
       </inputs>
     </file>
@@ -792,45 +971,22 @@
       <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_iwdg.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 155</file>
+          <name>BICOMP</name>
+          <file> 166</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 152</file>
+          <name>ICCSTM8</name>
+          <file> 157</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 52 30 186 31 87 32 33 189 35 36 67 94 177 100 37 38 49 167 39 135 51</file>
-        </tool>
-        <tool>
           <name>BICOMP</name>
-          <file> 52 30 51</file>
+          <file> 108 31 107</file>
         </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_spi.c</name>
-      <outputs>
         <tool>
           <name>ICCSTM8</name>
-          <file> 114</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 112</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCSTM8</name>
-          <file> 100 30 186 31 87 32 33 189 35 36 67 94 52 177 37 38 49 167 39 135 51</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 100 30 51</file>
+          <file> 108 31 187 32 142 33 34 190 36 37 121 57 178 54 38 39 106 167 40 92 107</file>
         </tool>
       </inputs>
     </file>
@@ -838,22 +994,45 @@
       <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_tim4.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 97</file>
+          <name>BICOMP</name>
+          <file> 124</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 55</file>
+          <name>ICCSTM8</name>
+          <file> 59</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 167 30 186 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 39 135 51</file>
+          <name>BICOMP</name>
+          <file> 167 31 107</file>
         </tool>
         <tool>
+          <name>ICCSTM8</name>
+          <file> 167 31 187 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 40 92 107</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_spi.c</name>
+      <outputs>
+        <tool>
           <name>BICOMP</name>
-          <file> 167 30 51</file>
+          <file> 67</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 71</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 54 31 107</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 54 31 187 32 142 33 34 190 36 37 121 57 108 178 38 39 106 167 40 92 107</file>
         </tool>
       </inputs>
     </file>
@@ -862,7 +1041,7 @@
       <inputs>
         <tool>
           <name>BILINK</name>
-          <file> 143 91 196 163 162 194 170 165 76 92 113 171 127 50 200 150 146 64 68 104 199 158 85 140</file>
+          <file> 100 146 196 163 161 195 169 165 131 149 70 200 170 84 113 204 189 164 103 64 133 138 61 88 203 172 154 97</file>
         </tool>
       </inputs>
     </file>
@@ -870,45 +1049,22 @@
       <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_uart1.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 161</file>
+          <name>BICOMP</name>
+          <file> 207</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 203</file>
+          <name>ICCSTM8</name>
+          <file> 156</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 121 30 186 31 87 32 33 189 35 36 67 94 52 177 100 37 38 167 135 51</file>
-        </tool>
-        <tool>
           <name>BICOMP</name>
-          <file> 121 30 186 31 87 32 33 189 35 36 67 94 52 177 100 37 38 167 135 51</file>
+          <file> 78 31 187 32 142 33 34 190 36 37 121 57 108 178 54 38 39 167 92 107</file>
         </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_awu.c</name>
-      <outputs>
         <tool>
           <name>ICCSTM8</name>
-          <file> 136</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 188</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCSTM8</name>
-          <file> 87 30 186 31 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 87 30 51</file>
+          <file> 78 31 187 32 142 33 34 190 36 37 121 57 108 178 54 38 39 167 92 107</file>
         </tool>
       </inputs>
     </file>
@@ -916,22 +1072,22 @@
       <name>$PROJ_DIR$\..\src\ht1621.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 141</file>
+          <name>BICOMP</name>
+          <file> 131</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 76</file>
+          <name>ICCSTM8</name>
+          <file> 98</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 34 30 51 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 61 99 154 128 159 173 93 66 125 129 96 137 106 153 12 18 5 63 17 13 14 15</file>
+          <name>BICOMP</name>
+          <file> 35 31 107 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 116 55 150 85 174 51 117 82 86 50 94 63 155 12 18 5 119 17 13 14 15</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 34 30 51 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 61 99 154 128 173 93 66 125 129 96 137 106 153 12 18 5 63 17 13 14 15</file>
+          <name>ICCSTM8</name>
+          <file> 35 31 107 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 116 55 150 85 159 174 51 117 82 86 50 94 63 155 12 18 5 119 17 13 14 15</file>
         </tool>
       </inputs>
     </file>
@@ -939,22 +1095,22 @@
       <name>$PROJ_DIR$\..\src\energy.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 179</file>
+          <name>BICOMP</name>
+          <file> 73</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 116</file>
+          <name>ICCSTM8</name>
+          <file> 180</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 30 186 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51 79 80</file>
+          <name>BICOMP</name>
+          <file> 31 187 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107 134 137</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 30 186 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51 79 80</file>
+          <name>ICCSTM8</name>
+          <file> 31 187 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107 134 137</file>
         </tool>
       </inputs>
     </file>
@@ -962,22 +1118,22 @@
       <name>$PROJ_DIR$\..\src\motor.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 148</file>
+          <name>BICOMP</name>
+          <file> 122</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 70</file>
+          <name>ICCSTM8</name>
+          <file> 148</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 30 186 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51 12 80 79 82</file>
+          <name>BICOMP</name>
+          <file> 31 187 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107 12 137 134 139</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 30 186 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51 12 80 79 82</file>
+          <name>ICCSTM8</name>
+          <file> 31 187 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107 12 137 134 139</file>
         </tool>
       </inputs>
     </file>
@@ -985,22 +1141,22 @@
       <name>$PROJ_DIR$\..\src\display.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 72</file>
+          <name>BICOMP</name>
+          <file> 90</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 133</file>
+          <name>ICCSTM8</name>
+          <file> 123</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 30 186 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51 63</file>
+          <name>BICOMP</name>
+          <file> 31 187 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107 119</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 30 186 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51 63</file>
+          <name>ICCSTM8</name>
+          <file> 31 187 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107 119</file>
         </tool>
       </inputs>
     </file>
@@ -1008,173 +1164,22 @@
       <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_tim3.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 111</file>
+          <name>BICOMP</name>
+          <file> 171</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 157</file>
+          <name>ICCSTM8</name>
+          <file> 69</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 49 30 186 31 87 32 33 189 35 36 67 94 52 177 100 37 38 167 39 135 51</file>
-        </tool>
-        <tool>
           <name>BICOMP</name>
-          <file> 49 30 51</file>
+          <file> 106 31 107</file>
         </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_can.c</name>
-      <outputs>
         <tool>
           <name>ICCSTM8</name>
-          <file> 118</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 166</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCSTM8</name>
-          <file> 59 30 186 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 59 30 51</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_i2c.c</name>
-      <outputs>
-        <tool>
-          <name>ICCSTM8</name>
-          <file> 197</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 71</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCSTM8</name>
-          <file> 67 30 186 31 87 32 33 189 35 36 94 52 177 100 37 38 49 167 39 135 51</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 67 30 51</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_uart3.c</name>
-      <outputs>
-        <tool>
-          <name>ICCSTM8</name>
-          <file> 180</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 62</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCSTM8</name>
-          <file> 84 30 186 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 84 30 51</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_wwdg.c</name>
-      <outputs>
-        <tool>
-          <name>ICCSTM8</name>
-          <file> 109</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 204</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCSTM8</name>
-          <file> 135 30 186 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 51</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 135 30 51</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\src\CS5550.c</name>
-      <outputs>
-        <tool>
-          <name>ICCSTM8</name>
-          <file> 122</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 169</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCSTM8</name>
-          <file> 30 186 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51 79</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 30 186 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51 79</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_gpio.c</name>
-      <outputs>
-        <tool>
-          <name>ICCSTM8</name>
-          <file> 102</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 68</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_itc.c</name>
-      <outputs>
-        <tool>
-          <name>ICCSTM8</name>
-          <file> 172</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 131</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCSTM8</name>
-          <file> 94 30 186 31 87 32 33 189 35 36 67 52 177 100 37 38 49 167 39 135 51</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 94 30 51</file>
+          <file> 106 31 187 32 142 33 34 190 36 37 121 57 108 178 54 38 39 167 40 92 107</file>
         </tool>
       </inputs>
     </file>
@@ -1182,22 +1187,45 @@
       <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_adc2.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 48</file>
+          <name>BICOMP</name>
+          <file> 202</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 198</file>
+          <name>ICCSTM8</name>
+          <file> 105</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 134 30 186 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51</file>
+          <name>BICOMP</name>
+          <file> 91 31 107</file>
         </tool>
         <tool>
+          <name>ICCSTM8</name>
+          <file> 91 31 187 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_itc.c</name>
+      <outputs>
+        <tool>
           <name>BICOMP</name>
-          <file> 134 30 51</file>
+          <file> 88</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 173</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 57 31 35 32 142 33 34 190 36 37 121 108 178 54 38 39 106 167 40 92 107</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 57 31 35 32 142 33 34 190 36 37 121 108 178 54 38 39 106 167 40 92 107</file>
         </tool>
       </inputs>
     </file>
@@ -1205,12 +1233,12 @@
       <name>$PROJ_DIR$\..\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_tim2.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 57</file>
+          <name>BICOMP</name>
+          <file> 172</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 158</file>
+          <name>ICCSTM8</name>
+          <file> 109</file>
         </tool>
       </outputs>
     </file>
@@ -1218,22 +1246,22 @@
       <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_rst.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 54</file>
+          <name>BICOMP</name>
+          <file> 185</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 184</file>
+          <name>ICCSTM8</name>
+          <file> 112</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 177 30 186 31 87 32 33 189 35 36 67 94 52 100 37 38 49 167 39 135 51</file>
+          <name>BICOMP</name>
+          <file> 178 31 107</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 177 30 51</file>
+          <name>ICCSTM8</name>
+          <file> 178 31 187 32 142 33 34 190 36 37 121 57 108 54 38 39 106 167 40 92 107</file>
         </tool>
       </inputs>
     </file>
@@ -1241,22 +1269,22 @@
       <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_tim6.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 101</file>
+          <name>BICOMP</name>
+          <file> 205</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 201</file>
+          <name>ICCSTM8</name>
+          <file> 56</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 86 30 186 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51</file>
+          <name>BICOMP</name>
+          <file> 143 31 107</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 86 30 51</file>
+          <name>ICCSTM8</name>
+          <file> 143 31 187 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107</file>
         </tool>
       </inputs>
     </file>
@@ -1264,22 +1292,22 @@
       <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_tim5.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 120</file>
+          <name>BICOMP</name>
+          <file> 206</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 202</file>
+          <name>ICCSTM8</name>
+          <file> 77</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 183 30 186 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51</file>
+          <name>BICOMP</name>
+          <file> 184 31 107</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 183 30 51</file>
+          <name>ICCSTM8</name>
+          <file> 184 31 187 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107</file>
         </tool>
       </inputs>
     </file>
@@ -1287,22 +1315,22 @@
       <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_exti.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 74</file>
+          <name>BICOMP</name>
+          <file> 64</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 95</file>
+          <name>ICCSTM8</name>
+          <file> 128</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 189 30 186 31 87 32 33 35 36 67 94 52 177 100 37 38 49 167 39 135 51</file>
+          <name>BICOMP</name>
+          <file> 190 31 35 32 142 33 34 36 37 121 57 108 178 54 38 39 106 167 40 92 107</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 189 30 51</file>
+          <name>ICCSTM8</name>
+          <file> 190 31 35 32 142 33 34 36 37 121 57 108 178 54 38 39 106 167 40 92 107</file>
         </tool>
       </inputs>
     </file>
@@ -1311,13 +1339,13 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 89</file>
+          <file> 144</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCSTM8</name>
-          <file> 185 30 186 31 87 32 33 189 35 36 67 94 52 177 100 37 38 49 167 39 135 51</file>
+          <file> 186 31 187 32 142 33 34 190 36 37 121 57 108 178 54 38 39 106 167 40 92 107</file>
         </tool>
       </inputs>
     </file>

@@ -325,8 +325,10 @@ u8  System_Init(void)
 
 void MData_update_LED(void)
 {
+    if(1 == RunData.lowpower_flag)
+        return;
     
-    display_buffer[6] = 0x00;
+    display_buffer[6] = 0x00;    
     if(1 == RunData.stable_flag)
         display_buffer[6] |= LED_STABLE;
     
@@ -486,10 +488,7 @@ void Display_LPmode(void)
         cnt = 0;
     
     for(i=0;i<6;i++)	
-        display_buffer[i] = display_code[display_NULL[i]]; 
-    
-    if(cnt<3)
-        display_buffer[0] = display_code[DISP_X];
+        display_buffer[i] = display_code[display_NULL[i]];
 }
 
 void Display_PrePCS(void)

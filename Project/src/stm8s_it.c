@@ -81,6 +81,7 @@ INTERRUPT_HANDLER(AWU_IRQHandler, 1)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+    AWU->CSR = AWU->CSR;
 }
 
 /**
@@ -129,6 +130,8 @@ INTERRUPT_HANDLER(EXTI_PORTC_IRQHandler, 5)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+    
+    Key_ISR();
 }
 
 /**

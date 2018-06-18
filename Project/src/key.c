@@ -7,57 +7,37 @@ static u16 key_press_time[20];    //记录每个按键按下的时间
 static u8 key_released_flag = 0;
 static u8 key_read_flag = 1;
 
-void ScanDriveLine(u8 index)
-{
-    switch(index) 
-    {
-    case 0:
-        GPIO_WriteLow(GPIOB,   GPIO_PIN_0);
-        GPIO_WriteHigh(GPIOB,  GPIO_PIN_1);
-        GPIO_WriteHigh(GPIOB,  GPIO_PIN_2);
-        GPIO_WriteHigh(GPIOB,  GPIO_PIN_3);
-        break;            
-    case 1:
-        GPIO_WriteHigh(GPIOB,  GPIO_PIN_0);
-        GPIO_WriteLow(GPIOB,   GPIO_PIN_1);
-        GPIO_WriteHigh(GPIOB,  GPIO_PIN_2);
-        GPIO_WriteHigh(GPIOB,  GPIO_PIN_3);
-        break;            
-
-    case 2:
-        GPIO_WriteHigh(GPIOB,  GPIO_PIN_0);
-        GPIO_WriteHigh(GPIOB,  GPIO_PIN_1);
-        GPIO_WriteLow(GPIOB,   GPIO_PIN_2);
-        GPIO_WriteHigh(GPIOB,  GPIO_PIN_3);
-        break;            
-
-    case 3:
-        GPIO_WriteHigh(GPIOB,  GPIO_PIN_0);
-        GPIO_WriteHigh(GPIOB,  GPIO_PIN_1);
-        GPIO_WriteHigh(GPIOB,  GPIO_PIN_2);
-        GPIO_WriteLow(GPIOB,   GPIO_PIN_3);
-        break;            
-
-    default:break;
-    }
-}
 ////////////////////////////
 //键盘管脚初始化
 ///////////////////////////
 void Key_Init(void)
  {  //6个按键
     u8 i;
-    GPIO_Init(GPIOC,GPIO_PIN_1,GPIO_MODE_IN_PU_NO_IT);
-    GPIO_Init(GPIOC,GPIO_PIN_2,GPIO_MODE_IN_PU_NO_IT);
-    GPIO_Init(GPIOC,GPIO_PIN_3,GPIO_MODE_IN_PU_NO_IT);
-    GPIO_Init(GPIOC,GPIO_PIN_4,GPIO_MODE_IN_PU_NO_IT);
+    GPIO_Init(GPIOC,GPIO_PIN_1,GPIO_MODE_IN_PU_IT);
+    GPIO_Init(GPIOC,GPIO_PIN_2,GPIO_MODE_IN_PU_IT);
+    GPIO_Init(GPIOC,GPIO_PIN_3,GPIO_MODE_IN_PU_IT);
+    GPIO_Init(GPIOC,GPIO_PIN_4,GPIO_MODE_IN_PU_IT);
     
     for(i=0;i<4;i++)
         key_press_time[i] = 0;
     
+    EXTI_DeInit();      
+    EXTI_SetTLISensitivity(EXTI_TLISENSITIVITY_FALL_ONLY);//下降沿触发中断
+    EXTI_SetExtIntSensitivity((EXTI_PORT_GPIOC),EXTI_SENSITIVITY_FALL_ONLY);
+  
+    enableInterrupts();
+    
  }
 
 
+
+void  Key_ISR(void)
+{
+    //ONLY FOR WAKE UP 
+    RunData.no_key_time = 0;
+    printf("exti int occured...\r\n");
+
+}
 
 //**********************************************************************
 //函数  名:Key_Scan
@@ -67,6 +47,7 @@ void Key_Init(void)
 //说    明:每2ms扫描一次
 //**********************************************************************
 
+    
 void  Key_Scan(void)
 {
     u8 i,key_tmp;
@@ -84,6 +65,7 @@ void  Key_Scan(void)
         key_press_time[key_tmp]++;
     }   
 }
+
 /****************************************************************************
 * 名称：Get_KeyCode()
 * 功能：读键码

@@ -8,7 +8,7 @@
 extern void Filter_Init(void);
 extern void ad_filter(u32 ad);
 extern void manual_break_stable(void);
-
+extern u8 Filt_GetFastFilterFlag(void);
 #endif
 
 

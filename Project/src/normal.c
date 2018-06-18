@@ -5,23 +5,7 @@
 #include "global.h"
 #include "ad_filter.h"
 #include "CPUled.h"
-
-
-void LPmode_Check(void) 
-{
-    u8 tmp;
-    tmp = 0; //nokey time & keepzero time MUST BE SATISFIED WITH THE PARAM
-    if((RunData.no_key_time > MachData.weigh_lptime)&&(RunData.keep_zero_time > MachData.weigh_lptime))
-        tmp++;
-    //if((9!=MachData.weigh_bkofftime)&&(0!=MachData.weigh_bkofftime)&&(RunData.not_zero_time > (MachData.weigh_bkofftime*60*60*2)))
-    //    tmp++;
-    
-    if(0==tmp) {
-        RunData.lowpower_flag = 0;
-    } else {
-        RunData.lowpower_flag = 1;
-    }
-}
+#include "lowpower.h"
 
 void Normal_Proc(void)
 {
@@ -34,9 +18,8 @@ void Normal_Proc(void)
              if(1 == CS1231_Read()) {
                  ad_filter(MData.hx711_data);
                  NewDataFlag = 1;
-             }
-             
-             
+                 LPmode_Check();
+             }    
          }
            
         if(Flag_10ms) {
@@ -50,7 +33,6 @@ void Normal_Proc(void)
             i = Key_GetCode();
             if(0 != i) {
                 RunData.key_sound_time = KEY_NORMAL_SOUND_TIME;
-                RunData.no_key_time = 0;
                 switch(MachData.mode) {
                 case MACHINE_NORMAL_MODE + MACHINE_FACTORY_MODE:
                     Key_Proc_Factory(i);
@@ -89,7 +71,7 @@ void Normal_Proc(void)
             
         if(1 == Flag_500ms) {
             Flag_500ms = 0; 
-            LPmode_Check();
+            //LPmode_Check();
             if(ADC1_GetFlagStatus(ADC1_FLAG_EOC)) {
                 Battery_Filter(ADC1_GetConversionValue());
                 Battery_Get();

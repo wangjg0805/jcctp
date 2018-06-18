@@ -3,6 +3,7 @@
 #include "stdio.h" 
 #include "global.h"
 #include "normal.h"
+#include "lowpower.h"
 
 #include "TM1668.h"
 #include "CPUled.h"
@@ -12,7 +13,7 @@
 //
 void Init_HSI(void)
 {
-    CLK_HSIPrescalerConfig(CLK_PRESCALER_CPUDIV1);
+    CLK_HSIPrescalerConfig(CLK_PRESCALER_CPUDIV8);
     
 }
 
@@ -37,12 +38,15 @@ void Init_ADC1(void)
 void main(void)       
 {
     Init_HSI();
+    Init_AWU();
+
     Speaker_Init();
     Key_Init();
   
     CS1231_Init();
     ///////////////////////////////ADC1 init
     Init_ADC1();
+
     //I2c_Init();
     EEPROM_Init();
     UART2_INIT();
