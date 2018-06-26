@@ -68,7 +68,7 @@ u32 ad_filter0(u32 ad_new_dat)
             direct_add_cnt = 0;
 	    }
         
-	    if((direct_add_cnt > 2)||(direct_sub_cnt > 2)) { //相邻数据大于2D 连续变化3次就进入快速滤波模式
+	    if((1==ExitLpmodeflag)||(direct_add_cnt > 2)||(direct_sub_cnt > 2)) { //相邻数据大于2D 连续变化3次就进入快速滤波模式
 	        manual_break_stable();
 	    }
 	    //相邻两次变化超过2D 就不允许自动跟踪

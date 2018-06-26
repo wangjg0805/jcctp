@@ -181,6 +181,10 @@ void TM1668_Display_Factory(void)
     case FAC_ZEROLIMIT:
         i = poweron_zerorange[FactoryData.factoryindex];
         break;     
+
+    case FAC_KEYCOUNT:
+        i = key_count[FactoryData.factoryindex];
+        break;     
         
     default:
         break;

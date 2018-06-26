@@ -10,7 +10,7 @@
 #include "TM1668.h"
 #include "CPUled.h"
 
-
+u8 ExitLpmodeflag;
 u8 Flag_10ms,Flag_100ms,Flag_500ms,Flag_30s;
 u8 display_buffer[16];
 u8 RS232_buf[16];
@@ -137,7 +137,10 @@ void  Init_MachineParam(void)
 
     MachData.loadtrackrange = BUFtoU32_tmp(buf);
     MachData.dozerorange = BUFtoU32_tmp(buf+4);
-  /*  
+    MachData.keytype = BUFtoU32_tmp(buf+8);
+
+    MachData.weigh_lptime = 10*2;  //5s
+    /*  
     
     Read_EEPROM(EEP_SYS_LOADTRACK_ADDR, buf, 4); 
     MachData.loadtrackrange = BUFtoU32_tmp(buf);
@@ -145,13 +148,13 @@ void  Init_MachineParam(void)
     MachData.weigh_division = MachData.weigh_fullrange/MachData.weigh_onestep;      
     MachData.weigh_calpoint_num = 1;
     */
-/*    
+/*   
     MachData.weigh_fullrange = 100000;
     MachData.weigh_onestep = 1;
     MachData.weigh_dotpos = 3;
     MachData.weigh_displaymin = 2;
-*/  
-    MachData.weigh_lptime = 10*2;  //5s
+*/ 
+
     MachData.weigh_division =  MachData.weigh_fullrange / MachData.weigh_onestep;
     
 } 
@@ -165,6 +168,7 @@ void Init_UserConfigParam(void)
     u8 buf[16];	
     
     Read_EEPROM(EEP_CALFLAG_ADDR, buf, 2); 
+    //if(0) {
     if((buf[0]==buf[1])&&(buf[0]== CHECK_DATA)) {
         Read_EEPROM(EEP_WEIGHTZERO_ADDR, buf, 8); 
         MData.ad_zero_data = BUFtoU32_tmp(buf);
@@ -422,7 +426,7 @@ void MData_update_normal(void)
     else
         tmp = MachData.weigh_coef[1]; 
     
-    printf("Netw: %ld \r\n",netw_ad);    
+    //printf("Netw: %ld \r\n",netw_ad);    
     MData.grossw = grossw_ad * tmp + 0.5;   
     MData.netw = netw_ad * tmp + 0.5;
     MData.displayweight = displaytostep(MData.netw);

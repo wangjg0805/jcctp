@@ -6,6 +6,6 @@
 extern void Init_AWU(void);
 extern void Sys_LPEnable(void);
 extern void Sys_LPDisable(void);
-extern void LPmode_Check(void);
+extern u8 LPmode_Check(void);
 
 #endif

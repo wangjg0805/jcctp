@@ -84,12 +84,11 @@ typedef enum {
     FAC_DISPLAYMIN,
     FAC_LOADTRACK,
     FAC_ZEROLIMIT,
+    //added 
+    FAC_KEYCOUNT,
+    
     FAC_EXIT,
     FAC_MAX,
-    FAC_RSV5,
-    FAC_RSV6,
-    FAC_RSV7,
-    FAC_RSV8,
     
 }FactoryCfgType;
 
@@ -125,6 +124,7 @@ typedef struct{
     u8 loadtrackrange;
     u8 weigh_lptime;
     u8 dozerorange;
+    u8 keytype;
     
     u32 weigh_division; 
     u32 weigh_ad_full;
@@ -210,6 +210,7 @@ typedef struct{
 }FactoryProcData;
 
 ///////////////////////////////////////±äÁ¿ÉùÃ÷
+extern u8 ExitLpmodeflag;
 extern u8 Flag_10ms,Flag_100ms,Flag_500ms,Flag_30s;
 extern u8 display_buffer[16];
 extern u8 RS232_buf[16];

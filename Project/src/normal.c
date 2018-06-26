@@ -7,6 +7,9 @@
 #include "CPUled.h"
 #include "lowpower.h"
 
+
+
+
 void Normal_Proc(void)
 {
     u16 i;
@@ -14,13 +17,18 @@ void Normal_Proc(void)
     
     while(1){
         
-         if(RESET == READ_CS1231_SDO) {
-             if(1 == CS1231_Read()) {
+        if(0 == ExitLpmodeflag) {
+            if(1==LPmode_Check()) //exit from lpmode
+                ExitLpmodeflag = 1;
+        }
+        if(RESET == READ_CS1231_SDO){
+            if(1 == CS1231_Read()) {
                  ad_filter(MData.hx711_data);
                  NewDataFlag = 1;
-                 LPmode_Check();
+                 ExitLpmodeflag = 0;
+                 
              }    
-         }
+        }
            
         if(Flag_10ms) {
             Flag_10ms = 0;
@@ -42,7 +50,10 @@ void Normal_Proc(void)
                     Key_Proc_UserCal(i);
                     break;
                 case MACHINE_NORMAL_MODE:
-                    Key_Proc(i);
+                    if(3 == MachData.keytype)
+                        Key_Proc_3(i);
+                    else
+                        Key_Proc_4(i);
                     break;
                 default:
                     break;

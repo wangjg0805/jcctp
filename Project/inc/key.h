@@ -18,8 +18,8 @@
 #define KEY_UNITMODE         0x07
 #define KEY_PCSCONFIRM       0x0B
 #define KEY_TARECAL          0x0D
-#define KEY_RSV              0x0E
-
+#define KEY_CAL              0x0E
+#define KEY_RSV              0x00
 
 void Key_Init(void);
 void Key_Scan(void);

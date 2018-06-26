@@ -79,7 +79,7 @@ void Key_TareProc(void)
     }
 }        
 
-void Key_Proc(u16 key)
+void Key_Proc_3(u16 key)
 {
 
     switch(key)
@@ -97,6 +97,41 @@ void Key_Proc(u16 key)
     case KEY_PRESSED_3S + KEY_TARECAL:
         Key_LongTareProc(); 
         break;
+    case KEY_PRESSED_3S + KEY_PCSCONFIRM:
+        Key_LongPCSProc(); 
+        break;
+    case KEY_PRESSED_3S + KEY_UNITMODE:
+        Key_LongUnitProc(); 
+        break;
+        
+    default:
+        break;
+    }
+}
+
+
+void Key_Proc_4(u16 key)
+{
+
+    switch(key)
+    {
+    case KEY_PRESSED+KEY_UNITMODE:
+        Key_UnitProc();
+        break;
+    case KEY_PRESSED+KEY_PCSCONFIRM:
+        Key_PCSProc();
+        break;        
+    case KEY_PRESSED+KEY_TARECAL:
+        Key_TareProc();
+        break;
+    case KEY_PRESSED+KEY_CAL:
+        Key_LongTareProc();  
+        break;   
+        
+        
+    //case KEY_PRESSED_3S + KEY_TARECAL:
+    //    Key_LongTareProc(); 
+    //    break;
     case KEY_PRESSED_3S + KEY_PCSCONFIRM:
         Key_LongPCSProc(); 
         break;

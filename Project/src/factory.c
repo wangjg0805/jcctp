@@ -19,7 +19,7 @@ const u8 weigh_displaymin[] =    {1,   1,    2,   3,    4,   5,   0};
 const u8 auto_loadtrackrange[] = {1,   1,    2,   3,    4,   5,   9,    0};
 const u8 weigh_lptime[] =        {1,   5,   15,  30,   60,  99,   0};
 const u8 poweron_zerorange[] =   {1,   4,   20,  50,  100, 200,   0};  
-
+const u8 key_count[] =           {1,   3,    4,  0}; 
 
 void Key_CalExit(void)
 {
@@ -217,6 +217,12 @@ void Key_FactoryUnitProc(void)
         if(poweron_zerorange[FactoryData.factoryindex] == 0)
             FactoryData.factoryindex = 1;
         break;
+
+    case FAC_KEYCOUNT:
+        if(key_count[FactoryData.factoryindex] == 0)
+            FactoryData.factoryindex = 1;
+        break;
+        
 /*
     case 7:
         if(auto_loadtrackrange[FactoryData.factoryindex] == 0)
@@ -291,11 +297,17 @@ void Key_FactoryTareProc(void)
        default:   FactoryData.factoryindex = 1;break;
        }
        break;
-/*       
-   case 7:
-       FactoryData.factoryindex = MachData.loadtrackrange;
+       
+   case FAC_KEYCOUNT:
+       switch(MachData.keytype) {
+       case 3:  FactoryData.factoryindex = 1;break;
+       case 4:  FactoryData.factoryindex = 2;break;
+       default:
+                FactoryData.factoryindex = 1;
+           break;
+       }
        break;
-*/
+       
    default:
        FactoryData.factoryindex = 1;
    }
@@ -338,20 +350,17 @@ void Key_FactoryPCSProc(void)
         U32toBUF(MachData.dozerorange,buf);
         Write_EEPROM(EEP_SYS_ZERORANGE_ADDR,buf,4);
         break;
+
+    case FAC_KEYCOUNT:
+        MachData.keytype = key_count[FactoryData.factoryindex];
+        U32toBUF(MachData.keytype,buf);
+        Write_EEPROM(EEP_SYS_KEYTYPE_ADDR,buf,4);
+        break;
         
     case FAC_EXIT:    
         MachData.mode -= MACHINE_FACTORY_MODE; 
         break;
-        
-/*        
-    case 7:
-        MachData.loadtrackrange = auto_loadtrackrange[FactoryData.factoryindex];
-        U32toBUF(MachData.loadtrackrange,buf);
-        Write_EEPROM(EEP_SYS_LOADTRACK_ADDR,buf,4);
-        break;
-    case 8:
-        MachData.mode -= MACHINE_FACTORY_MODE;
-*/        
+     
     default:
         break;
     }
