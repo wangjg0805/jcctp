@@ -22,7 +22,8 @@ extern void Key_FactoryPCSProc(void);
 
 extern void Key_UserCalUnitProc(void);
 extern void Key_UserCalPCSProc(void);
-extern void Key_UserCalAutoProc(void); 
+extern void UserCalAutoProc(void); 
+extern void LoadFlashExitCheck(void);
 
 extern void Display_Factory(void);
 extern void Display_UserCal(void);

@@ -144,7 +144,7 @@ void do_zero_proc(void)//ÊÖ¶¯ÖÃÁã+-2%
         MData.ad_zero_data = MData.ad_dat_avg;
         MData.ad_tare_data = 0;
         RunData.zero_flag = 1;
-    } else {
+    } else if(MData.ad_dat_avg > MData.poweron_zero_data) {  //only in positive status
         do_tare_proc();
     }
 }

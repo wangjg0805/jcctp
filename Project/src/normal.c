@@ -13,7 +13,6 @@
 void Normal_Proc(void)
 {
     u16 i;
-    u8 NewDataFlag = 0;
     
     while(1){
         
@@ -24,7 +23,7 @@ void Normal_Proc(void)
         if(RESET == READ_CS1231_SDO){
             if(1 == CS1231_Read()) {
                  ad_filter(MData.hx711_data);
-                 NewDataFlag = 1;
+                 MData_update_normal();
                  ExitLpmodeflag = 0;
                  
              }    
@@ -59,24 +58,20 @@ void Normal_Proc(void)
                     break;
                 }  
             }
-            
-            if(1 == NewDataFlag) {
-                NewDataFlag = 0;
-                MData_update_normal();
-                switch(MachData.mode) {
-                case MACHINE_NORMAL_MODE + MACHINE_FACTORY_MODE:
-                    TM1668_Display_Factory();
+                        
+            switch(MachData.mode) {
+            case MACHINE_NORMAL_MODE + MACHINE_FACTORY_MODE:
+                TM1668_Display_Factory();
+                break;
+            case MACHINE_NORMAL_MODE + MACHINE_USERCAL1_MODE:
+            case MACHINE_NORMAL_MODE + MACHINE_USERCAL2_MODE:
+                TM1668_Display_UserCal();                  
+                break;
+            case MACHINE_NORMAL_MODE:
+                TM1668_Display_Normal();  
+                break;
+            default:
                     break;
-                case MACHINE_NORMAL_MODE + MACHINE_USERCAL1_MODE:
-                case MACHINE_NORMAL_MODE + MACHINE_USERCAL2_MODE:
-                    TM1668_Display_UserCal();                  
-                    break;
-                case MACHINE_NORMAL_MODE:
-                    TM1668_Display_Normal();  
-                    break;
-                default:
-                    break;
-                }
             }
         }
             

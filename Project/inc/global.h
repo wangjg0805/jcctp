@@ -211,7 +211,7 @@ typedef struct{
 
 ///////////////////////////////////////±äÁ¿ÉùÃ÷
 extern u8 ExitLpmodeflag;
-extern u8 Flag_10ms,Flag_100ms,Flag_500ms,Flag_30s;
+extern u8 Flag_10ms,Flag_100ms,Flag_500ms,Flag_5s;
 extern u8 display_buffer[16];
 extern u8 RS232_buf[16];
 
@@ -235,7 +235,7 @@ extern void Battery_Get(void);
 extern void MData_update_LED(void);
 extern void MData_update_normal(void);
 
-extern void Init_UserConfigParam(void);
+extern void Init_UserCalParam(void);
 
 //display function
 extern void Display_ClearPreZero(u8 max,u8 dot,u8* buf);

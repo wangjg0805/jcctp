@@ -59,10 +59,9 @@ void Timer2_ISR(void)
     RunData.keep_zero_time++;
     RunData.not_zero_time++;
     //LedCpu_Reverse();
-  	//========= 30s Time ==========
-	if(T0ms500 < 60)
+  	//========= 10s Time ==========
+	if(T0ms500 < 10)
 	    return;
-
 	T0ms500 = 0;
-    Flag_30s = 1;
+    Flag_5s = 1;
 }

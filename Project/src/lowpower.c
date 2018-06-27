@@ -52,8 +52,9 @@ u8 LPmode_Check(void)
     u8 tmp;
     tmp = 0; //nokey time & keepzero time MUST BE SATISFIED WITH THE PARAM
     
-    if(CAL_NULL == CalData.calstep)
+    if(MACHINE_NORMAL_MODE == MachData.mode)
         tmp++;
+    
     if(RunData.no_key_time > MachData.weigh_lptime)
         tmp++;
     if(RunData.keep_zero_time > MachData.weigh_lptime)

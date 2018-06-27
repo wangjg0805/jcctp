@@ -11,7 +11,7 @@
 #include "CPUled.h"
 
 u8 ExitLpmodeflag;
-u8 Flag_10ms,Flag_100ms,Flag_500ms,Flag_30s;
+u8 Flag_10ms,Flag_100ms,Flag_500ms,Flag_5s;
 u8 display_buffer[16];
 u8 RS232_buf[16];
 
@@ -163,7 +163,7 @@ void  Init_MachineParam(void)
 //////////////////////////////////////////////////
 //初始化 用户参数2
 ///////////////////////////////////////////////////
-void Init_UserConfigParam(void)
+void Init_UserCalParam(void)
 {
     u8 buf[16];	
     
@@ -286,7 +286,7 @@ u8  System_Init(void)
             //Init_LinecalParam();  
             break;
         case 7:
-            Init_UserConfigParam();
+            Init_UserCalParam();
             break;
         case 9:
             Init_UserDataParam();
@@ -367,12 +367,21 @@ u8 MData_PowerOnProc(void)
 //user cal stage
 u8 MData_CalProc(void)
 {   
+    u8 tmp = 0;
+
     if(((MACHINE_NORMAL_MODE+MACHINE_USERCAL1_MODE) == MachData.mode)||
        ((MACHINE_NORMAL_MODE+MACHINE_USERCAL2_MODE) == MachData.mode)) {
          if(1 == RunData.stable_flag) {
-            Key_UserCalAutoProc();
+            UserCalAutoProc();
          }
-         return(1);
+         if((MACHINE_NORMAL_MODE+MACHINE_USERCAL1_MODE == MachData.mode) &&
+            (CAL_PASS1 == CalData.calstep))
+             return(0);
+         else if((MACHINE_NORMAL_MODE+MACHINE_USERCAL2_MODE == MachData.mode)&& 
+            (CAL_PASS2 == CalData.calstep)) //update display buffer
+             return(0);
+         else      
+             return(1);
     }
     else 
         return(0);   

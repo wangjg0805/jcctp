@@ -21,22 +21,9 @@ const u8 weigh_lptime[] =        {1,   5,   15,  30,   60,  99,   0};
 const u8 poweron_zerorange[] =   {1,   4,   20,  50,  100, 200,   0};  
 const u8 key_count[] =           {1,   3,    4,  0}; 
 
-void Key_CalExit(void)
-{
-    MachData.mode = MACHINE_NORMAL_MODE;
-    CalData.calstep = CAL_NULL;    
-}
+static u8 Time180sCount = 0;
 
-
-void Key_UserCalPCSProc(void)
-{
-    
-    if((CAL_PASS1 != CalData.calstep)||(CAL_PASS2 != CalData.calstep)||(CAL_TIP != CalData.calstep)) //EXIT AUTOMATICALLY WHEN IN CALPASS STAGE
-        
-        Key_CalExit();   
-}
-
-void SaveToE2prom(u32 data, u16 addr,u8 len)
+static void SaveToE2prom(u32 data, u16 addr,u8 len)
 {
     u8 buf[8];
     
@@ -47,6 +34,54 @@ void SaveToE2prom(u32 data, u16 addr,u8 len)
     buf[7] = buf[3]; 
     Write_EEPROM(addr,buf,len);
 }
+
+
+void Save_Load2CalData(void)
+{
+    u8 buf[2];
+    SaveToE2prom(MachData.weigh_ad_full,EEP_WEIGHTFULL2_ADDR,8);
+     
+    buf[0] = CHECK_DATA;
+    buf[1] = CHECK_DATA;        
+    Write_EEPROM(EEP_CALFLAG_ADDR,buf,2);    
+}
+
+
+void Key_CalExit(void)
+{
+    MachData.mode = MACHINE_NORMAL_MODE;
+    CalData.calstep = CAL_NULL;  
+    RunData.keep_zero_time = 0;
+    //printf("lpmodeflag: %d \r\n",RunData.lowpower_flag);
+}
+
+
+void Key_UserCalPCSProc(void)
+{
+    if(CAL_LOAD2_FLASH == CalData.calstep) {
+        //update the second 
+        MachData.weigh_ad_full = MachData.weigh_ad_Middle * 2;
+        Save_Load2CalData();
+        Init_UserCalParam();
+    }
+        
+    Key_CalExit();  
+}
+
+
+
+void LoadFlashExitCheck(void)
+{
+    if(Flag_5s) {
+        Flag_5s = 0;
+        Time180sCount += 5;
+        if(180 == Time180sCount) {
+            Time180sCount = 0;
+            Key_UserCalPCSProc();
+        }
+    }
+}
+
 
 void Key_CalProc1(void)
 {
@@ -60,24 +95,20 @@ void Key_CalProc1(void)
         CalData.calstep = CAL_PASS1;
         MachData.weigh_ad_Middle = MData.ad_dat_avg -  MData.ad_zero_data;  //use 1/2 
         MachData.weigh_ad_full = MachData.weigh_ad_Middle * 2;
-        MachData.weigh_coef[0] = MachData.weigh_fullrange / (MachData.weigh_ad_full + 0.1);
-        MachData.weigh_coef[1] = MachData.weigh_coef[0];
-        FilterData.ad_filter_para = (MachData.weigh_ad_full+0.1) / MachData.weigh_division;
         
         SaveToE2prom(MachData.weigh_ad_Middle,EEP_WEIGHTFULL1_ADDR,8);
         SaveToE2prom(MachData.weigh_ad_full,  EEP_WEIGHTFULL2_ADDR,8);
-      
         buf[0] = CHECK_DATA;
         buf[1] = CHECK_DATA;        
         Write_EEPROM(EEP_CALFLAG_ADDR,buf,2);  //caldata ok flag
+        
+        Init_UserCalParam();
     }    
 }
 
 
 void Key_CalProc2(void)
-{
-    u8 buf[8];
-     
+{   
     switch(CalData.calstep) {
     case CAL_LOAD1:
         if(labs(MData.ad_dat_avg-MData.ad_zero_data) < MACHINE_LOAD2A_AD_MIN) {
@@ -87,28 +118,23 @@ void Key_CalProc2(void)
         } else {
            CalData.calstep = CAL_PASS1;
            MachData.weigh_ad_Middle = MData.ad_dat_avg -  MData.ad_zero_data;
-            
            SaveToE2prom(MachData.weigh_ad_Middle,EEP_WEIGHTFULL1_ADDR,8);
         }
         break;
     case CAL_LOAD2:
+        /*
         if(labs(MData.ad_dat_avg-MData.ad_zero_data) < MACHINE_LOAD2B_AD_MIN) {
             CalData.calstep = CAL_LOAD2_TOO_SMALL;
         } else if(labs(MData.ad_dat_avg-MData.ad_zero_data) > MACHINE_LOAD2B_AD_MAX) {
             CalData.calstep = CAL_LOAD2_TOO_BIG;
         } else {
+        */
            CalData.calstep = CAL_PASS2;
            MachData.weigh_ad_full = MData.ad_dat_avg -  MData.ad_zero_data;
-           
-           SaveToE2prom(MachData.weigh_ad_full,EEP_WEIGHTFULL2_ADDR,8);
-           
-           buf[0] = CHECK_DATA;
-           buf[1] = CHECK_DATA;        
-           Write_EEPROM(EEP_CALFLAG_ADDR,buf,2);
-           
+           Save_Load2CalData();
            //update weigh coef
-           Init_UserConfigParam();
-        }
+           Init_UserCalParam();
+        //}
         break;
     default:
         break;
@@ -116,7 +142,7 @@ void Key_CalProc2(void)
 }
 
 //done it automatic 
-void Key_UserCalAutoProc(void)
+void UserCalAutoProc(void)
 {
     static u8 cnt = 0;
     u8 buf[8];
@@ -136,8 +162,10 @@ void Key_UserCalAutoProc(void)
             cnt = 0;
             if(MachData.mode == MACHINE_NORMAL_MODE+MACHINE_USERCAL1_MODE)
                 CalData.calstep = CAL_OVER;
-            else
-                CalData.calstep++;
+            else {
+                CalData.calstep = CAL_LOAD2_FLASH;
+                Time180sCount = 0;
+            }
         }
         break;
     case CAL_WAIT_ZERO:  //waiting for stable ,get 0
@@ -147,6 +175,7 @@ void Key_UserCalAutoProc(void)
             CalData.calstep = CAL_ZERO_TOO_BIG;
         } else {
             CalData.calstep = CAL_LOAD1_FLASH;
+            Time180sCount = 0;
             MData.ad_zero_data = MData.ad_dat_avg;
             U32toBUF(MData.ad_zero_data,buf);
             printf("zero data:0x%x,0x%x,0x%x,0x%x \r\n",buf[0],buf[1],buf[2],buf[3]);
@@ -161,7 +190,7 @@ void Key_UserCalAutoProc(void)
         }
         break;
     case CAL_LOAD1_FLASH:     
-        if(labs(MData.ad_dat_avg-MData.ad_zero_data) > 10000)
+        if(labs(MData.ad_dat_avg-MData.ad_zero_data) > MachData.weigh_division *2) //
             CalData.calstep = CAL_LOAD1;
         break;
             
@@ -173,14 +202,14 @@ void Key_UserCalAutoProc(void)
         break;
         
     case CAL_LOAD2_FLASH:
-        if(labs(MData.ad_dat_avg-MData.ad_zero_data) > (MachData.weigh_ad_Middle+10000))
+        if(labs(MData.ad_dat_avg-MData.ad_zero_data) > (MachData.weigh_ad_Middle+ MachData.weigh_division *2))
             CalData.calstep = CAL_LOAD2;
         break;
     case CAL_LOAD2:
         Key_CalProc2();
         break;
     case CAL_OVER:
-            Key_CalExit();
+        Key_CalExit();
         break;
     default:
         break;

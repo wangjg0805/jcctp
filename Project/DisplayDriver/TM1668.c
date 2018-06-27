@@ -261,6 +261,8 @@ void TM1668_Display_UserCal(void)
     case CAL_LOAD1_FLASH:
         if(cnt>5)
             TM1668_Display_CalLoad();
+        //added function 
+        LoadFlashExitCheck();
         break;
     case CAL_LOAD1:
         TM1668_Display_CalLoad();
@@ -268,6 +270,9 @@ void TM1668_Display_UserCal(void)
     case CAL_LOAD2_FLASH:
         if(cnt>5)
             TM1668_Display_CalLoad();
+        
+        //added function 
+        LoadFlashExitCheck();
         break;
     case CAL_LOAD2:
         TM1668_Display_CalLoad();

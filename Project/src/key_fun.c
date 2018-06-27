@@ -60,7 +60,7 @@ void Key_PCSProc(void)
 
 void Key_LongTareProc(void)
 {
-    if(MachData.mode == MACHINE_NORMAL_MODE) {
+    if(STAT_WEIGHT == RunData.current_mode) {
         CalData.calstep = CAL_TIP;
         MachData.mode = MACHINE_NORMAL_MODE+MACHINE_USERCAL1_MODE;
         manual_break_stable();
@@ -74,7 +74,7 @@ void Key_TareProc(void)
         if(0 == CountList[CouIndex])
             CouIndex = 0;
         RunData.PCSSample = CountList[CouIndex];
-    } else {
+    } else if(STAT_WEIGHT == RunData.current_mode){ //only in weigh mode
         RunData.do_zero_flag = 1;
     }
 }        
@@ -124,10 +124,14 @@ void Key_Proc_4(u16 key)
     case KEY_PRESSED+KEY_TARECAL:
         Key_TareProc();
         break;
+#if 0
     case KEY_PRESSED+KEY_CAL:
         Key_LongTareProc();  
         break;   
-        
+#endif        
+    case KEY_PRESSED_3S+KEY_CAL:
+        Key_LongTareProc();  
+        break;   
         
     //case KEY_PRESSED_3S + KEY_TARECAL:
     //    Key_LongTareProc(); 
