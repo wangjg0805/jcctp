@@ -20,6 +20,8 @@ void Normal_Proc(void)
             if(1==LPmode_Check()) //exit from lpmode
                 ExitLpmodeflag = 1;
         }
+        
+#if(ADC_CHIP == 0)        
         if(RESET == READ_CS1231_SDO){
             if(1 == CS1231_Read()) {
                  ad_filter(MData.hx711_data);
@@ -28,6 +30,14 @@ void Normal_Proc(void)
                  
              }    
         }
+#else
+        if(1 == CS1231_Read()) {
+             ad_filter(MData.hx711_data);
+             MData_update_normal();
+             ExitLpmodeflag = 0; 
+        }
+         
+#endif        
            
         if(Flag_10ms) {
             Flag_10ms = 0;

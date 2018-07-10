@@ -39,17 +39,22 @@ void main(void)
 {
     Init_HSI();
     Init_AWU();
-
+    UART2_INIT();
     Speaker_Init();
     Key_Init();
   
+#if (ADC_CHIP == 0)
     CS1231_Init();
+#else
+    CS1237_Init();
+#endif
+    
     ///////////////////////////////ADC1 init
     Init_ADC1();
 
     //I2c_Init();
     EEPROM_Init();
-    UART2_INIT();
+   
 
     TIM2_Init();
     enableInterrupts();

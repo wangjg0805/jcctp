@@ -20,7 +20,8 @@ typedef enum {
 }ScreenType;
 
         
-#define  DISPLAY_TYPE          LED
+#define DISPLAY_TYPE            LED
+#define ADC_CHIP                 1
 
 #define MACHINE_NORMAL_MODE     0x01
 #define MACHINE_FACTORY_MODE    0x02
