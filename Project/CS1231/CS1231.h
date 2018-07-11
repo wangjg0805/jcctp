@@ -22,7 +22,6 @@
 #define READ_CS1231_SDO         GPIO_ReadInputPin(GPIOD, GPIO_PIN_7)
  
 //extern void CS1231_Init(void);
-//extern u8  CS1231_Read(void);
-extern u8 CS1237_Read(void);
-
+extern void CS1237_Init(void);
+extern u8 CS1231_Read(void);
 #endif

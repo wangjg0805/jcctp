@@ -10,7 +10,7 @@
 #include "TM1668.h"
 #include "CPUled.h"
 
-u8 ExitLpmodeflag;
+u8 ExitLpmodeflag,Cnt10ms;
 u8 Flag_10ms,Flag_100ms,Flag_500ms,Flag_5s;
 u8 display_buffer[16];
 u8 RS232_buf[16];

@@ -211,7 +211,7 @@ typedef struct{
 }FactoryProcData;
 
 ///////////////////////////////////////±äÁ¿ÉùÃ÷
-extern u8 ExitLpmodeflag;
+extern u8 ExitLpmodeflag,Cnt10ms;
 extern u8 Flag_10ms,Flag_100ms,Flag_500ms,Flag_5s;
 extern u8 display_buffer[16];
 extern u8 RS232_buf[16];
