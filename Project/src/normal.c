@@ -16,7 +16,7 @@ void Normal_Proc(void)
     u16 i;
     
     while(1){
-     
+#if 0     
         if(0 == ExitLpmodeflag) {
             if(1==LPmode_Check()) { //exit from lpmode
                 ExitLpmodeflag = 1;
@@ -24,7 +24,7 @@ void Normal_Proc(void)
                 CS1231_Read(); //discard it
             }
         }
-
+#endif
 #if(ADC_CHIP == 0)        
         if(RESET == READ_CS1231_SDO){
             if(1 == CS1231_Read()) {
