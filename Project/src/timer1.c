@@ -41,7 +41,6 @@ void Timer2_ISR(void)
 	T0ms02=0;
     T0ms10++;
     Flag_10ms = 1;
-    Cnt10ms++;
     
   	//========== 100ms Time ============
 	if(T0ms10<10)

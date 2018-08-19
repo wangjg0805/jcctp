@@ -59,12 +59,12 @@ u8 LPmode_Check(void)
         tmp++;
     if(RunData.keep_zero_time > MachData.weigh_lptime)
         tmp++;
-    if(0 == Filt_GetFastFilterFlag())
-        tmp++;
+    //if(0 == Filt_GetFastFilterFlag())
+    //    tmp++;
     //if((9!=MachData.weigh_bkofftime)&&(0!=MachData.weigh_bkofftime)&&(RunData.not_zero_time > (MachData.weigh_bkofftime*60*60*2)))
     //    tmp++;
     
-    if(4 == tmp) {
+    if(3 == tmp) {
         RunData.lowpower_flag = 1;
         printf("LPIN\r\n");
         Sys_LPEnable();

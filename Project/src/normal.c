@@ -14,36 +14,21 @@ void Normal_Proc(void)
     u16 i;
     
     while(1){
-#if 0     
+        
         if(0 == ExitLpmodeflag) {
             if(1==LPmode_Check()) { //exit from lpmode
                 ExitLpmodeflag = 1;
-                Cnt10ms = 0;
                 CS1231_Read(); //discard it
             }
         }
-#endif
-#if(ADC_CHIP == 0)        
+        
         if(RESET == READ_CS1231_SDO){
             if(1 == CS1231_Read()) {
                  ad_filter(MData.hx711_data);
                  MData_update_normal();
-                 ExitLpmodeflag = 0;
-                 
+                 ExitLpmodeflag = 0;   
              }    
         }
-#else
-        //if(Cnt10ms > 15) {
-        //if((RESET == READ_CS1231_SDO) &&Flag_100ms) {
-            if(1 == CS1231_Read()) {
-             //printf("hx711_data:%ld\r\n",MData.hx711_data);
-             ad_filter(MData.hx711_data);
-             MData_update_normal();
-             ExitLpmodeflag = 0;
-             Cnt10ms = 0;
-            }
-         
-#endif        
            
         if(Flag_10ms) {
             Flag_10ms = 0;

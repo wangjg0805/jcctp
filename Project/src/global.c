@@ -10,7 +10,7 @@
 #include "TM1668.h"
 #include "CPUled.h"
 
-u8 ExitLpmodeflag,Cnt10ms;
+u8 ExitLpmodeflag;
 u8 Flag_10ms,Flag_100ms,Flag_500ms,Flag_5s;
 u8 display_buffer[16];
 u8 RS232_buf[16];
@@ -300,8 +300,7 @@ u8  System_Init(void)
             Key_Scan();
         }
 	    if(1 == Flag_100ms) {
-            Flag_100ms = 0;
-            printf("Flag_100ms = 1 \r\n"); 
+            Flag_100ms = 0; 
             i++;
             if(1 == CS1231_Read())
                 ad_filter(MData.hx711_data);
@@ -437,8 +436,10 @@ void MData_update_normal(void)
         tmp = MachData.weigh_coef[1]; 
     
     //printf("Netw: %ld \r\n",netw_ad);    
-    MData.grossw = grossw_ad * tmp + 0.5;   
-    MData.netw = netw_ad * tmp + 0.5;
+    //MData.grossw = grossw_ad * tmp + 0.5;   
+    //MData.netw = netw_ad * tmp + 0.5;
+    MData.grossw = grossw_ad * tmp;   
+    MData.netw = netw_ad * tmp;
     MData.displayweight = displaytostep(MData.netw);
     
     if((1==RunData.stable_flag)&&(MData.displayweight<0.1)) {

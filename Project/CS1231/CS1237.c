@@ -173,11 +173,11 @@ u8 CS1231_Read(void)
     //CS1231_SDIO_MODE_OUT;
     //CS1231_SDIO_MODE_IN;
     if((0==dat)||(0x7fffff==dat)) {
-        printf("hx711_data:%ld\r\n",dat);    
+        printf("AD_data:%ld\r\n",dat);    
         return(0);
     } else {
         MData.hx711_data = dat>>2;
-        printf("hx711_data:%ld\r\n",MData.hx711_data);        
+        printf("AD_data:%ld\r\n",MData.hx711_data);        
         return(1);
     }
 }
