@@ -778,9 +778,15 @@
     </file>
     <file>
       <name>$PROJ_DIR$\..\CS1231\CS1231.c</name>
+      <excluded>
+        <configuration>STM8S105</configuration>
+      </excluded>
     </file>
     <file>
       <name>$PROJ_DIR$\..\CS1231\CS1231.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\CS1231\CS1237.c</name>
     </file>
   </group>
   <group>

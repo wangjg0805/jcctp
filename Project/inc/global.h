@@ -20,7 +20,8 @@ typedef enum {
 }ScreenType;
 
         
-#define  DISPLAY_TYPE          LED
+#define DISPLAY_TYPE            LED
+#define ADC_CHIP                 1
 
 #define MACHINE_NORMAL_MODE     0x01
 #define MACHINE_FACTORY_MODE    0x02
@@ -210,7 +211,7 @@ typedef struct{
 }FactoryProcData;
 
 ///////////////////////////////////////±äÁ¿ÉùÃ÷
-extern u8 ExitLpmodeflag;
+extern u8 ExitLpmodeflag,Cnt10ms;
 extern u8 Flag_10ms,Flag_100ms,Flag_500ms,Flag_5s;
 extern u8 display_buffer[16];
 extern u8 RS232_buf[16];

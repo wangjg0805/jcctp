@@ -190,7 +190,9 @@ void UserCalAutoProc(void)
         }
         break;
     case CAL_LOAD1_FLASH:     
-        if(labs(MData.ad_dat_avg-MData.ad_zero_data) > MachData.weigh_division *2) //
+        //if(labs(MData.ad_dat_avg-MData.ad_zero_data) > MachData.weigh_division *2) //
+        if(labs(MData.ad_dat_avg-MData.ad_zero_data) > 10000) //
+            
             CalData.calstep = CAL_LOAD1;
         break;
             
@@ -202,7 +204,8 @@ void UserCalAutoProc(void)
         break;
         
     case CAL_LOAD2_FLASH:
-        if(labs(MData.ad_dat_avg-MData.ad_zero_data) > (MachData.weigh_ad_Middle+ MachData.weigh_division *2))
+        //if(labs(MData.ad_dat_avg-MData.ad_zero_data) > (MachData.weigh_ad_Middle+ MachData.weigh_division *2))
+        if(labs(MData.ad_dat_avg-MData.ad_zero_data) > (MachData.weigh_ad_Middle+10000))      
             CalData.calstep = CAL_LOAD2;
         break;
     case CAL_LOAD2:
