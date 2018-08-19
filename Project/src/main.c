@@ -13,7 +13,7 @@
 //
 void Init_HSI(void)
 {
-    CLK_HSIPrescalerConfig(CLK_PRESCALER_CPUDIV8);
+    CLK_HSIPrescalerConfig(CLK_PRESCALER_CPUDIV1);
     
 }
 
@@ -55,10 +55,9 @@ void main(void)
     //I2c_Init();
     EEPROM_Init();
    
-
     TIM2_Init();
     enableInterrupts();
-  
+
     ////////////////////////////ht1621 init 
 #if (DISPLAY_TYPE == LCD)
     HT1621_Init();

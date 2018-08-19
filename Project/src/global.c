@@ -301,6 +301,7 @@ u8  System_Init(void)
         }
 	    if(1 == Flag_100ms) {
             Flag_100ms = 0;
+            printf("Flag_100ms = 1 \r\n"); 
             i++;
             if(1 == CS1231_Read())
                 ad_filter(MData.hx711_data);

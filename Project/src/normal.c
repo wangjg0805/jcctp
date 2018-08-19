@@ -9,8 +9,6 @@
 #include "cs1231.h"
 
 
-
-
 void Normal_Proc(void)
 {
     u16 i;
@@ -35,15 +33,15 @@ void Normal_Proc(void)
              }    
         }
 #else
-        if(Cnt10ms > 15) {
+        //if(Cnt10ms > 15) {
+        //if((RESET == READ_CS1231_SDO) &&Flag_100ms) {
             if(1 == CS1231_Read()) {
-             printf("hx711_data:%ld\r\n",MData.hx711_data);
+             //printf("hx711_data:%ld\r\n",MData.hx711_data);
              ad_filter(MData.hx711_data);
              MData_update_normal();
              ExitLpmodeflag = 0;
              Cnt10ms = 0;
             }
-        }
          
 #endif        
            

@@ -7,8 +7,6 @@
 
 #define DELAY_CNT     0
 
-
-
 static void delay(u32 length)
 {
     while(length >0)
@@ -67,8 +65,8 @@ void CS1237_Config(void)
         dat <<= 1;
     }
     CS1237ClockUp();
-	dat = 0x1c;
-    dat = 0x5c;
+	dat = 0x0c;
+    //dat = 0x5c; //40HZ PGA:128 CH1
 	for(i=0;i<8;i++){
         CS1231_CLK_H;
 		if(dat&0x80)
@@ -152,39 +150,34 @@ u8 CS1231_Read(void)
     u8 i,j;
     u32 dat;
     
-    //CS1231_SDIO_MODE_OUT;
-    //CS1231_SDIO_H;
-    CS1231_CLK_L;
-    
-    //CS1231_SDIO_MODE_IN;
-    while(1) {
-        delay(100);
-        if(RESET == READ_CS1231_SDO)  //wait for cs1237 
-            break;
-    }
-    delay(200);
-    
+    CS1231_CLK_L;  
+    if(RESET != READ_CS1231_SDO)
+        return(0);
+        
     dat = 0;
     for(i=0;i<24;i++){
         dat <<= 1;
         CS1231_CLK_H;
-        //delay(1);
+        delay(DELAY_CNT);
         j = READ_CS1231PORT;
         if(j & CS1231_SDIO_MASK)
             dat++;
         CS1231_CLK_L; 
-        //delay(1);
+        delay(DELAY_CNT);
   	}
 	
     CS1237ClockUp();
     CS1237ClockUp();
     CS1237ClockUp();
     
-    // printf("hx711_data:%ld\r\n",dat);
-    MData.hx711_data = dat>>1;
-    if((0==dat)||(0x7fffff==dat))
+    //CS1231_SDIO_MODE_OUT;
+    //CS1231_SDIO_MODE_IN;
+    if((0==dat)||(0x7fffff==dat)) {
+        printf("hx711_data:%ld\r\n",dat);    
         return(0);
-    else 
+    } else {
+        MData.hx711_data = dat>>2;
+        printf("hx711_data:%ld\r\n",MData.hx711_data);        
         return(1);
-
+    }
 }

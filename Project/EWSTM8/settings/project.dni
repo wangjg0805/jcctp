@@ -1,5 +1,5 @@
 [DebugChecksum]
-Checksum=-317242788
+Checksum=1354130046
 [DisAssemblyWindow]
 NumStates=_ 1
 State 1=_ 1
@@ -17,6 +17,8 @@ UseTrigger=1
 TriggerName=main
 LimitSize=0
 ByteLimit=50
+[BreakpointUsageDialog]
+Placement=_ 578 294 1023 576
 [CallStackLog]
 Enabled=0
 [DriverProfiling]
@@ -43,8 +45,6 @@ ActionState=1
 [TraceHelper]
 Enabled=0
 ShowSource=1
-[BreakpointUsageDialog]
-Placement=_ 578 294 1023 576
 [Breakpoints]
 Count=0
 [Log file]
