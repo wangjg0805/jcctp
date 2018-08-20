@@ -442,7 +442,7 @@ void MData_update_normal(void)
     MData.netw = netw_ad * tmp;
     MData.displayweight = displaytostep(MData.netw);
     
-    if((1==RunData.stable_flag)&&(MData.displayweight<0.1)) {
+    if((1==RunData.stable_flag)&&(MData.displayweight < 1.0)) {
         RunData.positive_flag = 1;
         RunData.return_zero_flag = 1;
         RunData.not_zero_time = 0;
