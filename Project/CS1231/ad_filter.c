@@ -68,7 +68,16 @@ u32 ad_filter0(u32 ad_new_dat)
             direct_add_cnt = 0;
 	    }
         
-	    if((1==ExitLpmodeflag)||(direct_add_cnt > 2)||(direct_sub_cnt > 2)) { //相邻数据大于2D 连续变化3次就进入快速滤波模式
+        //from lp mode
+        if(MachData.ADCChip == CS1237) {
+            if((2==ExitLpmodeflag)&&(tmp > FilterData.ad_filter_para*5))
+                manual_break_stable();
+        } else {
+            if((1==ExitLpmodeflag)&&(tmp > FilterData.ad_filter_para*5))
+                manual_break_stable();        
+        }
+        
+	    if((direct_add_cnt > 2)||(direct_sub_cnt > 2)) { //相邻数据大于2D 连续变化3次就进入快速滤波模式
 	        manual_break_stable();
 	    }
 	    //相邻两次变化超过2D 就不允许自动跟踪
@@ -132,13 +141,14 @@ void ad_filter(u32 ad_data)
     u32 tmp;   
     //printf("new ad: %ld \r\n", ad_data);
     tmp = ad_filter0(ad_data); 
+ 
     //////////////////////////////////////////
     if(1 == fast_filter_flag) {
         ad_stable_cnt  = 0;
         RunData.stable_flag = 0;
         RunData.zero_flag = 0;
 		//auto_off_cnt   = 0;
- 	    MData.ad_dat_avg = tmp/RAW_DATA_MAG;   //快速变化阶段
+ 	    MData.ad_dat_avg = tmp;   //快速变化阶段
         //printf("fast_filter stage...... \r\n");
         return;
     }
@@ -150,7 +160,7 @@ void ad_filter(u32 ad_data)
             flag_ad_buf_full = 1; 
             ad_dat_idx = 0;
         }
-        MData.ad_dat_avg = get_buf_data()/RAW_DATA_MAG;  
+        MData.ad_dat_avg = get_buf_data();  
         //printf("fill filter_buf stage...... \r\n");
         return;
     }
@@ -201,7 +211,7 @@ void ad_filter(u32 ad_data)
  	    }
     */
  	//得到新数据  
- 	MData.ad_dat_avg = get_buf_data()/RAW_DATA_MAG;  
+ 	MData.ad_dat_avg = get_buf_data();  
     //printf("stable stage,new ad: %ld \r\n", MData.ad_dat_avg);
 }
 

@@ -65,6 +65,7 @@ u8 LPmode_Check(void)
     //    tmp++;
     
     if(3 == tmp) {
+        CS1237_ChangeSensorPower(0);
         RunData.lowpower_flag = 1;
         printf("LPIN\r\n");
         Sys_LPEnable();

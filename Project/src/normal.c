@@ -17,19 +17,36 @@ void Normal_Proc(void)
         
         if(0 == ExitLpmodeflag) {
             if(1==LPmode_Check()) { //exit from lpmode
-                ExitLpmodeflag = 1;
-                CS1231_Read(); //discard it
+                ExitLpmodeflag = 1;  
+            if(MachData.ADCChip == CS1237)
+                CS1237_ReInit();      
             }
         }
-        
+      
+        if(MachData.ADCChip == CS1231) {
         if(RESET == READ_CS1231_SDO){
             if(1 == CS1231_Read()) {
-                 ad_filter(MData.hx711_data);
-                 MData_update_normal();
-                 ExitLpmodeflag = 0;   
-             }    
+                ad_filter(MData.hx711_data);
+                MData_update_normal();
+                ExitLpmodeflag = 0;
+            }    
         }
-           
+        } else { 
+        //the first data is not stable when exit from lp
+        //so discard it and sample from 2th data        
+        if(RESET == READ_CS1231_SDO){
+            if(1 == CS1237_Read()) {
+                if(1==ExitLpmodeflag) 
+                    ExitLpmodeflag++;
+                else {
+                    ad_filter(MData.hx711_data);
+                    MData_update_normal();
+                    ExitLpmodeflag = 0;
+                }   
+            }    
+        }
+        }
+        
         if(Flag_10ms) {
             Flag_10ms = 0;
             Key_Scan();

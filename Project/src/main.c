@@ -43,11 +43,12 @@ void main(void)
     Speaker_Init();
     Key_Init();
   
-#if (ADC_CHIP == 0)
-    CS1231_Init();
-#else
-    CS1237_Init();
-#endif
+    MachData.ADCChip = CS1237;
+    
+    if(MachData.ADCChip == CS1231)
+        CS1231_Init();
+    else
+        CS1237_Init();
     
     ///////////////////////////////ADC1 init
     Init_ADC1();
