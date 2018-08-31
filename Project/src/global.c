@@ -302,8 +302,13 @@ u8  System_Init(void)
 	    if(1 == Flag_100ms) {
             Flag_100ms = 0; 
             i++;
-            if(1 == CS1231_Read())
+            if(MachData.ADCChip == CS1231) {
+                if(1 == CS1231_Read())
                 ad_filter(MData.hx711_data);
+            } else {
+                if(1 == CS1237_Read())               
+                ad_filter(MData.hx711_data);
+            }
             
             j = Key_GetCode();
             if(j!=0) {
@@ -367,8 +372,6 @@ u8 MData_PowerOnProc(void)
 //user cal stage
 u8 MData_CalProc(void)
 {   
-    u8 tmp = 0;
-
     if(((MACHINE_NORMAL_MODE+MACHINE_USERCAL1_MODE) == MachData.mode)||
        ((MACHINE_NORMAL_MODE+MACHINE_USERCAL2_MODE) == MachData.mode)) {
          if(1 == RunData.stable_flag) {

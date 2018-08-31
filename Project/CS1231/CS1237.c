@@ -34,7 +34,7 @@ static void CS1237ClockUp(void)
     
 }
 
-void CS1237_Config(void)
+void CS1237_ChangeSensorPower(unsigned char Status)
 {
 	unsigned char i;
 	unsigned char dat;
@@ -65,8 +65,10 @@ void CS1237_Config(void)
         dat <<= 1;
     }
     CS1237ClockUp();
-	dat = 0x0c;
-    //dat = 0x5c; //40HZ PGA:128 CH1
+    if(1 == Status)
+        dat = 0x0c;
+    else 
+        dat = 0x4c; //close sensor power
 	for(i=0;i<8;i++){
         CS1231_CLK_H;
 		if(dat&0x80)
@@ -78,7 +80,6 @@ void CS1237_Config(void)
 	}
     
     CS1237ClockUp();
-
 }
 
 // 读取芯片的配置数据
@@ -130,22 +131,23 @@ unsigned char CS1237_ReadConfig(void)
 	return dat;
 }
 
-
+void CS1237_ReInit(void)
+{
+    CS1237_ChangeSensorPower(1); 
+    CS1237_ReadConfig();
+}
 
 void CS1237_Init(void)
 {
     u8 i;
     
     CS1237_PinInit();
-
-    CS1237_Config();    
-    //delay(20000);
-    i = CS1237_ReadConfig();
+    CS1237_ReInit();
     printf("CS1237_Read is %d  \r\n",i);
-    
 }
 
-u8 CS1231_Read(void)
+
+u8 CS1237_Read(void)
 {
     u8 i,j;
     u32 dat;
