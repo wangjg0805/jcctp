@@ -75,11 +75,11 @@
         <option>
           <name>GenLibOutFormatter</name>
           <version>0</version>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>GenLibOutFormatterDescription</name>
-          <state>Full formatting.</state>
+          <state>No specifier a or A.</state>
         </option>
         <option>
           <name>GenStackSize</name>
@@ -87,7 +87,7 @@
         </option>
         <option>
           <name>GenHeapSize</name>
-          <state>0x100</state>
+          <state>0x200</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -458,7 +458,7 @@
         <option>
           <name>OOCOutputFormat</name>
           <version>2</version>
-          <state>2</state>
+          <state>1</state>
         </option>
         <option>
           <name>OCOutputOverride</name>
@@ -466,7 +466,7 @@
         </option>
         <option>
           <name>OOCOutputFile</name>
-          <state>project.bin</state>
+          <state>project.hex</state>
         </option>
         <option>
           <name>OOCCommandLineProducer</name>

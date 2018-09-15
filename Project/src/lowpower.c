@@ -33,7 +33,7 @@ void Sys_LPEnable(void)
     if(LPPhase&0x01)
         AWU_Init(AWU_TIMEBASE_256MS);
     else
-        AWU_Init(AWU_TIMEBASE_1S);
+        AWU_Init(AWU_TIMEBASE_2S);
     
     AWU_Cmd(ENABLE);
     CLK_SlowActiveHaltWakeUpCmd(ENABLE);
@@ -65,7 +65,9 @@ u8 LPmode_Check(void)
     //    tmp++;
     
     if(3 == tmp) {
-        CS1237_ChangeSensorPower(0);
+        if(MachData.ADCChip == CS1237)
+            CS1237_ChangeSensorPower(0);
+        
         RunData.lowpower_flag = 1;
         printf("LPIN\r\n");
         Sys_LPEnable();

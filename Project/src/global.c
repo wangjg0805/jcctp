@@ -44,6 +44,10 @@ void Battery_Get()
         tmp += MData.bat_buf[i];
     MData.battery = (tmp/8) * 500 / 512;
     //printf("battery: %03d \r\n",MData.battery);
+    if(MData.battery < LOWBATTERY_VOLT)
+        RunData.lowbat_flag = 1;
+    else
+        RunData.lowbat_flag = 0;
 }
 
 
@@ -101,10 +105,10 @@ void InitGlobalVarible(void)
     MData.ad_zero_data = 0;
     MData.ad_tare_data = 0;
     
-    MData.battery = 0;
+    MData.battery = 600;  //default
     MData.batterybufindex = 0;
     for(i=0;i<8;i++)
-        MData.bat_buf[i] = 0;
+        MData.bat_buf[i] =  MData.battery;
      
     CalData.calstep = CAL_NULL;
 
@@ -273,7 +277,8 @@ u8  System_Init(void)
             break;
         case 20:
             Display_ClearLED();
-            TM1668_DisplayMode();
+            TM1668_DisplayModel();
+            TM1668_Update();
             break;
         case 40:
             Display_Battery();
@@ -480,7 +485,7 @@ void Display_ClearPreZero(u8 max,u8 dot,u8* buf)
     }
 }
 
-void Display_InnerCode(u32 x)
+void Display_Data(u32 x)
 {
     u8 i;
     sprintf((char*)display_buffer,"%06ld",x);
@@ -574,6 +579,15 @@ void Display_Weight(void)
     
 }
 
+void Display_CalCountDown(void)
+{
+    u8 i;
+    for(i=0;i<6;i++)	
+        display_buffer[i] = display_code[display_NULL[i]];
+   
+    display_buffer[2] = display_code[RunData.CalCountDown_time/2];
+    
+}
 
 void Display_Battery(void)
 {

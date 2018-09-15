@@ -41,23 +41,20 @@ void main(void)
     Init_AWU();
     UART2_INIT();
     Speaker_Init();
-    Key_Init();
-  
-    MachData.ADCChip = CS1237;
-    
-    if(MachData.ADCChip == CS1231)
-        CS1231_Init();
-    else
-        CS1237_Init();
-    
+    Key_Init();    
     ///////////////////////////////ADC1 init
     Init_ADC1();
-
     //I2c_Init();
     EEPROM_Init();
    
     TIM2_Init();
     enableInterrupts();
+
+    MachData.ADCChip = CS1231; 
+    if(MachData.ADCChip == CS1231)
+        CS1231_Init();
+    else
+        CS1237_Init();
 
     ////////////////////////////ht1621 init 
 #if (DISPLAY_TYPE == LCD)
@@ -67,8 +64,10 @@ void main(void)
     TM1668_Init();
 #endif  
 
+    RunData.key_sound_time = KEY_NORMAL_SOUND_TIME;
     /////////////////////////////////////////////////////////////////////////	
     MachData.mode = System_Init();
+    RunData.key_sound_time = KEY_NORMAL_SOUND_TIME;
 
     if((MACHINE_NORMAL_MODE+MACHINE_FACTORY_MODE) == MachData.mode) {
         FactoryData.factorystep = FAC_EXIT;

@@ -7,12 +7,12 @@
 #include "i2c.h"
 #include "timer1.h"
 
-const u32 weigh_calmode1[] =      {1,   1500,  3000,  10000,  15000,  25000,  30000,   50000,  100000,   0};
-const u32 weigh_calmode2[2][10]= {{1,   1500,  3000,  10000,  15000,  25000,  30000,   50000,  100000,   0},
-                                  {1,   3000,  6000,  20000,  30000,  50000,  60000,  100000,  200000,   0}};
+const u32 weigh_calmode1[] =      {1,   1500,  3000,  10000,  15000,  25000,  30000,   50000,  100000,  500000,  500000,   500000,    0};
+const u32 weigh_calmode2[2][20]= {{1,   1500,  3000,  10000,  15000,  25000,  30000,   50000,  100000,  500000,  500000,   500000,    0},
+                                  {1,   3000,  6000,  20000,  30000,  50000,  60000,  100000,  200000,  500000,  500000,   500000,    0}};
 
+const u8 weigh_fullrange[] =      {1,      3,     6,     10,     20,     30,     50,      60,      75,     100,     150,      200,    0}; //*1000
 
-const u8 weigh_fullrange[] =     {1,   3,    6,  20,   30,  50,  60,  100,  200, 0}; //*1000 
 const u8 weigh_onestep[] =       {1,   1,    2,   5,   10,  20,  50,  100,  0};
 const u8 weigh_dot[] =           {1,   1,    2,   3,    4,   5,   0};
 const u8 weigh_displaymin[] =    {1,   1,    2,   3,    4,   5,   0};
@@ -94,7 +94,7 @@ void Key_CalProc1(void)
     } else {
         CalData.calstep = CAL_PASS1;
         MachData.weigh_ad_Middle = MData.ad_dat_avg -  MData.ad_zero_data;  //use 1/2 
-        MachData.weigh_ad_full = MachData.weigh_ad_Middle * 2;
+        MachData.weigh_ad_full = MachData.weigh_ad_Middle * 2; //use half of fullload 
         
         SaveToE2prom(MachData.weigh_ad_Middle,EEP_WEIGHTFULL1_ADDR,8);
         SaveToE2prom(MachData.weigh_ad_full,  EEP_WEIGHTFULL2_ADDR,8);
@@ -271,16 +271,19 @@ void Key_FactoryUnitProc(void)
 
 void FactoryGetFirstStepIndex(void)
 {
-    switch(MachData.weigh_fullrange) {
-    case 3000:    FactoryData.factoryindex = 1;break;
-    case 6000:    FactoryData.factoryindex = 2;break;
-    case 20000:   FactoryData.factoryindex = 3;break;
-    case 30000:   FactoryData.factoryindex = 4;break;
-    case 50000:   FactoryData.factoryindex = 5;break;
-    case 60000:   FactoryData.factoryindex = 6;break;
-    case 100000:  FactoryData.factoryindex = 7;break;
-    case 200000:  FactoryData.factoryindex = 8;break;
-    default:      FactoryData.factoryindex = 1;break;
+    switch(MachData.weigh_fullrange) { 
+    case 3000:    FactoryData.factoryindex = 1;  break;
+    case 6000:    FactoryData.factoryindex = 2;  break;
+    case 10000:   FactoryData.factoryindex = 3;  break;    
+    case 20000:   FactoryData.factoryindex = 4;  break;
+    case 30000:   FactoryData.factoryindex = 5;  break;
+    case 50000:   FactoryData.factoryindex = 6;  break;
+    case 60000:   FactoryData.factoryindex = 7;  break;
+    case 75000:   FactoryData.factoryindex = 8;  break;    
+    case 100000:  FactoryData.factoryindex = 9;  break;
+    case 150000:  FactoryData.factoryindex = 10; break;    
+    case 200000:  FactoryData.factoryindex = 11; break;
+    default:      FactoryData.factoryindex = 1;  break;
     }
 }
 

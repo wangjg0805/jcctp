@@ -34,6 +34,26 @@ static void CS1237ClockUp(void)
     
 }
 
+unsigned char CS1237_WaitForAck(void)
+{
+    unsigned int timeout;
+    timeout = 0;
+    while(1) {
+        delay(100);
+        if(RESET == READ_CS1231_SDO)  //wait for cs1237 
+            break;
+        timeout++;
+        if(1500 == timeout)
+            break;
+    }
+    
+    if(1500 == timeout)
+        return(1);
+    else
+        return(0);
+}
+
+
 void CS1237_ChangeSensorPower(unsigned char Status)
 {
 	unsigned char i;
@@ -44,11 +64,8 @@ void CS1237_ChangeSensorPower(unsigned char Status)
     CS1231_SDIO_MODE_IN;
     CS1231_CLK_L;
 
-    while(1) {
-        delay(100);
-        if(RESET == READ_CS1231_SDO)  //wait for cs1237 
-            break;
-    }
+    if(1 == CS1237_WaitForAck())
+        return;
     
 	for(i=0;i<29;i++)// 1 - 29
 	    CS1237ClockUp();
@@ -87,14 +104,13 @@ unsigned char CS1237_ReadConfig(void)
 {
 	unsigned char i,j;
 	unsigned char dat=0;//读取到的数据
-	   
+	unsigned int timeout = 0;
+    
     CS1231_CLK_L;
-    while(1) {
-        delay(100);
-        if(RESET == READ_CS1231_SDO)  //wait for cs1237 
-            break;
-    }
 
+    if(1 == CS1237_WaitForAck())
+        return(CS1237_ERROR_CODE);
+    
 	for(i=0;i<29;i++)// 1 - 29
         CS1237ClockUp();
     
@@ -134,16 +150,16 @@ unsigned char CS1237_ReadConfig(void)
 void CS1237_ReInit(void)
 {
     CS1237_ChangeSensorPower(1); 
-    CS1237_ReadConfig();
+    if(CS1237_ERROR_CODE == CS1237_ReadConfig())
+        printf("CS1237 ERROR \r\n");
 }
 
 void CS1237_Init(void)
 {
-    u8 i;
     
     CS1237_PinInit();
     CS1237_ReInit();
-    printf("CS1237_Read is %d  \r\n",i);
+    
 }
 
 
@@ -179,7 +195,7 @@ u8 CS1237_Read(void)
         return(0);
     } else {
         MData.hx711_data = dat>>2;
-        printf("AD_data:%ld\r\n",MData.hx711_data);        
+        //printf("AD_data:%ld\r\n",MData.hx711_data);        
         return(1);
     }
 }

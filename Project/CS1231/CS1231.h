@@ -20,6 +20,9 @@
 #define CS1231_SDIO_MASK        0x80
 #define READ_CS1231PORT         GPIO_ReadInputData(GPIOD)
 #define READ_CS1231_SDO         GPIO_ReadInputPin(GPIOD, GPIO_PIN_7)
+
+
+#define CS1237_ERROR_CODE      0xff
  
 extern void CS1231_Init(void);
 extern u8 CS1231_Read(void);

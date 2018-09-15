@@ -18,33 +18,33 @@ void Normal_Proc(void)
         if(0 == ExitLpmodeflag) {
             if(1==LPmode_Check()) { //exit from lpmode
                 ExitLpmodeflag = 1;  
-            if(MachData.ADCChip == CS1237)
-                CS1237_ReInit();      
+                if(MachData.ADCChip == CS1237)
+                    CS1237_ReInit();      
             }
         }
       
         if(MachData.ADCChip == CS1231) {
-        if(RESET == READ_CS1231_SDO){
-            if(1 == CS1231_Read()) {
-                ad_filter(MData.hx711_data);
-                MData_update_normal();
-                ExitLpmodeflag = 0;
-            }    
-        }
-        } else { 
-        //the first data is not stable when exit from lp
-        //so discard it and sample from 2th data        
-        if(RESET == READ_CS1231_SDO){
-            if(1 == CS1237_Read()) {
-                if(1==ExitLpmodeflag) 
-                    ExitLpmodeflag++;
-                else {
+            if(RESET == READ_CS1231_SDO){
+                if(1 == CS1231_Read()) {
                     ad_filter(MData.hx711_data);
                     MData_update_normal();
                     ExitLpmodeflag = 0;
-                }   
-            }    
-        }
+                }    
+            }
+        } else { 
+        //the first data is not stable when exit from lp
+        //so discard it and sample from 2th data        
+            if(RESET == READ_CS1231_SDO){
+                if(1 == CS1237_Read()) {
+                    if(1==ExitLpmodeflag) 
+                        ExitLpmodeflag++;
+                    else {
+                        ad_filter(MData.hx711_data);
+                        MData_update_normal();
+                        ExitLpmodeflag = 0;
+                    }   
+                }    
+            }
         }
         
         if(Flag_10ms) {
@@ -95,15 +95,28 @@ void Normal_Proc(void)
             
         if(1 == Flag_500ms) {
             Flag_500ms = 0; 
-            //LPmode_Check();
+            RunData.no_key_time++;      //500ms 
+            RunData.keep_zero_time++;
+            RunData.not_zero_time++;
+            if(STAT_CALCOUNTDOWN == RunData.current_mode) {
+                RunData.CalCountDown_time--; 
+                printf("RunData.CalCountDown_time:%d \r\n",RunData.CalCountDown_time);
+                if(0 == RunData.CalCountDown_time) {
+                    RunData.current_mode = STAT_WEIGHT;
+                    i = Key_GetCode();
+                    if(i == KEY_PRESSING+KEY_TARECAL)
+                        Key_Cal1Proc();
+                    if(i == KEY_PRESSING+KEY_UNITMODE)
+                        Key_Cal2Proc();
+                }
+            }
+         
             if(ADC1_GetFlagStatus(ADC1_FLAG_EOC)) {
                 Battery_Filter(ADC1_GetConversionValue());
                 Battery_Get();
             }
             
-            //printf("weigh_ad_zero is: %ld \r\n",MData.weigh_ad_zero);
-            //UART2_SendData("dat_avg",MData.ad_dat_avg);
-            //UART2_SendData("ad_zero",MData.weigh_ad_zero);
+        //printf("weigh_ad_zero is: %ld \r\n",MData.weigh_ad_zero);
         } 
     }  
 }

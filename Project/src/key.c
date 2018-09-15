@@ -35,7 +35,7 @@ void  Key_ISR(void)
 {
     //ONLY FOR WAKE UP 
     RunData.no_key_time = 0;
-    printf("exti int occured...\r\n");
+    //printf("exti int occured...\r\n");
 
 }
 
@@ -56,7 +56,7 @@ void  Key_Scan(void)
     if(0x0f == key_tmp) {
         key_released_flag = 1;
         if(1 == key_read_flag){
-            for(i=0;i<4;i++)
+            for(i=0;i<KEY_NUM;i++)
                 key_press_time[i] = 0;  //清零
         }
     } else {//有键按下
@@ -76,26 +76,44 @@ u16 Key_GetCode(void)
 {
     u8 i;
     u16 Key_CodeTmp = 0;
+    static u8 LongPressStartFlag = 0;
     
-    if((key_read_flag == 0) && (key_released_flag == 1)) {        
-        for(i=0;i<16;i++) {
-            if(key_press_time[i] > KEY_PRESS_TIME_3S) {
-                key_press_time[i] = 0;
-                Key_CodeTmp = KEY_PRESSED_3S + i;
-            }
-        }
-        
-        if(0 == Key_CodeTmp) {
-            for(i=0;i<16;i++) {
-                if(key_press_time[i] > KEY_PRESS_TIME) {
-                    key_press_time[i] = 0;
-                    Key_CodeTmp = KEY_PRESSED + i;
+    if(key_read_flag == 0) {
+        if(0 == key_released_flag) { //not released
+            for(i=0;i<KEY_NUM;i++) {
+                if(key_press_time[i] > KEY_LONGPRESS_START) {
+                    Key_CodeTmp = KEY_PRESSING + i;
+                    LongPressStartFlag = 1;
+                    printf("LongPressStartFlag ok \r\n");
                 }
+            }   
+        } else {
+            for(i=0;i<KEY_NUM;i++) {
+                if(key_press_time[i] > KEY_PRESS_TIME_3S) {
+                    //key_press_time[i] = 0;
+                    Key_CodeTmp = KEY_PRESSED_3S + i;
+                    printf("KEY_PRESSED_3S ok \r\n");
+                }
+            }      
+            if((0==Key_CodeTmp)&&(0==LongPressStartFlag)) {
+                for(i=0;i<KEY_NUM;i++) {
+                    if(key_press_time[i] > KEY_PRESS_TIME) {
+                        //key_press_time[i] = 0;
+                        Key_CodeTmp = KEY_PRESSED + i;
+                        printf("KEY_PRESSED ok \r\n");
+                    }
+                }
+            } else {
+               Key_CodeTmp = KEY_RELEASED;   //ONLE CARE RELEASED ACTION
+               printf("KEY_RELEASED ok \r\n");
             }
+            
+            LongPressStartFlag = 0;
+            key_read_flag = 1;
         }
-    
-    key_read_flag = 1;
    }
-   
+    //if(0!=Key_CodeTmp)
+    //    printf("keycode is %ld \r\n",Key_CodeTmp);
+    
     return(Key_CodeTmp);
 }

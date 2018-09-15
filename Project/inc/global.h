@@ -60,6 +60,9 @@ typedef enum {
 #define FULL_STEP_NUM             9 //over 9D ,and full
 #define NEG_FULL_NUM          99999 //-9999,and full
 
+//low battery 
+#define LOWBATTERY_VOLT        540
+
 //ZERO RANGE
 //#define POWER_ON_ZERO_RANGE     10  //10%
 #define MANUAL_ZERO_RANGE       4   //4%
@@ -71,6 +74,7 @@ typedef enum {
     STAT_PCS_ERR,  
     STAT_PCS,
     STAT_BATTERY,
+    STAT_CALCOUNTDOWN,
 }SYSStatus;
 
 typedef enum {
@@ -163,9 +167,11 @@ typedef struct{
     u8 power_on_flag;
     u8 return_zero_flag;    
     u8 lowpower_flag;
-
+    u8 lowbat_flag;
+        
     u8 power_on_cnt;
     u8 key_sound_time;
+    u8 CalCountDown_time;
     
     u32 no_key_time;
     u32 keep_zero_time;
@@ -245,7 +251,7 @@ extern void Init_UserCalParam(void);
 
 //display function
 extern void Display_ClearPreZero(u8 max,u8 dot,u8* buf);
-extern void Display_InnerCode(u32 x);
+extern void Display_Data(u32 x);
 extern void Display_Wait(void);
 extern void Display_LPmode(void);
 extern void Display_PrePCS(void);

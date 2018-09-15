@@ -93,7 +93,7 @@ extern const u8 display_code[];
 
 extern void TM1668_Update(void);  // ˝¬Îπ‹œ‘ æ
 extern void TM1668_DisplayAll(void);
-extern void TM1668_DisplayMode(void);
+extern void TM1668_DisplayModel(void);
 extern void TM1668_Display_SpecialChar(u8 x);
 
 extern void TM1668_Display_Factory(void);
