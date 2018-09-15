@@ -99,9 +99,13 @@ void Key_TareProc(void)
 
 void Key_Proc_3(u16 key)
 {
+    
     if(KEY_RELEASED == key)
         Key_ReleasedProc();
     
+    if(KEY_PRESSING==(key&0xff00))
+        RunData.key_sound_time = 0;
+       
     switch(key)
     {
     //ADD PRESSING STATUS
@@ -140,9 +144,18 @@ void Key_Proc_4(u16 key)
 {
     if(KEY_RELEASED == key)
         Key_ReleasedProc();
-
+    if(KEY_PRESSING==(key&0xff00))
+        RunData.key_sound_time = 0; 
+    
     switch(key)
     {
+        
+    case KEY_PRESSING+KEY_CAL:
+    case KEY_PRESSING+KEY_UNITMODE:
+        Key_CalCountDownProc();
+        
+        break;    
+        
     case KEY_PRESSED+KEY_UNITMODE:
         Key_UnitProc();
         break;
@@ -152,18 +165,10 @@ void Key_Proc_4(u16 key)
     case KEY_PRESSED+KEY_TARECAL:
         Key_TareProc();
         break;
-#if 0
-    case KEY_PRESSED+KEY_CAL:
-        Key_Cal1Proc();  
-        break;   
-#endif        
+      
     case KEY_PRESSED_3S+KEY_CAL:
         Key_Cal1Proc();  
         break;   
-        
-    //case KEY_PRESSED_3S + KEY_TARECAL:
-    //    Key_LongTareProc(); 
-    //    break;
     case KEY_PRESSED_3S + KEY_PCSCONFIRM:
         Key_LongPCSProc(); 
         break;
@@ -179,15 +184,19 @@ void Key_Proc_4(u16 key)
 
 void Key_Proc_Factory(u16 key)
 {
+    
     switch(key){
     case KEY_PRESSED+KEY_UNITMODE:
         Key_FactoryUnitProc();
+        //RunData.key_sound_time = KEY_NORMAL_SOUND_TIME;
         break;
     case KEY_PRESSED+KEY_PCSCONFIRM:
         Key_FactoryPCSProc();
+        //RunData.key_sound_time = KEY_NORMAL_SOUND_TIME;
         break;   
     case KEY_PRESSED+KEY_TARECAL:
         Key_FactoryTareProc();
+        //RunData.key_sound_time = KEY_NORMAL_SOUND_TIME;
         break;
         
     default:
@@ -200,12 +209,15 @@ void Key_Proc_UserCal(u16 key)
     switch(key){
     case KEY_PRESSED+KEY_UNITMODE:
         //Key_UserCalUnitProc();
+        //RunData.key_sound_time = KEY_NORMAL_SOUND_TIME;
         break;
     case KEY_PRESSED+KEY_PCSCONFIRM:
         Key_UserCalPCSProc();
+        //RunData.key_sound_time = KEY_NORMAL_SOUND_TIME;
         break; 
     case KEY_PRESSED+KEY_TARECAL:
         //Key_UserCalTareProc();
+        //RunData.key_sound_time = KEY_NORMAL_SOUND_TIME;
         break;   
     default:
         break;

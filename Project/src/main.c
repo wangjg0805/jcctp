@@ -50,7 +50,7 @@ void main(void)
     TIM2_Init();
     enableInterrupts();
 
-    MachData.ADCChip = CS1231; 
+    MachData.ADCChip = CS1237; 
     if(MachData.ADCChip == CS1231)
         CS1231_Init();
     else
@@ -64,7 +64,6 @@ void main(void)
     TM1668_Init();
 #endif  
 
-    RunData.key_sound_time = KEY_NORMAL_SOUND_TIME;
     /////////////////////////////////////////////////////////////////////////	
     MachData.mode = System_Init();
     RunData.key_sound_time = KEY_NORMAL_SOUND_TIME;

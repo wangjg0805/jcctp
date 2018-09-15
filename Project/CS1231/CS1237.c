@@ -43,11 +43,11 @@ unsigned char CS1237_WaitForAck(void)
         if(RESET == READ_CS1231_SDO)  //wait for cs1237 
             break;
         timeout++;
-        if(1500 == timeout)
+        if(2000 == timeout)
             break;
     }
     
-    if(1500 == timeout)
+    if(2000 == timeout)
         return(1);
     else
         return(0);
@@ -195,7 +195,7 @@ u8 CS1237_Read(void)
         return(0);
     } else {
         MData.hx711_data = dat>>2;
-        //printf("AD_data:%ld\r\n",MData.hx711_data);        
+        printf("AD_data:%ld\r\n",MData.hx711_data);        
         return(1);
     }
 }
