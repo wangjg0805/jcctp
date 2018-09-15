@@ -2,7 +2,8 @@
 ********************************************************************************/
 #include  "global.h"
 #include  "CS1231.h"
-
+#include "stdio.h" 
+#include "stdlib.h"
  ///////////////////////////////////////////
 static void delay(u32 length)
     {
@@ -13,8 +14,8 @@ static void delay(u32 length)
 static void CS1231_PinInit(void)
 {
     //GPIO_Init(GPIOD,GPIO_PIN_7,GPIO_MODE_OUT_PP_LOW_FAST); //DOUT
-    GPIO_Init(GPIOD,GPIO_PIN_2,GPIO_MODE_OUT_PP_LOW_FAST); //CLK
-    GPIO_Init(GPIOD,GPIO_PIN_3,GPIO_MODE_OUT_PP_LOW_FAST); //PD
+    GPIO_Init(GPIOD,GPIO_PIN_2,GPIO_MODE_OUT_PP_HIGH_FAST); //CLK
+    GPIO_Init(GPIOD,GPIO_PIN_3,GPIO_MODE_OUT_PP_HIGH_FAST); //PD
    
 }
 
@@ -74,7 +75,8 @@ u8 CS1231_Read(void)
     if((tmp==0xffffff)||(tmp==0))
         return(0);
     else {
-        MData.hx711_data = tmp>>1;	  //ȡ 22bit
+        MData.hx711_data = tmp>>2;	  //ȡ 22bit
+        printf("hx711_data:%ld\r\n",MData.hx711_data);
 	    return(1);
     }
 }

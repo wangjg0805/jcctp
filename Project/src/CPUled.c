@@ -18,6 +18,20 @@ void Speaker_Off(void)
     GPIO_WriteLow(SPEAKER_PORT,  SPEAKER_PIN);
  }
 
+
+/////////////////////////////////////////…˘“Ù¥¶¿Ì
+void Speaker_Proc(void)
+{
+    if(0!=RunData.key_sound_time) {
+        RunData.key_sound_time--;
+        Speaker_On();
+    } else {
+        Speaker_Off();
+    }
+    
+}
+ 
+
 ////////////////////////////
 //LCD bklight pin
 ///////////////////////////

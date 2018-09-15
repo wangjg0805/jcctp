@@ -3,26 +3,52 @@
 #include "stdio.h"
 
 #include "global.h"
-
+#include "ad_filter.h"
+#include "factory.h"
 //*************************************************************
 const u16 CountList[] = {10,20,50,100,200,500,900,0};
 static u8 CouIndex = 0;
 
+void Key_ReleasedProc(void)
+{
+    if(STAT_CALCOUNTDOWN == RunData.current_mode) {
+        RunData.current_mode = STAT_WEIGHT;
+        RunData.CalCountDown_time = 0;
+    }
+}
+
+
+void Key_CalCountDownProc(void)
+{
+    if(STAT_CALCOUNTDOWN != RunData.current_mode) {
+        RunData.current_mode = STAT_CALCOUNTDOWN;
+        RunData.CalCountDown_time = 3*2 + 1;
+    }
+}
+
+
+void Key_Cal2Proc(void) 
+{
+    if(MachData.mode == MACHINE_NORMAL_MODE) {
+        CalData.calstep = CAL_TIP;
+        MachData.mode = MACHINE_NORMAL_MODE+MACHINE_USERCAL2_MODE;
+        manual_break_stable();
+    }
+}
 
 void Key_UnitProc(void)
 {
-    if(STAT_BATTERY == RunData.current_mode) {
+    
+    if(STAT_BATTERY == RunData.current_mode)
         RunData.current_mode = STAT_WEIGHT;
-    } else {
-        ;
-    }
+    
 }        
 
-
-void Key_LongUnitProc(void)
+void Key_LongPCSProc(void)
 {
-    //additional function for debug
-    RunData.current_mode = STAT_BATTERY;
+    //additional function for debug //
+    if(MachData.mode == MACHINE_NORMAL_MODE)
+        RunData.current_mode = STAT_BATTERY;
 
 }
 
@@ -50,13 +76,13 @@ void Key_PCSProc(void)
 }
 
 
-void Key_LongTareProc(void)
-{   
-    //if(STAT_WEIGHT == RunData.current_mode) {    
-        CalData.usercalstart = 1;
-        CalData.usercalstep = 1;
-        MachData.mode = MACHINE_NORMAL_MODE+MACHINE_USERCAL_MODE;
-    //}
+void Key_Cal1Proc(void)
+{
+    if(STAT_WEIGHT == RunData.current_mode) {
+        CalData.calstep = CAL_TIP;
+        MachData.mode = MACHINE_NORMAL_MODE+MACHINE_USERCAL1_MODE;
+        manual_break_stable();
+    }
 }
 
 void Key_TareProc(void)
@@ -66,31 +92,46 @@ void Key_TareProc(void)
         if(0 == CountList[CouIndex])
             CouIndex = 0;
         RunData.PCSSample = CountList[CouIndex];
-    } else {
+    } else if(STAT_WEIGHT == RunData.current_mode){ //only in weigh mode
         RunData.do_zero_flag = 1;
     }
 }        
 
-void Key_Proc(u16 key)
+void Key_Proc_3(u16 key)
 {
-
+    
+    if(KEY_RELEASED == key)
+        Key_ReleasedProc();
+    
+    if(KEY_PRESSING==(key&0xff00))
+        RunData.key_sound_time = 0;
+       
     switch(key)
     {
+    //ADD PRESSING STATUS
+    case KEY_PRESSING+KEY_TARECAL:
+    case KEY_PRESSING+KEY_UNITMODE:
+        Key_CalCountDownProc();
+        break;
+        
     case KEY_PRESSED+KEY_UNITMODE:
         Key_UnitProc();
         break;
     case KEY_PRESSED+KEY_PCSCONFIRM:
         Key_PCSProc();
         break;        
-
     case KEY_PRESSED+KEY_TARECAL:
         Key_TareProc();
         break;
+        
     case KEY_PRESSED_3S + KEY_TARECAL:
-        Key_LongTareProc(); 
+        Key_Cal1Proc(); 
+        break;
+    case KEY_PRESSED_3S + KEY_PCSCONFIRM:
+        Key_LongPCSProc(); 
         break;
     case KEY_PRESSED_3S + KEY_UNITMODE:
-        Key_LongUnitProc(); 
+        Key_Cal2Proc(); 
         break;
         
     default:
@@ -98,43 +139,92 @@ void Key_Proc(u16 key)
     }
 }
 
-//linecal key proc added
-void Key_LineCalUnitProc(void)
+
+void Key_Proc_4(u16 key)
 {
-
-}
-
-
-void Key_LineCalPCSProc(void)
-{
-
-}
-
-
-void Key_LineCalTareProc(void)
-{
-
-}
-
-
-void Key_Proc_Linecal(u16 key)
-{
+    if(KEY_RELEASED == key)
+        Key_ReleasedProc();
+    if(KEY_PRESSING==(key&0xff00))
+        RunData.key_sound_time = 0; 
+    
     switch(key)
     {
+        
+    case KEY_PRESSING+KEY_CAL:
+    case KEY_PRESSING+KEY_UNITMODE:
+        Key_CalCountDownProc();
+        
+        break;    
+        
     case KEY_PRESSED+KEY_UNITMODE:
-        Key_LineCalUnitProc();
+        Key_UnitProc();
         break;
     case KEY_PRESSED+KEY_PCSCONFIRM:
-        Key_LineCalPCSProc();
+        Key_PCSProc();
         break;        
-
     case KEY_PRESSED+KEY_TARECAL:
-        Key_LineCalTareProc();
-        break;        
+        Key_TareProc();
+        break;
+      
+    case KEY_PRESSED_3S+KEY_CAL:
+        Key_Cal1Proc();  
+        break;   
+    case KEY_PRESSED_3S + KEY_PCSCONFIRM:
+        Key_LongPCSProc(); 
+        break;
+    case KEY_PRESSED_3S + KEY_UNITMODE:
+        Key_Cal2Proc(); 
+        break;
+        
     default:
         break;
     }
 }
+
+
+void Key_Proc_Factory(u16 key)
+{
+    
+    switch(key){
+    case KEY_PRESSED+KEY_UNITMODE:
+        Key_FactoryUnitProc();
+        //RunData.key_sound_time = KEY_NORMAL_SOUND_TIME;
+        break;
+    case KEY_PRESSED+KEY_PCSCONFIRM:
+        Key_FactoryPCSProc();
+        //RunData.key_sound_time = KEY_NORMAL_SOUND_TIME;
+        break;   
+    case KEY_PRESSED+KEY_TARECAL:
+        Key_FactoryTareProc();
+        //RunData.key_sound_time = KEY_NORMAL_SOUND_TIME;
+        break;
+        
+    default:
+        break;
+    }
+}
+
+void Key_Proc_UserCal(u16 key)
+{
+    switch(key){
+    case KEY_PRESSED+KEY_UNITMODE:
+        //Key_UserCalUnitProc();
+        //RunData.key_sound_time = KEY_NORMAL_SOUND_TIME;
+        break;
+    case KEY_PRESSED+KEY_PCSCONFIRM:
+        Key_UserCalPCSProc();
+        //RunData.key_sound_time = KEY_NORMAL_SOUND_TIME;
+        break; 
+    case KEY_PRESSED+KEY_TARECAL:
+        //Key_UserCalTareProc();
+        //RunData.key_sound_time = KEY_NORMAL_SOUND_TIME;
+        break;   
+    default:
+        break;
+    }
+}
+
+
 
 
 

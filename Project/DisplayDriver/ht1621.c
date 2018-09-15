@@ -50,7 +50,6 @@ static void Send_Com(u8 con,u8 sdata)
 //≥ı ºªØ   
 void HT1621_Init(void)   
 {   
-    u8 i;
     HT1621_PinInit();
     
     Send_Com(COMMAND,SYS_EN);   
@@ -66,7 +65,7 @@ void HT1621_Init(void)
 ///////////////////////////
 void DIS_Update(void)
 {
-    u8 i,j,data;   
+    u8 i,data;   
     CSL;   
     Send_LBit(WRITE,3);   
     Send_LBit(0x00,6);   

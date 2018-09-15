@@ -22,22 +22,30 @@
 
 //save param
 //ZERO DATA
+
+#define    STM32EEPROM_BASE_ADDR          0x4000
+
 #define    EEP_CALFLAG_ADDR               0x00    //cal ok 
 
 #define    EEP_WEIGHTZERO_ADDR            0x10    //线性校准零点
 #define    EEP_WEIGHTZERO_ADDR_BAK        0x14    //备份
 //FULL DATA
-#define    EEP_WEIGHTFULL_ADDR            0x18    //满量程内码
-#define    EEP_WEIGHTFULL_ADDR_BAK        0x1C    //备份
+#define    EEP_WEIGHTFULL1_ADDR           0x20    //满量程内码
+#define    EEP_WEIGHTFULL1_ADDR_BAK       0x24    //备份
+#define    EEP_WEIGHTFULL2_ADDR           0x28    //满量程内码
+#define    EEP_WEIGHTFULL2_ADDR_BAK       0x2C    //备份
+
 
 //system config area
 #define   EEP_SYS_FULLRANGE_ADDR          0x50  //
 #define   EEP_SYS_ONESTEP_ADDR            0x54  //
 #define   EEP_SYS_DOT_ADDR                0x58  //
 #define   EEP_SYS_DISFENDU_ADDR           0x5C  //
-#define   EEP_SYS_BKOFFTIME_ADDR          0x60  //
+#define   EEP_SYS_LOADTRACK_ADDR          0x60  //
 #define   EEP_SYS_ZERORANGE_ADDR          0x64  //
-#define   EEP_SYS_LOADTRACK_ADDR          0x68  //
+#define   EEP_SYS_KEYTYPE_ADDR            0x68  //
+
+#define   EEP_SYS_BKOFFTIME_ADDR          0x6C  //
 
 //用户配置 参数 0xB0-0XD0
 #define   EEP_USR_FUN1_ADDR               0xB0  //  
@@ -49,9 +57,6 @@
 #define   EEP_USR_FUN7_ADDR               0xBC  //
 #define   EEP_USR_FUN8_ADDR               0xBE  //
 
-//系统配置参数 0xD0-0xF0
-#define   EEP_SYS_FULL_ADDR               0xD0  //
-#define   EEP_SYS_DIV_ADDR                0xD4  // 
 //////////////////////////////////////////////////////////////////////////////////
 //TEST
 #define   EEP_TEST_ADDR                  0xF0    //EEPROM TEST
@@ -88,7 +93,9 @@
 
 
 
-void I2c_Init(void);
-u8 Write_EEPROM(u16 addr, void *wrptr, u16 wlen);
-void Read_EEPROM(u16 addr, void *rdptr, u16 rlen);
+//extern void I2c_Init(void);
+
+extern u8 Write_EEPROM(u16 addr, u8* buf, u16 wlen);
+extern void Read_EEPROM(u16 addr, u8* buf, u16 rlen);
+extern void EEPROM_Init(void);
 #endif	/*_I2C_H_*/

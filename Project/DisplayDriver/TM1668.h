@@ -47,6 +47,9 @@
 #define SEG_G 0x10
 #define SEG_P 0x04
 
+#define LED_STABLE 0x02
+#define LED_ZERO   0x01
+#define LED_COUNT  0x10
 
 
 //special char
@@ -73,7 +76,7 @@
 
 
 extern u8 const display_BATTERY[];
-extern u8 const display_LPMODE[]; 
+extern u8 const display_NULL[]; 
 extern u8 const display_FULL[]; 
 extern u8 const display_COUNT[]; 
 extern u8 const display_COUNTERR[];
@@ -87,7 +90,10 @@ extern u8 const display_LINECAL[];
 
 extern const u8 display_code[];
 /*******声明接口函数*******/
+
 extern void TM1668_Update(void);  //数码管显示
+extern void TM1668_DisplayAll(void);
+extern void TM1668_DisplayModel(void);
 extern void TM1668_Display_SpecialChar(u8 x);
 
 extern void TM1668_Display_Factory(void);

@@ -9,14 +9,15 @@
 #define BKLIGHT_PIN    GPIO_PIN_X
 
 
-void Speaker_Init(void);
-void Speaker_On(void);
-void Speaker_Off(void);
+extern void Speaker_Init(void);
+extern void Speaker_On(void);
+extern void Speaker_Off(void);
+extern void Speaker_Proc(void);
 ////////////////////////////
 //·äÃùÆ÷¹Ü½Å³õÊ¼»¯
 ///////////////////////////
-void BkLight_Reverse(void);
-void BkLight_On(void);
-void BkLight_Off(void);
+extern void BkLight_Reverse(void);
+extern void BkLight_On(void);
+extern void BkLight_Off(void);
 
 #endif

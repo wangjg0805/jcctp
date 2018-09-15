@@ -3,38 +3,50 @@
 #include <math.h>
 #include "stdio.h" 
 #include "global.h"
+#include "ad_filter.h"
+#include "CPUled.h"
+#include "lowpower.h"
+#include "cs1231.h"
 
 
-void LPmode_Check(void) 
-{
-    u8 tmp;
-    tmp = 0; //nokey time & keepzero time MUST BE SATISFIED WITH THE PARAM
-    if((RunData.no_key_time > MachData.weigh_lptime)&&(RunData.keep_zero_time > MachData.weigh_lptime))
-        tmp++;
-    //if((9!=MachData.weigh_bkofftime)&&(0!=MachData.weigh_bkofftime)&&(RunData.not_zero_time > (MachData.weigh_bkofftime*60*60*2)))
-    //    tmp++;
-    
-    if(0==tmp) {
-        RunData.lowpower_flag = 0;
-    } else {
-        RunData.lowpower_flag = 1;
-    }
-}
-
-void Normal_Pro(void)
+void Normal_Proc(void)
 {
     u16 i;
-    u8 NewDataFlag = 0;
     
     while(1){
         
-         if(RESET == READ_CS1231_SDO) {
-             if(1 == CS1231_Read()) {
-                 ad_filter(MData.hx711_data);
-                 NewDataFlag = 1;
-             }
-         }
-           
+        if(0 == ExitLpmodeflag) {
+            if(1==LPmode_Check()) { //exit from lpmode
+                ExitLpmodeflag = 1;  
+                if(MachData.ADCChip == CS1237)
+                    CS1237_ReInit();      
+            }
+        }
+      
+        if(MachData.ADCChip == CS1231) {
+            if(RESET == READ_CS1231_SDO){
+                if(1 == CS1231_Read()) {
+                    ad_filter(MData.hx711_data);
+                    MData_update_normal();
+                    ExitLpmodeflag = 0;
+                }    
+            }
+        } else { 
+        //the first data is not stable when exit from lp
+        //so discard it and sample from 2th data        
+            if(RESET == READ_CS1231_SDO){
+                if(1 == CS1237_Read()) {
+                    if(1==ExitLpmodeflag) 
+                        ExitLpmodeflag++;
+                    else {
+                        ad_filter(MData.hx711_data);
+                        MData_update_normal();
+                        ExitLpmodeflag = 0;
+                    }   
+                }    
+            }
+        }
+        
         if(Flag_10ms) {
             Flag_10ms = 0;
             Key_Scan();
@@ -46,75 +58,65 @@ void Normal_Pro(void)
             i = Key_GetCode();
             if(0 != i) {
                 RunData.key_sound_time = KEY_NORMAL_SOUND_TIME;
-                RunData.no_key_time = 0;
                 switch(MachData.mode) {
-                case MACHINE_NORMAL_MODE + MACHINE_LINECAL_MODE:
-                    Key_Proc_Linecal(i);
-                    break;
                 case MACHINE_NORMAL_MODE + MACHINE_FACTORY_MODE:
                     Key_Proc_Factory(i);
                     break;
-                case MACHINE_NORMAL_MODE + MACHINE_USERCAL_MODE:
+                case MACHINE_NORMAL_MODE + MACHINE_USERCAL1_MODE:
+                case MACHINE_NORMAL_MODE + MACHINE_USERCAL2_MODE:
                     Key_Proc_UserCal(i);
                     break;
                 case MACHINE_NORMAL_MODE:
-                    Key_Proc(i);
+                    if(3 == MachData.keytype)
+                        Key_Proc_3(i);
+                    else
+                        Key_Proc_4(i);
                     break;
                 default:
                     break;
                 }  
             }
-            
-            if(1 == NewDataFlag) {
-                NewDataFlag = 0;
-                switch(MachData.mode) {
-                case MACHINE_NORMAL_MODE + MACHINE_LINECAL_MODE:
-                    MData_update_normal();
-                    if(LCD == DISPLAY_TYPE)
-                        Display_LineCal();
-                    else
-                        TM1668_Display_LineCal();
-                    break;    
-                case MACHINE_NORMAL_MODE + MACHINE_FACTORY_MODE:
-                    MData_update_normal();
-                    if(LCD == DISPLAY_TYPE)
-                        Display_Factory();
-                    else
-                        TM1668_Display_Factory();
+                        
+            switch(MachData.mode) {
+            case MACHINE_NORMAL_MODE + MACHINE_FACTORY_MODE:
+                TM1668_Display_Factory();
+                break;
+            case MACHINE_NORMAL_MODE + MACHINE_USERCAL1_MODE:
+            case MACHINE_NORMAL_MODE + MACHINE_USERCAL2_MODE:
+                TM1668_Display_UserCal();                  
+                break;
+            case MACHINE_NORMAL_MODE:
+                TM1668_Display_Normal();  
+                break;
+            default:
                     break;
-                case MACHINE_NORMAL_MODE + MACHINE_USERCAL_MODE:
-                    MData_update_cal();
-                    if(LCD == DISPLAY_TYPE)
-                       Display_UserCal();
-                    else
-                        TM1668_Display_UserCal();
-                       
-                    break;
-                case MACHINE_NORMAL_MODE:
-                    MData_update_normal();
-                    if(LCD == DISPLAY_TYPE)
-                        Display_Normal();
-                    else
-                        TM1668_Display_Normal();
-                    
-                    break;
-                default:
-                    break;
-                }
             }
         }
             
         if(1 == Flag_500ms) {
             Flag_500ms = 0; 
-            LPmode_Check();
+            RunData.no_key_time++;      //500ms 
+            RunData.keep_zero_time++;
+            RunData.not_zero_time++;
+            if(STAT_CALCOUNTDOWN == RunData.current_mode) {
+                RunData.CalCountDown_time--; 
+                printf("RunData.CalCountDown_time:%d \r\n",RunData.CalCountDown_time);
+                if(0 == RunData.CalCountDown_time) {
+                    RunData.current_mode = STAT_WEIGHT;
+                    i = Key_GetCode();
+                    if(i == KEY_PRESSING+KEY_TARECAL)
+                        Key_Cal1Proc();
+                    if(i == KEY_PRESSING+KEY_UNITMODE)
+                        Key_Cal2Proc();
+                }
+            }
+         
             if(ADC1_GetFlagStatus(ADC1_FLAG_EOC)) {
                 Battery_Filter(ADC1_GetConversionValue());
                 Battery_Get();
             }
             
-            //printf("weigh_ad_zero is: %ld \r\n",MData.weigh_ad_zero);
-            //UART2_SendData("dat_avg",MData.ad_dat_avg);
-            //UART2_SendData("ad_zero",MData.weigh_ad_zero);
+        //printf("weigh_ad_zero is: %ld \r\n",MData.weigh_ad_zero);
         } 
     }  
 }

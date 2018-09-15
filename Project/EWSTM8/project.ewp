@@ -75,19 +75,19 @@
         <option>
           <name>GenLibOutFormatter</name>
           <version>0</version>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>GenLibOutFormatterDescription</name>
-          <state>Full formatting.</state>
+          <state>No specifier a or A.</state>
         </option>
         <option>
           <name>GenStackSize</name>
-          <state>0x100</state>
+          <state>0x400</state>
         </option>
         <option>
           <name>GenHeapSize</name>
-          <state>0x100</state>
+          <state>0x200</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -458,7 +458,7 @@
         <option>
           <name>OOCOutputFormat</name>
           <version>2</version>
-          <state>2</state>
+          <state>1</state>
         </option>
         <option>
           <name>OCOutputOverride</name>
@@ -466,7 +466,7 @@
         </option>
         <option>
           <name>OOCOutputFile</name>
-          <state>project.bin</state>
+          <state>project.hex</state>
         </option>
         <option>
           <name>OOCCommandLineProducer</name>
@@ -782,6 +782,9 @@
     <file>
       <name>$PROJ_DIR$\..\CS1231\CS1231.h</name>
     </file>
+    <file>
+      <name>$PROJ_DIR$\..\CS1231\CS1237.c</name>
+    </file>
   </group>
   <group>
     <name>DisplayDriver</name>
@@ -849,6 +852,9 @@
       <name>$PROJ_DIR$\..\src\key_fun.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\src\lowpower.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\src\main.c</name>
     </file>
     <file>
@@ -884,6 +890,9 @@
         <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_conf.h</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_flash.h</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_gpio.h</name>
       </file>
       <file>
@@ -902,13 +911,25 @@
         <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_adc1.c</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_awu.c</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_beep.c</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_clk.c</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_exti.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_flash.c</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_gpio.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_itc.c</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\src\stm8s_tim1.c</name>

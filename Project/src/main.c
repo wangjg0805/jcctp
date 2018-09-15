@@ -2,7 +2,14 @@
 
 #include "stdio.h" 
 #include "global.h"
+#include "normal.h"
+#include "lowpower.h"
+
 #include "TM1668.h"
+#include "CPUled.h"
+#include "i2c.h"
+#include "ht1621.h"
+#include "factory.h"
 //
 void Init_HSI(void)
 {
@@ -30,40 +37,42 @@ void Init_ADC1(void)
 
 void main(void)       
 {
-    u8  i;
- 
     Init_HSI();
+    Init_AWU();
+    UART2_INIT();
     Speaker_Init();
-    Key_Init();
-  
-    CS1231_Init();
+    Key_Init();    
     ///////////////////////////////ADC1 init
     Init_ADC1();
-    I2c_Init();
-    UART2_INIT();
-
+    //I2c_Init();
+    EEPROM_Init();
+   
     TIM2_Init();
     enableInterrupts();
-  
+
+    MachData.ADCChip = CS1237; 
+    if(MachData.ADCChip == CS1231)
+        CS1231_Init();
+    else
+        CS1237_Init();
+
     ////////////////////////////ht1621 init 
 #if (DISPLAY_TYPE == LCD)
     HT1621_Init();
     //BkLight_On();
 #else
     TM1668_Init();
-#endif
+#endif  
+
     /////////////////////////////////////////////////////////////////////////	
     MachData.mode = System_Init();
+    RunData.key_sound_time = KEY_NORMAL_SOUND_TIME;
 
     if((MACHINE_NORMAL_MODE+MACHINE_FACTORY_MODE) == MachData.mode) {
-        FactoryData.factorystep = FAC_FULL;
-        FactoryGetFirstStepIndex();
-    } else if((MACHINE_NORMAL_MODE+MACHINE_LINECAL_MODE) == MachData.mode) {
-        CalData.linecalstart = 1;
-        CalData.linecalstep = 1;
+        FactoryData.factorystep = FAC_EXIT;
     }
-    
-    Normal_Pro();
+    FactoryGetFirstStepIndex(); //use for cal info
+    Normal_Proc();
     
 	while(1){;}
 }  
