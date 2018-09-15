@@ -136,7 +136,7 @@ void  Init_MachineParam(void)
     MachData.weigh_onestep = BUFtoU32_tmp(buf+4);
     MachData.weigh_dotpos = BUFtoU32_tmp(buf+8);
     MachData.weigh_displaymin = BUFtoU32_tmp(buf+12);
-    
+
     Read_EEPROM(EEP_SYS_LOADTRACK_ADDR, buf, 16);
 
     MachData.loadtrackrange = BUFtoU32_tmp(buf);
@@ -144,21 +144,20 @@ void  Init_MachineParam(void)
     MachData.keytype = BUFtoU32_tmp(buf+8);
 
     MachData.weigh_lptime = 10*2;  //5s
-    /*  
-    
-    Read_EEPROM(EEP_SYS_LOADTRACK_ADDR, buf, 4); 
-    MachData.loadtrackrange = BUFtoU32_tmp(buf);
-  
-    MachData.weigh_division = MachData.weigh_fullrange/MachData.weigh_onestep;      
-    MachData.weigh_calpoint_num = 1;
-    */
-/*   
-    MachData.weigh_fullrange = 100000;
-    MachData.weigh_onestep = 1;
-    MachData.weigh_dotpos = 3;
-    MachData.weigh_displaymin = 2;
-*/ 
 
+    //check error
+    if((MachData.weigh_fullrange<3000) ||   
+       (MachData.weigh_fullrange>200000) ||
+       (0 != MachData.weigh_fullrange%1000)) { 
+       MachData.weigh_fullrange = 30000;  
+       MachData.weigh_onestep = 1;     
+       MachData.weigh_dotpos = 3; 
+       MachData.weigh_displaymin = 2;
+       MachData.loadtrackrange = 2;
+       MachData.dozerorange = 4; //4%
+       MachData.keytype = 3;
+     }
+    
     MachData.weigh_division =  MachData.weigh_fullrange / MachData.weigh_onestep;
     
 } 

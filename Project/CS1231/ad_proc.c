@@ -8,74 +8,35 @@
 #include  "stdlib.h" //int abs
 #include  "math.h"   //float abs
 
-/*
-void autoload_track_old(void)
+static u32 trackcnt = 0;
+static u32 loadtrack_load = 0;
+    
+static int loadtrackoffset = 0;
+
+static void autoload_exit(void)
 {
-    static u8 debugtimes = 0;
-    static u32 trackcnt = 0;
-	static u32 netweight = 0;
-	u32 weigh_tmp;
-    if((0==RunData.stable_flag)||(1==RunData.power_on_flag)) {
-        trackcnt = 0;
-        return;
-    }
-    if((MACHINE_NORMAL_MODE+MACHINE_USERCAL_MODE) == MachData.mode) {
-        trackcnt = 0;
-        return;
-    }
-    if(abs(MData.ad_dat_avg-MData.ad_zero_data) < FilterData.ad_filter_para*100) {
-        trackcnt = 0;
-        return;
-    }
-    
-    if(9 == MachData.loadtrackrange)
-        return;
-    
-    trackcnt++;
-	if(1 == trackcnt) {
-        netweight = MData.ad_dat_avg - MData.ad_zero_data;
-        printf("start load track..... netweigth: %ld \r\n",netweight);
-    } else if(0 == trackcnt % 15) {
-        weigh_tmp = MData.ad_dat_avg-MData.ad_zero_data;
-        if(abs(weigh_tmp-netweight) < FilterData.ad_filter_para*MachData.loadtrackrange) {
-            if(weigh_tmp > netweight)
-                MData.ad_zero_data = MData.ad_zero_data + (weigh_tmp - netweight);
-            else
-                MData.ad_zero_data = MData.ad_zero_data - (weigh_tmp - netweight);
-            
-            MData.ad_dat_avg = netweight + MData.ad_zero_data;
-            printf("auto load track working , MData.ad_zero_data is: %ld \r\n",MData.ad_zero_data);
-        } else {
-            trackcnt = 0;
-            printf("trackcnt = 0 , MData.ad_dat_avg is: %ld \r\n",MData.ad_dat_avg);
-		}
-    } else {
-        MData.ad_dat_avg = netweight + MData.ad_zero_data;      
-    }
+    trackcnt = 0;
+    loadtrackoffset = 0;
+    //loadtracksign = 0;
 }
-*/
 
 
 void autoload_track(void)
 {
-    static u32 trackcnt = 0;
-	static u32 loadtrack_load = 0;
-    
 	u32 weigh_tmp,tmp;
- 
 
     if(0==RunData.stable_flag) {
-       trackcnt = 0;
+       autoload_exit();
        return;
     }
-    
-    if(abs(MData.ad_dat_avg-MData.ad_zero_data) < FilterData.ad_filter_para*100) {
-        trackcnt = 0;
+    if(abs(MData.ad_dat_avg-MData.ad_zero_data) < FilterData.ad_filter_para*50) {
+        autoload_exit();
         return;
     }
-    
-    if(9 == MachData.loadtrackrange)  //user config disable this function
+    if(9 == MachData.loadtrackrange) { //user config disable this function
+        autoload_exit();
         return;
+    }
     
     trackcnt++;
     if(1 == trackcnt) {
@@ -84,14 +45,23 @@ void autoload_track(void)
     } else if(0 == trackcnt%10) {
         weigh_tmp = MData.ad_dat_avg - MData.ad_zero_data;       
         tmp = abs(weigh_tmp - loadtrack_load);
-        //printf("new weigh:%ld, track weigh: %ld, tmp is:%ld \r\n",weigh_tmp,loadtrack_load,tmp);
         if(tmp < FilterData.ad_filter_para*MachData.loadtrackrange) {
-            if(weigh_tmp > loadtrack_load)
+            if(weigh_tmp > loadtrack_load) {
                 MData.ad_zero_data = MData.ad_zero_data + tmp;
-            else
+                loadtrackoffset += tmp;
+                printf("MData.ad_zero_data: %ld \r\n",MData.ad_zero_data);
+            } else {
                 MData.ad_zero_data = MData.ad_zero_data - tmp;
+                loadtrackoffset -= tmp;
+                printf("MData.ad_zero_data: %ld \r\n",MData.ad_zero_data);
+            }
             
-            printf("auto load track working , MData.ad_zero_data is: %ld \r\n",MData.ad_zero_data);
+            if(loadtrackoffset > FilterData.ad_filter_para*(MachData.loadtrackrange+0.5)) {
+                 MData.ad_zero_data = MData.ad_zero_data - loadtrackoffset;
+                 printf("autoload track working , loadtrackoffset: %ld \r\n",loadtrackoffset);
+                 autoload_exit();
+            }
+                
         } else {
             trackcnt = 0;
             //printf("trackcnt = 0 , MData.ad_dat_avg is: %ld \r\n",MData.ad_dat_avg);
