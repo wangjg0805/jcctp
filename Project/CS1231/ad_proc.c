@@ -12,19 +12,21 @@ static u32 trackcnt = 0;
 static u32 loadtrack_load = 0;
     
 static int loadtrackoffset = 0;
+static u8 loadtrackoffsetsign = 0;
 
 static void autoload_exit(void)
 {
     trackcnt = 0;
     loadtrackoffset = 0;
-    //loadtracksign = 0;
+    loadtrackoffsetsign = 0;
 }
 
 
 void autoload_track(void)
 {
-	u32 weigh_tmp,tmp;
-
+	u32 weigh_tmp;
+    u32 tmp;
+    
     if(0==RunData.stable_flag) {
        autoload_exit();
        return;
@@ -40,7 +42,6 @@ void autoload_track(void)
     
     trackcnt++;
     if(1 == trackcnt) {
-        //loadtrack_zero = MData.ad_zero_data;
         loadtrack_load = MData.ad_dat_avg - MData.ad_zero_data;
     } else if(0 == trackcnt%10) {
         weigh_tmp = MData.ad_dat_avg - MData.ad_zero_data;       
@@ -49,16 +50,21 @@ void autoload_track(void)
             if(weigh_tmp > loadtrack_load) {
                 MData.ad_zero_data = MData.ad_zero_data + tmp;
                 loadtrackoffset += tmp;
-                printf("MData.ad_zero_data: %ld \r\n",MData.ad_zero_data);
+                printf("loadtrack working,ad_zero_data: %ld \r\n",MData.ad_zero_data);
             } else {
                 MData.ad_zero_data = MData.ad_zero_data - tmp;
                 loadtrackoffset -= tmp;
-                printf("MData.ad_zero_data: %ld \r\n",MData.ad_zero_data);
+                printf("loadtrack working,ad_zero_data: %ld \r\n",MData.ad_zero_data);
             }
             
-            if(loadtrackoffset > FilterData.ad_filter_para*(MachData.loadtrackrange+0.5)) {
+            if((loadtrackoffset<0)&&((0-loadtrackoffset)>FilterData.ad_filter_para*(MachData.loadtrackrange+0.5))) {
                  MData.ad_zero_data = MData.ad_zero_data - loadtrackoffset;
-                 printf("autoload track working , loadtrackoffset: %ld \r\n",loadtrackoffset);
+                 printf("autoload track working 111 , loadtrackoffset: %ld \r\n",loadtrackoffset);
+                 autoload_exit();
+            }
+            if((loadtrackoffset>0)&&(loadtrackoffset>FilterData.ad_filter_para*(MachData.loadtrackrange+0.5))) {
+                 MData.ad_zero_data = MData.ad_zero_data - loadtrackoffset;
+                 printf("autoload track working 222, loadtrackoffset: %ld \r\n",loadtrackoffset);
                  autoload_exit();
             }
                 
@@ -90,7 +96,7 @@ void autozero_track(void)
 	    if(FilterData.zero_track_cnt >= AUTOZERO_TRACK_TIME) {
 	        FilterData.zero_track_cnt = 0;
 	        MData.ad_zero_data = MData.ad_dat_avg;
-           // printf("auto zero working,weigh_ad_zero is %ld \r\n",MData.ad_zero_data);
+            printf("auto zero working,weigh_ad_zero is %ld \r\n",MData.ad_zero_data);
             RunData.zero_flag = 1;
 	    }
 	} else  

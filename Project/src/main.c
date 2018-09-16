@@ -50,7 +50,7 @@ void main(void)
     TIM2_Init();
     enableInterrupts();
 
-    MachData.ADCChip = CS1231; 
+    MachData.ADCChip = CS1237; 
     if(MachData.ADCChip == CS1231)
         CS1231_Init();
     else

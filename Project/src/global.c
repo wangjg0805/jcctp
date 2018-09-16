@@ -149,12 +149,12 @@ void  Init_MachineParam(void)
     if((MachData.weigh_fullrange<3000) ||   
        (MachData.weigh_fullrange>200000) ||
        (0 != MachData.weigh_fullrange%1000)) { 
-       MachData.weigh_fullrange = 30000;  
+       MachData.weigh_fullrange = 60000;  
        MachData.weigh_onestep = 1;     
-       MachData.weigh_dotpos = 3; 
+       MachData.weigh_dotpos = 2; 
        MachData.weigh_displaymin = 2;
-       MachData.loadtrackrange = 2;
-       MachData.dozerorange = 4; //4%
+       MachData.loadtrackrange = 1;
+       MachData.dozerorange = 100; //100%
        MachData.keytype = 3;
      }
     
@@ -443,10 +443,10 @@ void MData_update_normal(void)
         tmp = MachData.weigh_coef[1]; 
     
     //printf("Netw: %ld \r\n",netw_ad);    
-    //MData.grossw = grossw_ad * tmp + 0.5;   
-    //MData.netw = netw_ad * tmp + 0.5;
-    MData.grossw = grossw_ad * tmp;   
-    MData.netw = netw_ad * tmp;
+    MData.grossw = grossw_ad * tmp + 0.5;   
+    MData.netw = netw_ad * tmp + 0.5;
+    //MData.grossw = grossw_ad * tmp;   
+    //MData.netw = netw_ad * tmp;
     MData.displayweight = displaytostep(MData.netw);
     
     if((1==RunData.stable_flag)&&(MData.displayweight < 1.0)) {
