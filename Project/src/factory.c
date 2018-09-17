@@ -7,11 +7,12 @@
 #include "i2c.h"
 #include "timer1.h"
 
-const u32 weigh_calmode1[] =      {1,   1500,  3000,  10000,  15000,  25000,  30000,   50000,  100000,  500000,  500000,   500000,    0};
-const u32 weigh_calmode2[2][20]= {{1,   1500,  3000,  10000,  15000,  25000,  30000,   50000,  100000,  500000,  500000,   500000,    0},
-                                  {1,   3000,  6000,  20000,  30000,  50000,  60000,  100000,  200000,  500000,  500000,   500000,    0}};
+const u32 weigh_calmode1[] =      {1,   2000,  5000,   5000,  10000,  15000,  25000,   50000,    50000,   50000,   50000,    50000,    50000,  0};
+const u32 weigh_calmode2[2][20]= {{1,   1500,  3000,   5000,  10000,  15000,  25000,   30000,    37500,   50000,   75000,   100000,   150000,  0},
+                                  {1,   3000,  6000,  10000,  20000,  30000,  50000,   60000,    75000,  100000,  150000,   200000,   300000,  0}};
+const float loadcal_coef[]=     {1.0,    1.5,   1.2,    2.0,    2.0,    2.0,    2.0,     1.2,      1.5,     2.0,     3.0,      4.0,      6.0,  0};
 
-const u8 weigh_fullrange[] =      {1,      3,     6,     10,     20,     30,     50,      60,      75,     100,     150,      200,    0}; //*1000
+const u16 weigh_fullrange[] =     {1,      3,     6,     10,     20,     30,     50,      60,       75,     100,     150,      200,      300,  0}; //*1000
 
 const u8 weigh_onestep[] =       {1,   1,    2,   5,   10,  20,  50,  100,  0};
 const u8 weigh_dot[] =           {1,   1,    2,   3,    4,   5,   0};
@@ -94,7 +95,7 @@ void Key_CalProc1(void)
     } else {
         CalData.calstep = CAL_PASS1;
         MachData.weigh_ad_Middle = MData.ad_dat_avg -  MData.ad_zero_data;  //use 1/2 
-        MachData.weigh_ad_full = MachData.weigh_ad_Middle * 2; //use half of fullload 
+        MachData.weigh_ad_full = MachData.weigh_ad_Middle * loadcal_coef[FactoryData.factoryindex];
         
         SaveToE2prom(MachData.weigh_ad_Middle,EEP_WEIGHTFULL1_ADDR,8);
         SaveToE2prom(MachData.weigh_ad_full,  EEP_WEIGHTFULL2_ADDR,8);
@@ -283,6 +284,7 @@ void FactoryGetFirstStepIndex(void)
     case 100000:  FactoryData.factoryindex = 9;  break;
     case 150000:  FactoryData.factoryindex = 10; break;    
     case 200000:  FactoryData.factoryindex = 11; break;
+    case 300000:  FactoryData.factoryindex = 12; break;
     default:      FactoryData.factoryindex = 1;  break;
     }
 }
@@ -354,7 +356,7 @@ void Key_FactoryPCSProc(void)
     switch(FactoryData.factorystep) {
     case FAC_FULL:
         MachData.weigh_fullrange = weigh_fullrange[FactoryData.factoryindex] * 1000L;
-        printf("weigh_fullrange :%ld \r\n", MachData.weigh_fullrange);
+        //printf("weigh_fullrange :%ld \r\n", MachData.weigh_fullrange);
         U32toBUF(MachData.weigh_fullrange,buf);
         Write_EEPROM(EEP_SYS_FULLRANGE_ADDR,buf,4);
         break;

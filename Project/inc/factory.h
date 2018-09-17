@@ -4,7 +4,8 @@
 extern const u32 weigh_calmode1[];
 extern const u32 weigh_calmode2[2][20];
 
-extern const u8 weigh_fullrange[];
+extern const float loadcal_coef[];
+extern const u16 weigh_fullrange[];
 extern const u8 weigh_onestep[];
 extern const u8 weigh_dot[];
 extern const u8 weigh_displaymin[];

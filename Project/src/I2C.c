@@ -239,6 +239,7 @@ void Read_EEPROM(u16 addr, u8* buf, u16 rlen)
 
 u8 Write_EEPROM(u16 addr, u8* buf, u16 wlen)
 {
+    u8 i;
     u32 tmp;
     disableInterrupts();
     
@@ -249,19 +250,11 @@ u8 Write_EEPROM(u16 addr, u8* buf, u16 wlen)
         FLASH_ProgramByte(STM32EEPROM_BASE_ADDR+addr,  *buf++);
         FLASH_ProgramByte(STM32EEPROM_BASE_ADDR+addr+1,*buf);
         break;
-    case 4:
-        printf("0x%x,0x%x,0x%x,0x%x \r\n",*buf,*(buf+1),*(buf+2),*(buf+3));
-        tmp = BUFtoU32(buf);
-        printf("FLASH_Program4byte:%ld \r\n",tmp);
-        FLASH_ProgramWord(STM32EEPROM_BASE_ADDR+addr,  tmp);
-        break;
-    case 8:
-        tmp = BUFtoU32(buf);
-        printf("FLASH_Program8byte:%ld \r\n",tmp);
-        FLASH_ProgramWord(STM32EEPROM_BASE_ADDR+addr,  tmp);
-        tmp = BUFtoU32(buf+4);
-        printf("FLASH_ProgramWord:%ld \r\n",tmp);
-        FLASH_ProgramWord(STM32EEPROM_BASE_ADDR+addr+4,  tmp);
+    default:
+        for(i=0;i<wlen/4;i++) {
+            tmp = BUFtoU32(buf+4*i);
+            FLASH_ProgramWord(STM32EEPROM_BASE_ADDR+addr+4*i, tmp);
+        }
         break;
     }
     

@@ -128,27 +128,26 @@ void InitGlobalVarible(void)
 /////////////////////////////////////////////// 
 void  Init_MachineParam(void)
 {	 
-    u8 buf[16];	 
+    u32 i;
+    u8 buf[32];	 
     
-    Read_EEPROM(EEP_SYS_FULLRANGE_ADDR, buf, 16);
+    Read_EEPROM(EEP_SYS_FULLRANGE_ADDR, buf, 4*7);
 
     MachData.weigh_fullrange = BUFtoU32_tmp(buf);
     MachData.weigh_onestep = BUFtoU32_tmp(buf+4);
     MachData.weigh_dotpos = BUFtoU32_tmp(buf+8);
     MachData.weigh_displaymin = BUFtoU32_tmp(buf+12);
 
-    Read_EEPROM(EEP_SYS_LOADTRACK_ADDR, buf, 16);
-
-    MachData.loadtrackrange = BUFtoU32_tmp(buf);
-    MachData.dozerorange = BUFtoU32_tmp(buf+4);
-    MachData.keytype = BUFtoU32_tmp(buf+8);
-
-    MachData.weigh_lptime = 10*2;  //5s
+    //Read_EEPROM(EEP_SYS_LOADTRACK_ADDR, buf, 16);
+    MachData.loadtrackrange = BUFtoU32_tmp(buf+16);
+    MachData.dozerorange = BUFtoU32_tmp(buf+20);
+    MachData.keytype = BUFtoU32_tmp(buf+24);
 
     //check error
     if((MachData.weigh_fullrange<3000) ||   
-       (MachData.weigh_fullrange>200000) ||
-       (0 != MachData.weigh_fullrange%1000)) { 
+       (MachData.weigh_fullrange>300000) ||
+       (0 != MachData.weigh_fullrange%1000)) 
+    { 
        MachData.weigh_fullrange = 60000;  
        MachData.weigh_onestep = 1;     
        MachData.weigh_dotpos = 2; 
@@ -156,10 +155,20 @@ void  Init_MachineParam(void)
        MachData.loadtrackrange = 1;
        MachData.dozerorange = 100; //100%
        MachData.keytype = 3;
+       //save to flash
+       U32toBUF(MachData.weigh_fullrange,buf);
+       U32toBUF(MachData.weigh_onestep,buf+4);
+       U32toBUF(MachData.weigh_dotpos,buf+8);
+       U32toBUF(MachData.weigh_displaymin,buf+12);
+       U32toBUF(MachData.loadtrackrange,buf+16);
+       U32toBUF(MachData.dozerorange,buf+20);
+       U32toBUF(MachData.keytype,buf+24);
+       Write_EEPROM(EEP_SYS_FULLRANGE_ADDR,buf,4*7);       
      }
     
+    MachData.weigh_lptime = 10*2;  //5s
     MachData.weigh_division =  MachData.weigh_fullrange / MachData.weigh_onestep;
-    
+    FactoryGetFirstStepIndex(); //use for cal info
 } 
 		 		 
 
@@ -179,7 +188,7 @@ void Init_UserCalParam(void)
         Read_EEPROM(EEP_WEIGHTFULL1_ADDR, buf, 16);
         MachData.weigh_ad_Middle = BUFtoU32_tmp(buf);
         MachData.weigh_ad_full = BUFtoU32_tmp(buf+8);
-        MachData.weigh_coef[0] = (MachData.weigh_fullrange/2) / (MachData.weigh_ad_Middle + 0.1);
+        MachData.weigh_coef[0] = (MachData.weigh_fullrange/loadcal_coef[FactoryData.factoryindex]) / (MachData.weigh_ad_Middle + 0.1);
         MachData.weigh_coef[1] =  MachData.weigh_fullrange    / (MachData.weigh_ad_full + 0.1);
     } else {
         MData.ad_zero_data = MACHINE_AD_ZERO;
@@ -192,14 +201,6 @@ void Init_UserCalParam(void)
     FilterData.ad_filter_para = (MachData.weigh_ad_full+0.1) / MachData.weigh_division;
 }
 
-void Init_UserDataParam(void)
-{
-    /*
-    u32 i,j;
-	u8 buf[8];	
-    Read_EEPROM(EEP_USR_FUN1_ADDR, buf, 8); 
- */
-}
 
 float displaytostep(float w)
 {
@@ -292,9 +293,7 @@ u8  System_Init(void)
         case 7:
             Init_UserCalParam();
             break;
-        case 9:
-            Init_UserDataParam();
-            break;
+
         default:
             break;
         }

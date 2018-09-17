@@ -22,7 +22,7 @@ void Key_CalCountDownProc(void)
 {
     if(STAT_CALCOUNTDOWN != RunData.current_mode) {
         RunData.current_mode = STAT_CALCOUNTDOWN;
-        RunData.CalCountDown_time = 3*2 + 1;
+        RunData.CalCountDown_time = 2*2 + 1;
     }
 }
 

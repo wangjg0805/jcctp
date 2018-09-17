@@ -141,7 +141,7 @@ void TM1668_DisplayModel(void)
 
 void TM1668_Display_Factory(void)
 {
-     u8 i;
+     u16 i;
     
      if(FAC_EXIT==FactoryData.factorystep) {
        Display_Data(MData.ad_dat_avg);
@@ -156,7 +156,7 @@ void TM1668_Display_Factory(void)
     i = 0;
     switch(FactoryData.factorystep) {
     case FAC_FULL:
-        i = (u8)weigh_fullrange[FactoryData.factoryindex];
+        i = weigh_fullrange[FactoryData.factoryindex];
         break;
     case FAC_FENDU:
         i = weigh_onestep[FactoryData.factoryindex];
