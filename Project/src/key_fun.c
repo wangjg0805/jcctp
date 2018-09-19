@@ -7,7 +7,58 @@
 #include "factory.h"
 //*************************************************************
 const u16 CountList[] = {10,20,50,100,200,500,900,0};
+
+static u16 KeyPressing = 0;
 static u8 CouIndex = 0;
+
+
+
+void Key_Cal1Proc(void)
+{
+    if(STAT_WEIGHT == RunData.current_mode) {
+        CalData.calstep = CAL_TIP;
+        MachData.mode = MACHINE_NORMAL_MODE+MACHINE_USERCAL1_MODE;
+        manual_break_stable();
+    }
+}
+
+void Key_Cal2Proc(void) 
+{
+    if(STAT_WEIGHT == RunData.current_mode) {
+        CalData.calstep = CAL_TIP;
+        MachData.mode = MACHINE_NORMAL_MODE+MACHINE_USERCAL2_MODE;
+        manual_break_stable();
+    }
+}
+
+void Key_EnterCal(void)
+{
+    RunData.current_mode = STAT_WEIGHT;
+    
+    if(3 == MachData.keytype) {
+        switch(KeyPressing) {
+        case KEY_PRESSING+KEY_TARECAL:
+            Key_Cal1Proc();
+            break;
+        case KEY_PRESSING+KEY_UNITMODE:
+            Key_Cal2Proc();
+            break;
+        default:
+            break;
+        }
+    } else {
+        switch(KeyPressing) {
+        case KEY_PRESSING+KEY_CAL:
+            Key_Cal1Proc();
+            break;
+        case KEY_PRESSING+KEY_UNITMODE:
+            Key_Cal2Proc();
+            break;
+        default:
+            break;
+        }
+    }
+}
 
 void Key_ReleasedProc(void)
 {
@@ -18,23 +69,16 @@ void Key_ReleasedProc(void)
 }
 
 
-void Key_CalCountDownProc(void)
+void Key_CalCountDownProc(u16 key)
 {
+    
     if(STAT_CALCOUNTDOWN != RunData.current_mode) {
+        KeyPressing = key;
         RunData.current_mode = STAT_CALCOUNTDOWN;
         RunData.CalCountDown_time = 2*2 + 1;
     }
 }
 
-
-void Key_Cal2Proc(void) 
-{
-    if(MachData.mode == MACHINE_NORMAL_MODE) {
-        CalData.calstep = CAL_TIP;
-        MachData.mode = MACHINE_NORMAL_MODE+MACHINE_USERCAL2_MODE;
-        manual_break_stable();
-    }
-}
 
 void Key_UnitProc(void)
 {
@@ -75,16 +119,6 @@ void Key_PCSProc(void)
     }
 }
 
-
-void Key_Cal1Proc(void)
-{
-    if(STAT_WEIGHT == RunData.current_mode) {
-        CalData.calstep = CAL_TIP;
-        MachData.mode = MACHINE_NORMAL_MODE+MACHINE_USERCAL1_MODE;
-        manual_break_stable();
-    }
-}
-
 void Key_TareProc(void)
 {
     if(STAT_PCS_SAMPLE == RunData.current_mode) {
@@ -111,7 +145,7 @@ void Key_Proc_3(u16 key)
     //ADD PRESSING STATUS
     case KEY_PRESSING+KEY_TARECAL:
     case KEY_PRESSING+KEY_UNITMODE:
-        Key_CalCountDownProc();
+        Key_CalCountDownProc(key);
         break;
         
     case KEY_PRESSED+KEY_UNITMODE:
@@ -124,15 +158,15 @@ void Key_Proc_3(u16 key)
         Key_TareProc();
         break;
         
-    case KEY_PRESSED_3S + KEY_TARECAL:
-        Key_Cal1Proc(); 
-        break;
+    //case KEY_PRESSED_3S + KEY_TARECAL:
+    //    Key_Cal1Proc(); 
+    //    break;
     case KEY_PRESSED_3S + KEY_PCSCONFIRM:
         Key_LongPCSProc(); 
         break;
-    case KEY_PRESSED_3S + KEY_UNITMODE:
-        Key_Cal2Proc(); 
-        break;
+    //case KEY_PRESSED_3S + KEY_UNITMODE:
+    //    Key_Cal2Proc(); 
+    //    break;
         
     default:
         break;
@@ -152,8 +186,7 @@ void Key_Proc_4(u16 key)
         
     case KEY_PRESSING+KEY_CAL:
     case KEY_PRESSING+KEY_UNITMODE:
-        Key_CalCountDownProc();
-        
+        Key_CalCountDownProc(key);   
         break;    
         
     case KEY_PRESSED+KEY_UNITMODE:
@@ -166,15 +199,15 @@ void Key_Proc_4(u16 key)
         Key_TareProc();
         break;
       
-    case KEY_PRESSED_3S+KEY_CAL:
-        Key_Cal1Proc();  
-        break;   
+    //case KEY_PRESSED_3S+KEY_CAL:
+    //   Key_Cal1Proc();  
+    //    break;   
     case KEY_PRESSED_3S + KEY_PCSCONFIRM:
         Key_LongPCSProc(); 
         break;
-    case KEY_PRESSED_3S + KEY_UNITMODE:
-        Key_Cal2Proc(); 
-        break;
+    //case KEY_PRESSED_3S + KEY_UNITMODE:
+    //    Key_Cal2Proc(); 
+    //    break;
         
     default:
         break;

@@ -100,15 +100,9 @@ void Normal_Proc(void)
             RunData.not_zero_time++;
             if(STAT_CALCOUNTDOWN == RunData.current_mode) {
                 RunData.CalCountDown_time--; 
-                printf("RunData.CalCountDown_time:%d \r\n",RunData.CalCountDown_time);
-                if(0 == RunData.CalCountDown_time) {
-                    RunData.current_mode = STAT_WEIGHT;
-                    i = Key_GetCode();
-                    if(i == KEY_PRESSING+KEY_TARECAL)
-                        Key_Cal1Proc();
-                    if(i == KEY_PRESSING+KEY_UNITMODE)
-                        Key_Cal2Proc();
-                }
+                //printf("RunData.CalCountDown_time:%d \r\n",RunData.CalCountDown_time);
+                if(0 == RunData.CalCountDown_time)
+                    Key_EnterCal();
             }
          
             if(ADC1_GetFlagStatus(ADC1_FLAG_EOC)) {
