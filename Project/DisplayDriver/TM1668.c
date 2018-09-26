@@ -93,10 +93,10 @@ void TM1668_Init(void)
     GPIO_Init(TM1668_CLK_PORT,TM1668_CLK_PIN,GPIO_MODE_OUT_PP_LOW_FAST);
     GPIO_Init(TM1668_STB_PORT,TM1668_STB_PIN,GPIO_MODE_OUT_PP_LOW_FAST);
     
-    TM1668_WriteCommand(TM1668COM_7SEG_11GRID);    //7segment 11grid
-    TM1668_WriteCommand(TM1668COM_DISPLAY_4_16);    //7segment 11grid
-    TM1668_WriteCommand(TM1668COM_ADDRESS_CONTINUE);
-  
+    //TM1668_WriteCommand(TM1668COM_7SEG_11GRID);    //7segment 11grid
+    //TM1668_WriteCommand(TM1668COM_DISPLAY_1_16);    //7segment 11grid
+    //TM1668_WriteCommand(TM1668COM_ADDRESS_CONTINUE);
+    //TM1668_WriteCommand(TM1668COM_DISPLAY_ON | TM1668COM_DISPLAY_1_16);
 }
 
 /************TM1668写地址数据函数**************/
@@ -110,8 +110,11 @@ void TM1668_Update(void)
         TM1668_WriteByte(0x00);                //seg8 9
     }
     TM1668_STB_H;  //锁存
+
+    //TM1668_WriteCommand(TM1668COM_DISPLAY_1_16); 
+    TM1668_WriteCommand(TM1668COM_DISPLAY_ON | TM1668COM_DISPLAY_1_16);
     
-    TM1668_WriteCommand(TM1668COM_DISPLAY_ON);
+    
 }
 
 
