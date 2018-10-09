@@ -13,6 +13,7 @@ extern const u8 weigh_bkofftime[];
 extern const u8 poweron_zerorange[]; 
 extern const u8 auto_loadtrackrange[]; 
 extern const u8 key_count[]; 
+extern const u8 brightness[]; 
 
 
 extern void Key_CalExit(void);

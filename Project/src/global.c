@@ -131,7 +131,7 @@ void  Init_MachineParam(void)
     u32 i;
     u8 buf[32];	 
     
-    Read_EEPROM(EEP_SYS_FULLRANGE_ADDR, buf, 4*7);
+    Read_EEPROM(EEP_SYS_FULLRANGE_ADDR, buf, 4*8);
 
     MachData.weigh_fullrange = BUFtoU32_tmp(buf);
     MachData.weigh_onestep = BUFtoU32_tmp(buf+4);
@@ -142,12 +142,11 @@ void  Init_MachineParam(void)
     MachData.loadtrackrange = BUFtoU32_tmp(buf+16);
     MachData.dozerorange = BUFtoU32_tmp(buf+20);
     MachData.keytype = BUFtoU32_tmp(buf+24);
-
+    MachData.brightness = BUFtoU32_tmp(buf+28);
     //check error
     if((MachData.weigh_fullrange<3000) ||   
        (MachData.weigh_fullrange>300000) ||
-       (0 != MachData.weigh_fullrange%1000)) 
-    { 
+       (0 != MachData.weigh_fullrange%1000)) { 
        MachData.weigh_fullrange = 60000;  
        MachData.weigh_onestep = 1;     
        MachData.weigh_dotpos = 2; 
@@ -155,6 +154,7 @@ void  Init_MachineParam(void)
        MachData.loadtrackrange = 1;
        MachData.dozerorange = 100; //100%
        MachData.keytype = 3;
+       MachData.brightness = 3;
        //save to flash
        U32toBUF(MachData.weigh_fullrange,buf);
        U32toBUF(MachData.weigh_onestep,buf+4);
@@ -163,7 +163,8 @@ void  Init_MachineParam(void)
        U32toBUF(MachData.loadtrackrange,buf+16);
        U32toBUF(MachData.dozerorange,buf+20);
        U32toBUF(MachData.keytype,buf+24);
-       Write_EEPROM(EEP_SYS_FULLRANGE_ADDR,buf,4*7);       
+       U32toBUF(MachData.brightness,buf+28);
+       Write_EEPROM(EEP_SYS_FULLRANGE_ADDR,buf,4*8);       
      }
     
     MachData.weigh_lptime = 10*2;  //5s
@@ -273,7 +274,18 @@ u8  System_Init(void)
         switch(i){
         case 0:
             InitGlobalVarible();
+            break;        
+        case 1:
+            Init_MachineParam();
+            break;
+        case 2:
             TM1668_DisplayAll();
+            break;    
+        case 5:     
+            //Init_LinecalParam();  
+            break;
+        case 7:
+            Init_UserCalParam();
             break;
         case 20:
             Display_ClearLED();
@@ -284,16 +296,6 @@ u8  System_Init(void)
             Display_Battery();
             TM1668_Update();
             break;
-        case 3:
-            Init_MachineParam();
-            break;
-        case 5:     
-            //Init_LinecalParam();  
-            break;
-        case 7:
-            Init_UserCalParam();
-            break;
-
         default:
             break;
         }

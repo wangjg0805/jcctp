@@ -21,6 +21,7 @@ const u8 auto_loadtrackrange[] = {1,   1,    2,   3,    4,   5,   9,    0};
 const u8 weigh_lptime[] =        {1,   5,   15,  30,   60,  99,   0};
 const u8 poweron_zerorange[] =   {1,   4,   20,  50,  100, 200,   0};  
 const u8 key_count[] =           {1,   3,    4,  0}; 
+const u8 brightness[] =          {1,   1,    2,  3,  0};
 
 static u8 Time180sCount = 0;
 
@@ -255,6 +256,13 @@ void Key_FactoryUnitProc(void)
         if(key_count[FactoryData.factoryindex] == 0)
             FactoryData.factoryindex = 1;
         break;
+
+    case FAC_BRIGHTNESS:
+        if(brightness[FactoryData.factoryindex] == 0)
+            FactoryData.factoryindex = 1;
+        
+        MachData.brightness = FactoryData.factoryindex; //must enable
+        break;
         
 /*
     case 7:
@@ -344,6 +352,17 @@ void Key_FactoryTareProc(void)
            break;
        }
        break;
+
+   case FAC_BRIGHTNESS:
+       switch(MachData.brightness) {
+       case 1:  FactoryData.factoryindex = 1;break;
+       case 2:  FactoryData.factoryindex = 2;break;
+       case 3:  FactoryData.factoryindex = 3;break;
+       default:
+                FactoryData.factoryindex = 3;
+           break;
+       }
+       break;
        
    default:
        FactoryData.factoryindex = 1;
@@ -392,6 +411,11 @@ void Key_FactoryPCSProc(void)
         MachData.keytype = key_count[FactoryData.factoryindex];
         U32toBUF(MachData.keytype,buf);
         Write_EEPROM(EEP_SYS_KEYTYPE_ADDR,buf,4);
+        break;
+    case FAC_BRIGHTNESS:
+        MachData.brightness = brightness[FactoryData.factoryindex];
+        U32toBUF(MachData.brightness,buf);
+        Write_EEPROM(EEP_SYS_BRIGHTNESS_ADDR,buf,4);
         break;
         
     case FAC_EXIT:    

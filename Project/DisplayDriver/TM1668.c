@@ -102,6 +102,8 @@ void TM1668_Init(void)
 /************TM1668写地址数据函数**************/
 void TM1668_Update(void)
 {
+    const u8 brightnesscode[] = {TM1668COM_DISPLAY_1_16,TM1668COM_DISPLAY_1_16,TM1668COM_DISPLAY_2_16,TM1668COM_DISPLAY_4_16};
+    
     unsigned char i;
     TM1668_STB_L;
     TM1668_WriteByte(TM1668COM_CONFIG_ADDRESS+0x00); 
@@ -112,7 +114,7 @@ void TM1668_Update(void)
     TM1668_STB_H;  //锁存
 
     //TM1668_WriteCommand(TM1668COM_DISPLAY_1_16); 
-    TM1668_WriteCommand(TM1668COM_DISPLAY_ON | TM1668COM_DISPLAY_1_16);
+    TM1668_WriteCommand(TM1668COM_DISPLAY_ON | brightnesscode[MachData.brightness]);
     
     
 }
@@ -176,9 +178,11 @@ void TM1668_Display_Factory(void)
     case FAC_ZEROLIMIT:
         i = poweron_zerorange[FactoryData.factoryindex];
         break;     
-
     case FAC_KEYCOUNT:
         i = key_count[FactoryData.factoryindex];
+        break;     
+    case FAC_BRIGHTNESS:
+        i = brightness[FactoryData.factoryindex];
         break;     
         
     default:
