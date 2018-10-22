@@ -93,15 +93,17 @@ void TM1668_Init(void)
     GPIO_Init(TM1668_CLK_PORT,TM1668_CLK_PIN,GPIO_MODE_OUT_PP_LOW_FAST);
     GPIO_Init(TM1668_STB_PORT,TM1668_STB_PIN,GPIO_MODE_OUT_PP_LOW_FAST);
     
-    TM1668_WriteCommand(TM1668COM_7SEG_11GRID);    //7segment 11grid
-    TM1668_WriteCommand(TM1668COM_DISPLAY_4_16);    //7segment 11grid
-    TM1668_WriteCommand(TM1668COM_ADDRESS_CONTINUE);
-  
+    //TM1668_WriteCommand(TM1668COM_7SEG_11GRID);    //7segment 11grid
+    //TM1668_WriteCommand(TM1668COM_DISPLAY_1_16);    //7segment 11grid
+    //TM1668_WriteCommand(TM1668COM_ADDRESS_CONTINUE);
+    //TM1668_WriteCommand(TM1668COM_DISPLAY_ON | TM1668COM_DISPLAY_1_16);
 }
 
 /************TM1668写地址数据函数**************/
 void TM1668_Update(void)
 {
+    const u8 brightnesscode[] = {TM1668COM_DISPLAY_1_16,TM1668COM_DISPLAY_1_16,TM1668COM_DISPLAY_2_16,TM1668COM_DISPLAY_4_16};
+    
     unsigned char i;
     TM1668_STB_L;
     TM1668_WriteByte(TM1668COM_CONFIG_ADDRESS+0x00); 
@@ -110,8 +112,11 @@ void TM1668_Update(void)
         TM1668_WriteByte(0x00);                //seg8 9
     }
     TM1668_STB_H;  //锁存
+
+    //TM1668_WriteCommand(TM1668COM_DISPLAY_1_16); 
+    TM1668_WriteCommand(TM1668COM_DISPLAY_ON | brightnesscode[MachData.brightness]);
     
-    TM1668_WriteCommand(TM1668COM_DISPLAY_ON);
+    
 }
 
 
@@ -141,7 +146,7 @@ void TM1668_DisplayModel(void)
 
 void TM1668_Display_Factory(void)
 {
-     u8 i;
+     u16 i;
     
      if(FAC_EXIT==FactoryData.factorystep) {
        Display_Data(MData.ad_dat_avg);
@@ -156,7 +161,7 @@ void TM1668_Display_Factory(void)
     i = 0;
     switch(FactoryData.factorystep) {
     case FAC_FULL:
-        i = (u8)weigh_fullrange[FactoryData.factoryindex];
+        i = weigh_fullrange[FactoryData.factoryindex];
         break;
     case FAC_FENDU:
         i = weigh_onestep[FactoryData.factoryindex];
@@ -173,9 +178,11 @@ void TM1668_Display_Factory(void)
     case FAC_ZEROLIMIT:
         i = poweron_zerorange[FactoryData.factoryindex];
         break;     
-
     case FAC_KEYCOUNT:
         i = key_count[FactoryData.factoryindex];
+        break;     
+    case FAC_BRIGHTNESS:
+        i = brightness[FactoryData.factoryindex];
         break;     
         
     default:

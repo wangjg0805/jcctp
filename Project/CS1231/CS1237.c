@@ -104,7 +104,6 @@ unsigned char CS1237_ReadConfig(void)
 {
 	unsigned char i,j;
 	unsigned char dat=0;//读取到的数据
-	unsigned int timeout = 0;
     
     CS1231_CLK_L;
 

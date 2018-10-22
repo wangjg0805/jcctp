@@ -50,7 +50,7 @@ void main(void)
     TIM2_Init();
     enableInterrupts();
 
-    MachData.ADCChip = CS1237; 
+    MachData.ADCChip = CS1231; 
     if(MachData.ADCChip == CS1231)
         CS1231_Init();
     else
@@ -61,7 +61,7 @@ void main(void)
     HT1621_Init();
     //BkLight_On();
 #else
-    TM1668_Init();
+    //TM1668_Init();
 #endif  
 
     /////////////////////////////////////////////////////////////////////////	
@@ -71,7 +71,7 @@ void main(void)
     if((MACHINE_NORMAL_MODE+MACHINE_FACTORY_MODE) == MachData.mode) {
         FactoryData.factorystep = FAC_EXIT;
     }
-    FactoryGetFirstStepIndex(); //use for cal info
+    
     Normal_Proc();
     
 	while(1){;}

@@ -44,8 +44,9 @@
 #define   EEP_SYS_LOADTRACK_ADDR          0x60  //
 #define   EEP_SYS_ZERORANGE_ADDR          0x64  //
 #define   EEP_SYS_KEYTYPE_ADDR            0x68  //
+#define   EEP_SYS_BRIGHTNESS_ADDR         0x6C  //
 
-#define   EEP_SYS_BKOFFTIME_ADDR          0x6C  //
+#define   EEP_SYS_BKOFFTIME_ADDR          0x70  //
 
 //用户配置 参数 0xB0-0XD0
 #define   EEP_USR_FUN1_ADDR               0xB0  //  

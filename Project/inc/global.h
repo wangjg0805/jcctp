@@ -95,6 +95,7 @@ typedef enum {
     FAC_ZEROLIMIT,
     //added 
     FAC_KEYCOUNT,
+    FAC_BRIGHTNESS,
     
     FAC_EXIT,
     FAC_MAX,
@@ -134,6 +135,7 @@ typedef struct{
     u8 weigh_lptime;
     u8 dozerorange;
     u8 keytype;
+    u8 brightness;
     u8 ADCChip;
     
     u32 weigh_division; 
@@ -261,4 +263,5 @@ extern void Display_Weight(void);
 extern void Display_Battery(void);
 extern void Display_ClearLED(void);
 extern void Display_SwapBuffer(void);
+extern void Display_CalCountDown(void);
 #endif

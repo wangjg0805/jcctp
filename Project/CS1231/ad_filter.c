@@ -70,10 +70,10 @@ u32 ad_filter0(u32 ad_new_dat)
         
         //from lp mode
         if(MachData.ADCChip == CS1231) {
-            if((1==ExitLpmodeflag)&&(tmp > FilterData.ad_filter_para*5))
+            if((1==ExitLpmodeflag)&&(tmp > FilterData.ad_filter_para*MachData.weigh_displaymin))
                 manual_break_stable();
         } else {
-            if((2==ExitLpmodeflag)&&(tmp > FilterData.ad_filter_para*5))
+            if((2==ExitLpmodeflag)&&(tmp > FilterData.ad_filter_para*MachData.weigh_displaymin))
                 manual_break_stable();        
         }
         

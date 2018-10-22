@@ -76,7 +76,7 @@ u8 CS1231_Read(void)
         return(0);
     else {
         MData.hx711_data = tmp>>2;	  //ȡ 22bit
-        printf("hx711_data:%ld\r\n",MData.hx711_data);
+        //printf("hx711_data:%ld\r\n",MData.hx711_data);
 	    return(1);
     }
 }
