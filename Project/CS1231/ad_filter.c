@@ -57,7 +57,25 @@ u32 ad_filter0(u32 ad_new_dat)
     static u32 direct_sub_cnt     = 0;   
     static u32 ad_last_dat  = 0;  
     u32 tmp;
+
     tmp = abs(ad_new_dat - ad_last_dat);
+    //from lp mode
+#if 1       
+    if(MachData.ADCChip == CS1231) {
+        if((2==ExitLpmodeflag)&&(tmp > FilterData.ad_filter_para*MachData.weigh_displaymin))
+            manual_break_stable();
+    } else {
+        if(2==ExitLpmodeflag){
+            if(ad_new_dat < ad_last_dat) {
+                if(tmp > FilterData.ad_filter_para*10)
+                    manual_break_stable();
+            } else {
+                if(tmp > FilterData.ad_filter_para*MachData.weigh_displaymin)
+                    manual_break_stable();
+            }
+        }
+    }
+#endif
     
     if(tmp > FilterData.ad_filter_para*3) {  //相邻两次数据差距很大 	         
         if(ad_new_dat >= ad_last_dat) {
@@ -67,15 +85,6 @@ u32 ad_filter0(u32 ad_new_dat)
 	        direct_sub_cnt++;
             direct_add_cnt = 0;
 	    }
-        
-        //from lp mode
-        if(MachData.ADCChip == CS1231) {
-            if((1==ExitLpmodeflag)&&(tmp > FilterData.ad_filter_para*MachData.weigh_displaymin))
-                manual_break_stable();
-        } else {
-            if((2==ExitLpmodeflag)&&(tmp > FilterData.ad_filter_para*MachData.weigh_displaymin))
-                manual_break_stable();        
-        }
         
 	    if((direct_add_cnt > 2)||(direct_sub_cnt > 2)) { //相邻数据大于2D 连续变化3次就进入快速滤波模式
 	        manual_break_stable();
@@ -104,7 +113,8 @@ u32 ad_filter0(u32 ad_new_dat)
              ad_last_dat = (ad_new_dat*7+ad_last_dat*3)/10;    //更新
          } 
          */
-    }   	  
+    }
+    
 	return ad_last_dat;
 }    
 //********************************************************

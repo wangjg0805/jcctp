@@ -454,6 +454,8 @@ void MData_update_normal(void)
         RunData.positive_flag = 1;
         RunData.return_zero_flag = 1;
         RunData.not_zero_time = 0;
+    } else if((2==ExitLpmodeflag)&&(MData.displayweight<10*MachData.weigh_onestep)&&(0==RunData.positive_flag)) {
+        printf("-10d not wake up \r\n");
     } else { 
         RunData.keep_zero_time = 0;
     }
